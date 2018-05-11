@@ -3,3 +3,5 @@ jdk: oraclejdk8
 scala:
     - 2.12.6
 script: sbt test
+notifications:
+    email: false
