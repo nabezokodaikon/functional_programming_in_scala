@@ -59,6 +59,19 @@ object MyModule {
     loop(0)
   }
 
+  def isSorted[A](as: Array[A], ordered: (A, A) => Boolean): Boolean = {
+
+    @annotation.tailrec
+    def loop(a: Int): Boolean = {
+      val b = a + 1
+      if (b >= as.length) true
+      else if (ordered(as(a), as(b))) loop(b)
+      else false
+    }
+
+    loop(0)
+  }
+
   def main(args: Array[String]): Unit = {
     println(formatAbs(-42))
     println(formatFactorial(7))

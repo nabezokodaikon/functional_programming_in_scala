@@ -55,4 +55,14 @@ class GettingStartedSpec extends FunSuite {
     assert(findFirst(Array("a", "b", "c"), (i: String) => i == "d") == -1)
     assert(findFirst(Array("a", "b", "c"), (i: String) => i == "c") == 2)
   }
+
+  test("isSorted") {
+    import MyModule.isSorted
+
+    assert(isSorted(Array(2, 1, 3), (a: Int, b: Int) => a <= b) == false)
+    assert(isSorted(Array(1, 2, 3), (a: Int, b: Int) => a <= b) == true)
+
+    assert(isSorted(Array("b", "a", "c"), (a: String, b: String) => a <= b) == false)
+    assert(isSorted(Array("a", "b", "d"), (a: String, b: String) => a <= b) == true)
+  }
 }
