@@ -3,6 +3,10 @@ package fpinscala.gettingstarted
 import org.scalatest.FunSuite
 
 class GettingStartedSpec extends FunSuite {
+  test("main") {
+    MyModule.main(Array[String]())
+  }
+
   test("abs fail") {
     assert(MyModule.abs(1) !== -1)
     assert(MyModule.abs(-1) !== -1)
