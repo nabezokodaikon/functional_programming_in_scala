@@ -72,8 +72,8 @@ object MyModule {
     loop(0)
   }
 
-  def curry[A, B, C](f: A => B => C): A => (B => C) =
-    a => b => f(a)(b)
+  def curry[A, B, C](f: (A, B) => C): A => (B => C) =
+    a => b => f(a, b)
 
   def main(args: Array[String]): Unit = {
     println(formatAbs(-42))
