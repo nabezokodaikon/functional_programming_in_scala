@@ -9,6 +9,12 @@ object MyModule {
   private def formatAbs(x: Int) =
     s"The absolute value of ${x} is ${abs(x)}"
 
+  private def formatFactorial(n: Int) =
+    s"The factorial value of ${n} is ${factorial(n)}"
+
+  private def formatResult(name: String, n: Int, f: Int => Int) =
+    s"The ${name} value of ${n} is ${f(n)}"
+
   def factorial(n: Int): Int = {
 
     def go(n: Int, acc: Int): Int = {
@@ -30,6 +36,11 @@ object MyModule {
     loop(n, 0, 1)
   }
 
-  def main(args: Array[String]): Unit =
+  def main(args: Array[String]): Unit = {
     println(formatAbs(-42))
+    println(formatFactorial(7))
+    println("--------")
+    println(formatResult("abs", -42, abs))
+    println(formatResult("factorial", 7, factorial))
+  }
 }
