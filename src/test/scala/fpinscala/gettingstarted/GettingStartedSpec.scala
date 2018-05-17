@@ -33,4 +33,12 @@ class GettingStartedSpec extends FunSuite {
     assert(fibonacci(4) == 3)
     assert(fibonacci(5) == 5)
   }
+
+  test("findFirst") {
+    import MyModule.findFirst
+    assert(findFirst(Array[String](), "a") == -1)
+    assert(findFirst(Array[String](), "c") == -1)
+    assert(findFirst(Array("a", "b"), "c") == -1)
+    assert(findFirst(Array("a", "b"), "b") == 1)
+  }
 }
