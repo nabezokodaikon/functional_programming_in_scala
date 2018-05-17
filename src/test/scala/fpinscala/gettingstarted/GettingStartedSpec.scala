@@ -65,4 +65,11 @@ class GettingStartedSpec extends FunSuite {
     assert(isSorted(Array("b", "a", "c"), (a: String, b: String) => a <= b) == false)
     assert(isSorted(Array("a", "b", "d"), (a: String, b: String) => a <= b) == true)
   }
+
+  test("EXRCISE 2.3") {
+    import MyModule.curry
+
+    val p = curry((a: Int) => (b: String) => b.format(a))
+    assert(p(10, "Value %d") == "Value 10")
+  }
 }
