@@ -70,6 +70,6 @@ class GettingStartedSpec extends FunSuite {
     import MyModule.curry
 
     val p = curry((a: Int) => (b: String) => b.format(a))
-    assert(p(10, "Value %d") == "Value 10")
+    assert(p(10)("Value %d") == "Value 10")
   }
 }
