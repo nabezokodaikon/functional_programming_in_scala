@@ -88,4 +88,14 @@ class GettingStartedSpec extends FunSuite {
     }
 
   }
+
+  test("EXERCISE 2.5") {
+    import MyModule.compose
+
+    val f = (b: Int) => b + 2
+    val g = (a: Int) => a * 3
+    val c = compose(f, g)
+    assert(c(1) == 5)
+    assert(c(2) == 8)
+  }
 }
