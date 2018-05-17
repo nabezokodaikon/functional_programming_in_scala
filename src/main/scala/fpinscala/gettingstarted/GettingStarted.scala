@@ -19,6 +19,17 @@ object MyModule {
     go(n, 1)
   }
 
+  def fibonacci(n: Int): Int = {
+
+    @annotation.tailrec
+    def loop(n: Int, prev: Int, current: Int): Int = {
+      if (n == 0) prev
+      else loop(n - 1, current, prev + current)
+    }
+
+    loop(n, 0, 1)
+  }
+
   def main(args: Array[String]): Unit =
     println(formatAbs(-42))
 }
