@@ -45,4 +45,14 @@ class GettingStartedSpec extends FunSuite {
     assert(findFirst(Array("a", "b"), "c") == -1)
     assert(findFirst(Array("a", "b"), "b") == 1)
   }
+
+  test("findFirst of Generic function") {
+    import MyModule.findFirst
+
+    assert(findFirst(Array(1, 2, 3), (i: Int) => i == 4) == -1)
+    assert(findFirst(Array(1, 2, 3), (i: Int) => i == 3) == 2)
+
+    assert(findFirst(Array("a", "b", "c"), (i: String) => i == "d") == -1)
+    assert(findFirst(Array("a", "b", "c"), (i: String) => i == "c") == 2)
+  }
 }
