@@ -72,4 +72,20 @@ class GettingStartedSpec extends FunSuite {
     val p = curry((a: Int, b: String) => b.format(a))
     assert(p(10)("Value %d") == "Value 10")
   }
+
+  test("EXERCISE 2.4") {
+    import MyModule._
+
+    {
+      val p = uncurry((a: Int) => (b: String) => b.format(a))
+      assert(p(11, "Value %d") == "Value 11")
+    }
+
+    {
+      val f1 = curry((a: Int, b: String) => b.format(a))
+      val f2 = uncurry(f1)
+      assert(f2(12, "Value %d") == "Value 12")
+    }
+
+  }
 }

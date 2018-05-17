@@ -75,6 +75,9 @@ object MyModule {
   def curry[A, B, C](f: (A, B) => C): A => (B => C) =
     a => b => f(a, b)
 
+  def uncurry[A, B, C](f: A => B => C): (A, B) => C =
+    (a, b) => f(a)(b)
+
   def main(args: Array[String]): Unit = {
     println(formatAbs(-42))
     println(formatFactorial(7))
