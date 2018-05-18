@@ -91,4 +91,27 @@ class ListSpec extends FunSuite {
 
     assert(sum(List(1, 2, 3, 4)) == 10)
   }
+
+  test("EXERCISE 3.11 sum") {
+    import List.sumByFoldLeft
+    assert(sumByFoldLeft(Nil) == 0)
+    assert(sumByFoldLeft(List(1)) == 1)
+    assert(sumByFoldLeft(List(1, 2, 3, 4)) == 10)
+  }
+
+  test("EXERCISE 3.11 product") {
+    import List.productByFoldLeft
+    assert(productByFoldLeft(Nil) == 1.0)
+    assert(productByFoldLeft(List(1)) == 1)
+    assert(productByFoldLeft(List(1, 2, 3, 4)) == 24)
+    assert(productByFoldLeft(List(1, 2, 0, 4)) == 0.0)
+  }
+
+  test("EXERCISE 3.11 length") {
+    import List.lengthByFoldLeft
+    assert(lengthByFoldLeft(Nil) == 0)
+    assert(lengthByFoldLeft(List("a")) == 1)
+    assert(lengthByFoldLeft(List("a", "b")) == 2)
+    assert(lengthByFoldLeft(List("a", "b", "c")) == 3)
+  }
 }
