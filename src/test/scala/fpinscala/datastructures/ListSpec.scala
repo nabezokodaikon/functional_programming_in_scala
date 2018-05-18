@@ -30,4 +30,13 @@ class ListSpec extends FunSuite {
     assert(List.drop(List(1, 2, 3, 4), 4) == Nil)
     assert(List.drop(List(1, 2, 3, 4), 5) == Nil)
   }
+
+  test("EXERCISE 3.5 dropWhile") {
+    def f(a: Int) = a < 3
+    assert(List.dropWhile(Nil, f) == Nil)
+    assert(List.dropWhile(List(1, 2, 3, 4), f) == List(3, 4))
+    assert(List.dropWhile(List(2, 3, 4), f) == List(3, 4))
+    assert(List.dropWhile(List(3, 4), f) == List(3, 4))
+    assert(List.dropWhile(List(4), f) == List(4))
+  }
 }
