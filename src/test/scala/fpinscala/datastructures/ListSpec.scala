@@ -39,4 +39,11 @@ class ListSpec extends FunSuite {
     assert(List.dropWhile(List(3, 4), f) == List(3, 4))
     assert(List.dropWhile(List(4), f) == List(4))
   }
+
+  test("List 3-2") {
+    assert(List.append(Nil, Nil) == Nil)
+    assert(List.append(List(1, 2), Nil) == List(1, 2))
+    assert(List.append(Nil, List(1, 2)) == List(1, 2))
+    assert(List.append(List(1, 2), List(3, 4)) == List(1, 2, 3, 4))
+  }
 }
