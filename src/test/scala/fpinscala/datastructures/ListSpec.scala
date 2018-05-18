@@ -114,4 +114,11 @@ class ListSpec extends FunSuite {
     assert(lengthByFoldLeft(List("a", "b")) == 2)
     assert(lengthByFoldLeft(List("a", "b", "c")) == 3)
   }
+
+  test("EXERCISE 3.12 reverse") {
+    import List.reverse
+    assert(reverse(Nil) == Nil)
+    assert(reverse(List(1)) == List(1))
+    assert(reverse(List(1, 2, 3)) == List(3, 2, 1))
+  }
 }
