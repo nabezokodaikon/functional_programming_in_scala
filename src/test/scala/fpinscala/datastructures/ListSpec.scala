@@ -19,4 +19,15 @@ class ListSpec extends FunSuite {
     assert(List.setHead(9, List(1)) == List(9))
     assert(List.setHead(9, List(1, 2)) == List(9, 2))
   }
+
+  test("EXERCISE 3.4 drop") {
+    assert(List.drop(Nil, 1) == Nil)
+    assert(List.drop(List(1, 2, 3, 4), -1) == List(1, 2, 3, 4))
+    assert(List.drop(List(1, 2, 3, 4), 0) == List(1, 2, 3, 4))
+    assert(List.drop(List(1, 2, 3, 4), 1) == List(2, 3, 4))
+    assert(List.drop(List(1, 2, 3, 4), 2) == List(3, 4))
+    assert(List.drop(List(1, 2, 3, 4), 3) == List(4))
+    assert(List.drop(List(1, 2, 3, 4), 4) == Nil)
+    assert(List.drop(List(1, 2, 3, 4), 5) == Nil)
+  }
 }
