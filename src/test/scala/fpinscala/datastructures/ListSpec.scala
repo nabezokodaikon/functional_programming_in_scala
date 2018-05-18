@@ -74,4 +74,12 @@ class ListSpec extends FunSuite {
     assert(foldRight(Nil, Nil: List[Int])(Cons(_, _)) == Nil)
     assert(foldRight(List(1, 2, 3), Nil: List[Int])(Cons(_, _)) == List(1, 2, 3))
   }
+
+  test("EXERCISE 3.9") {
+    import List.length
+    assert(length(Nil) == 0)
+    assert(length(List("a")) == 1)
+    assert(length(List("a", "b")) == 2)
+    assert(length(List("a", "b", "c")) == 3)
+  }
 }

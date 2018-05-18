@@ -80,4 +80,7 @@ object List {
    */
   def product2(ns: List[Double]) =
     foldRight(ns, 1.0)(_ * _)
+
+  def length[A](l: List[A]): Int =
+    foldRight(l, 0)((_, acc) => acc + 1)
 }
