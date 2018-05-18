@@ -55,4 +55,17 @@ class ListSpec extends FunSuite {
     assert(init(List(1)) == Nil)
     assert(init(List(1, 2, 3, 4)) == List(1, 2, 3))
   }
+
+  test("List 3-3 sum2") {
+    import List.sum2
+    assert(sum2(Nil) == 0)
+    assert(sum2(List(1, 2, 3, 4)) == 10)
+  }
+
+  test("List 3-3 product2") {
+    import List.product2
+    assert(product2(Nil) == 1.0)
+    assert(product2(List(1, 2, 0, 4)) == 0)
+    assert(product2(List(1, 2, 3, 4)) == 24)
+  }
 }
