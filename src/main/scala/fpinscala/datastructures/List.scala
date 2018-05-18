@@ -72,6 +72,12 @@ object List {
   def sum2(ns: List[Int]) =
     foldRight(ns, 0)((x, y) => x + y)
 
+  /*
+   * EXERCISE 3.7
+   * リスト内に0.0を検出しても、
+   * foldRightはリストの最期までたどるため、
+   * 処理を中止することはできない。
+   */
   def product2(ns: List[Double]) =
     foldRight(ns, 1.0)(_ * _)
 }
