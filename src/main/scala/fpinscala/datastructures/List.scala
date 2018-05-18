@@ -25,4 +25,9 @@ object List {
     case Nil => sys.error("tail of empty list")
     case Cons(_, t) => t
   }
+
+  def setHead[A](h: A, l: List[A]) = l match {
+    case Nil => sys.error("setHead on empty list")
+    case Cons(_, t) => Cons(h, t)
+  }
 }
