@@ -82,4 +82,13 @@ class ListSpec extends FunSuite {
     assert(length(List("a", "b")) == 2)
     assert(length(List("a", "b", "c")) == 3)
   }
+
+  test("EXERCISE 3.10 foldLeft") {
+    import List.foldLeft
+    def sum(l: List[Int]) = {
+      foldLeft(l, 0)((b, a) => b + a)
+    }
+
+    assert(sum(List(1, 2, 3, 4)) == 10)
+  }
 }
