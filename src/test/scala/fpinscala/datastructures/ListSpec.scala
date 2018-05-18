@@ -151,4 +151,12 @@ class ListSpec extends FunSuite {
     })
     println("// end foldRightViaFoldLeft_1")
   }
+
+  test("EXERCISE 3.14 appendViaFoldLeft") {
+    import List.appendViaFoldRight
+    assert(appendViaFoldRight(Nil, Nil) == Nil)
+    assert(appendViaFoldRight(List(1, 2), Nil) == List(1, 2))
+    assert(appendViaFoldRight(Nil, List(1, 2)) == List(1, 2))
+    assert(appendViaFoldRight(List(1, 2), List(3, 4)) == List(1, 2, 3, 4))
+  }
 }
