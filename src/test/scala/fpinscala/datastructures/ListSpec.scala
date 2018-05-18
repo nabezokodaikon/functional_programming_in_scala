@@ -46,4 +46,13 @@ class ListSpec extends FunSuite {
     assert(List.append(Nil, List(1, 2)) == List(1, 2))
     assert(List.append(List(1, 2), List(3, 4)) == List(1, 2, 3, 4))
   }
+
+  test("EXERCISE 3.6 init") {
+    import List.init
+    assertThrows[RuntimeException] {
+      init(Nil)
+    }
+    assert(init(List(1)) == Nil)
+    assert(init(List(1, 2, 3, 4)) == List(1, 2, 3))
+  }
 }
