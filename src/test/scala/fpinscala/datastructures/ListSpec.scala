@@ -121,4 +121,15 @@ class ListSpec extends FunSuite {
     assert(reverse(List(1)) == List(1))
     assert(reverse(List(1, 2, 3)) == List(3, 2, 1))
   }
+
+  test("EXERCISE 3.13 foldLeft via foldRight") {
+    import List.foldLeftViaFoldRight
+
+    def reverse[A](l: List[A]): List[A] =
+      foldLeftViaFoldRight(l, List[A]())((acc, h) => Cons(h, acc))
+
+    assert(reverse(Nil) == Nil)
+    assert(reverse(List(1)) == List(1))
+    assert(reverse(List(1, 2, 3)) == List(3, 2, 1))
+  }
 }
