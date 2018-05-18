@@ -68,4 +68,10 @@ class ListSpec extends FunSuite {
     assert(product2(List(1, 2, 0, 4)) == 0)
     assert(product2(List(1, 2, 3, 4)) == 24)
   }
+
+  test("EXERCISE 3.8") {
+    import List.foldRight
+    assert(foldRight(Nil, Nil: List[Int])(Cons(_, _)) == Nil)
+    assert(foldRight(List(1, 2, 3), Nil: List[Int])(Cons(_, _)) == List(1, 2, 3))
+  }
 }
