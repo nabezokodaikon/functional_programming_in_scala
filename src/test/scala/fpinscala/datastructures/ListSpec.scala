@@ -132,4 +132,23 @@ class ListSpec extends FunSuite {
     assert(reverse(List(1)) == List(1))
     assert(reverse(List(1, 2, 3)) == List(3, 2, 1))
   }
+
+  test("EXERCISE 3.13 foldRight via foldLeft") {
+    import List.{ foldRightViaFoldLeft, foldRightViaFoldLeft_1 }
+
+    assert(foldRightViaFoldLeft(Nil, List[Int]())(Cons(_, _)) == Nil)
+    assert(foldRightViaFoldLeft(List(1), List[Int]())(Cons(_, _)) == List(1))
+    assert(foldRightViaFoldLeft(List(1, 2, 3), List[Int]())(Cons(_, _)) == List(1, 2, 3))
+
+    assert(foldRightViaFoldLeft_1(Nil, List[Int]())(Cons(_, _)) == Nil)
+    assert(foldRightViaFoldLeft_1(List(1), List[Int]())(Cons(_, _)) == List(1))
+    assert(foldRightViaFoldLeft_1(List(1, 2, 3), List[Int]())(Cons(_, _)) == List(1, 2, 3))
+
+    println("// start foldRightViaFoldLeft_1")
+    foldRightViaFoldLeft_1(List(1, 2, 3, 4), 0)((a, b) => {
+      println(s"a: ${a}, b: ${b}")
+      a + b
+    })
+    println("// end foldRightViaFoldLeft_1")
+  }
 }
