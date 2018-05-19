@@ -214,4 +214,12 @@ class ListSpec extends FunSuite {
     assert(flatMap(List(1, 2, 3))(i => List(i, i)) == List(1, 1, 2, 2, 3, 3))
     assert(flatMap(List(List(1, 2), List(3, 4)))(i => i) == List(1, 2, 3, 4))
   }
+
+  test("EXERCISE 3.21 filterViaFlatMap") {
+    import List.{ filter, filterViaFlatMap }
+    def f = (a: Int) => a % 2 == 1
+    assert(filterViaFlatMap(List[Int]())(f) == List[Int]())
+    assert(filterViaFlatMap(List(2))(f) == List[Int]())
+    assert(filterViaFlatMap(List(1, 2, 3))(f) == List(1, 3))
+  }
 }
