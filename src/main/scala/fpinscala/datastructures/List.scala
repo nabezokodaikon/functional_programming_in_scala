@@ -139,4 +139,19 @@ object List {
 
   def filter[A](as: List[A])(f: A => Boolean): List[A] =
     foldRightViaFoldLeft_1(as, List[A]())((h, t) => if (f(h)) Cons(h, t) else t)
+
+  /*
+   * mapと同じような働きをする。
+   * 単一の結果ではなくリストを返し、
+   * そのリストは最終的な結果のリストに挿入される。
+   * <例>
+   * flatMap(List(1, 2, 3))(i => List(i, i)) == List(1, 1, 2, 2, 3, 3)
+   *
+   * 二重の配列を一重にする。
+   * <例>
+   * flatMap(List(List[1, 2], List[3, 4]))(i => List(i)) == List(1, 2, 3, 4)
+   */
+  def flatMap[A, B](as: List[A])(f: A => List[B]): List[B] =
+    concat(map(as)(f))
+
 }

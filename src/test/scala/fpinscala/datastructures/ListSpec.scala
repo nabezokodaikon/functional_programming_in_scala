@@ -207,4 +207,11 @@ class ListSpec extends FunSuite {
     assert(filter(List(2, 4, 6))(f) == List(2, 4, 6))
     assert(filter(List(1, 2, 3, 4, 5, 6))(f) == List(2, 4, 6))
   }
+
+  test("EXERCISE 3.20 flatMap") {
+    import List.flatMap
+    assert(flatMap(List(1, 2, 3))(_ => Nil) == Nil)
+    assert(flatMap(List(1, 2, 3))(i => List(i, i)) == List(1, 1, 2, 2, 3, 3))
+    assert(flatMap(List(List(1, 2), List(3, 4)))(i => i) == List(1, 2, 3, 4))
+  }
 }
