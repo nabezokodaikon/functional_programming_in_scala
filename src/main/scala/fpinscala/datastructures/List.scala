@@ -130,4 +130,7 @@ object List {
 
   def increment(l: List[Int]): List[Int] =
     foldRightViaFoldLeft_1(l, List[Int]())((a, b) => Cons(a + 1, b))
+
+  def doubleToString(l: List[Double]): List[String] =
+    foldRightViaFoldLeft_1(l, List[String]())((h, t) => Cons(h.toString, t))
 }

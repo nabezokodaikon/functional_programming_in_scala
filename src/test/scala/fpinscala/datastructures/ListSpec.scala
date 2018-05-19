@@ -179,4 +179,11 @@ class ListSpec extends FunSuite {
     assert(increment(List(1)) == List(2))
     assert(increment(List(1, 2, 3)) == List(2, 3, 4))
   }
+
+  test("EXERCISE 3.17 doubleToString") {
+    import List.doubleToString
+    assert(doubleToString(List[Double]()) == List[String]())
+    assert(doubleToString(List(0.1)) == List("0.1"))
+    assert(doubleToString(List(0.1, 0.2, 0.3)) == List("0.1", "0.2", "0.3"))
+  }
 }
