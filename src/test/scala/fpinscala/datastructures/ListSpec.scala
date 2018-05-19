@@ -172,4 +172,11 @@ class ListSpec extends FunSuite {
     concatWithPrint(List(List(1, 2), List(3, 4), List(5, 6)))
     println("// end concatWithPrint")
   }
+
+  test("EXERCISE 3.16 increment") {
+    import List.increment
+    assert(increment(List[Int]()) == List[Int]())
+    assert(increment(List(1)) == List(2))
+    assert(increment(List(1, 2, 3)) == List(2, 3, 4))
+  }
 }

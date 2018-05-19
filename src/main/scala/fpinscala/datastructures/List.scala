@@ -127,4 +127,7 @@ object List {
       println(s"append a: ${a}, b: ${b}")
       appendViaFoldRight(a, b)
     })
+
+  def increment(l: List[Int]): List[Int] =
+    foldRightViaFoldLeft_1(l, List[Int]())((a, b) => Cons(a + 1, b))
 }
