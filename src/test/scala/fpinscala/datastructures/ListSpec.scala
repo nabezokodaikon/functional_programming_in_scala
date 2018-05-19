@@ -159,4 +159,17 @@ class ListSpec extends FunSuite {
     assert(appendViaFoldRight(Nil, List(1, 2)) == List(1, 2))
     assert(appendViaFoldRight(List(1, 2), List(3, 4)) == List(1, 2, 3, 4))
   }
+
+  test("EXERCISE 3.15 concat") {
+    import List.{ concat, concatWithPrint }
+    assert(concat(Nil) == Nil)
+    assert(concat(Nil, Nil, Nil) == Nil)
+    assert(concat(List(1, 2)) == List(1, 2))
+    assert(concat(List(1, 2), List(3, 4)) == List(1, 2, 3, 4))
+    assert(concat(List(1, 2), List(3, 4), List(5, 6)) == List(1, 2, 3, 4, 5, 6))
+
+    println("// start concatWithPrint")
+    concatWithPrint(List(1, 2), List(3, 4), List(5, 6))
+    println("// end concatWithPrint")
+  }
 }
