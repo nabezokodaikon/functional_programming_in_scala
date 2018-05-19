@@ -222,4 +222,11 @@ class ListSpec extends FunSuite {
     assert(filterViaFlatMap(List(2))(f) == List[Int]())
     assert(filterViaFlatMap(List(1, 2, 3))(f) == List(1, 3))
   }
+
+  test("EXERCISE 3.22 addPairwise") {
+    import List.addPairwise
+    assert(addPairwise(Nil, List(1, 2, 3)) == Nil)
+    assert(addPairwise(List(1, 2, 3), Nil) == Nil)
+    assert(addPairwise(List(1, 2, 3), List(4, 5, 6)) == List(5, 7, 9))
+  }
 }
