@@ -119,11 +119,11 @@ object List {
    * `foldRight`はリストの最期まで走査してから、畳込みを開始する。
    * よって、全てのリストの全長に線形になる。
    */
-  def concat[A](ls: List[A]*): List[A] =
-    foldRightViaFoldLeft_1(List[List[A]](ls: _*), List[A]())(appendViaFoldRight(_, _))
+  def concat[A](l: List[List[A]]): List[A] =
+    foldRightViaFoldLeft_1(l, List[A]())(appendViaFoldRight)
 
-  def concatWithPrint[A](ls: List[A]*): List[A] =
-    foldRightViaFoldLeft_1(List[List[A]](ls: _*), List[A]())((a, b) => {
+  def concatWithPrint[A](l: List[List[A]]): List[A] =
+    foldRightViaFoldLeft_1(l, List[A]())((a, b) => {
       println(s"append a: ${a}, b: ${b}")
       appendViaFoldRight(a, b)
     })
