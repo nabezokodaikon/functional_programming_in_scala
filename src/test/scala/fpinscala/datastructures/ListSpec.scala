@@ -198,4 +198,13 @@ class ListSpec extends FunSuite {
     assert(map(List(0.1))(_.toString) == List("0.1"))
     assert(map(List(0.1, 0.2, 0.3))(_.toString) == List("0.1", "0.2", "0.3"))
   }
+
+  test("EXERCISE 3.19 filter") {
+    import List.filter
+    def f = (a: Int) => a % 2 == 0
+    assert(filter(List[Int]())(f) == List[Int]())
+    assert(filter(List(1, 3, 5))(f) == List[Int]())
+    assert(filter(List(2, 4, 6))(f) == List(2, 4, 6))
+    assert(filter(List(1, 2, 3, 4, 5, 6))(f) == List(2, 4, 6))
+  }
 }
