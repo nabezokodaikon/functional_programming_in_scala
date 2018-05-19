@@ -186,4 +186,16 @@ class ListSpec extends FunSuite {
     assert(doubleToString(List(0.1)) == List("0.1"))
     assert(doubleToString(List(0.1, 0.2, 0.3)) == List("0.1", "0.2", "0.3"))
   }
+
+  test("EXERCISE 3.18 map") {
+    import List.map
+
+    assert(map(List[Int]())(_ + 1) == List[Int]())
+    assert(map(List(1))(_ + 1) == List(2))
+    assert(map(List(1, 2, 3))(_ + 1) == List(2, 3, 4))
+
+    assert(map(List[Double]())(_.toString) == List[String]())
+    assert(map(List(0.1))(_.toString) == List("0.1"))
+    assert(map(List(0.1, 0.2, 0.3))(_.toString) == List("0.1", "0.2", "0.3"))
+  }
 }
