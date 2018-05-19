@@ -229,4 +229,14 @@ class ListSpec extends FunSuite {
     assert(addPairwise(List(1, 2, 3), Nil) == Nil)
     assert(addPairwise(List(1, 2, 3), List(4, 5, 6)) == List(5, 7, 9))
   }
+
+  test("EXERCISE 3.23 zipWith") {
+    import List.zipWith
+    def f1 = (a: Int, b: Int) => a + b
+    assert(zipWith(Nil, List(1, 2, 3))(f1) == Nil)
+    assert(zipWith(List(1, 2, 3), Nil)(f1) == Nil)
+    assert(zipWith(List(1, 2, 3), List(4, 5, 6))(f1) == List(5, 7, 9))
+    def f2 = (a: String, b: String) => s"${a}${b}"
+    assert(zipWith(List("a", "b", "c"), List("d", "e", "f"))(f2) == List("ad", "be", "cf"))
+  }
 }
