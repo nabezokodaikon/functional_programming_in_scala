@@ -307,4 +307,37 @@ class ListSpec extends FunSuite {
     assert(map(Branch(Branch(Leaf(1), Leaf(2)), Branch(Leaf(3), Branch(Leaf(4), Leaf(5)))))(v => v * 2) ==
       Branch(Branch(Leaf(2), Leaf(4)), Branch(Leaf(6), Branch(Leaf(8), Leaf(10)))))
   }
+
+  test("EXERCISE 3.29 sizeViaFold") {
+    import Tree.sizeViaFold
+    assert(sizeViaFold(Branch(Leaf(1), Leaf(2))) == 3)
+    assert(sizeViaFold(Branch(Branch(Leaf(1), Leaf(2)), Leaf(3))) == 5)
+    assert(sizeViaFold(Branch(Leaf(1), Branch(Leaf(2), Leaf(3)))) == 5)
+    assert(sizeViaFold(Branch(Branch(Leaf(1), Leaf(2)), Branch(Leaf(3), Leaf(4)))) == 7)
+  }
+
+  test("EXERCISE 3.29 maximumViaFold") {
+    import Tree.maximumViaFold
+    assert(maximumViaFold(Branch(Leaf(1), Leaf(2))) == 2)
+    assert(maximumViaFold(Branch(Branch(Leaf(1), Leaf(2)), Leaf(3))) == 3)
+    assert(maximumViaFold(Branch(Leaf(1), Branch(Leaf(2), Leaf(3)))) == 3)
+    assert(maximumViaFold(Branch(Branch(Leaf(1), Leaf(2)), Branch(Leaf(3), Leaf(4)))) == 4)
+  }
+
+  test("EXERCISE 3.29 depthViaFold") {
+    import Tree.depthViaFold
+    assert(depthViaFold(Branch(Leaf(1), Leaf(2))) == 1)
+    assert(depthViaFold(Branch(Branch(Leaf(1), Leaf(2)), Leaf(3))) == 2)
+    assert(depthViaFold(Branch(Leaf(1), Branch(Leaf(2), Leaf(3)))) == 2)
+    assert(depthViaFold(Branch(Branch(Leaf(1), Leaf(2)), Branch(Leaf(3), Branch(Leaf(4), Leaf(5))))) == 3)
+  }
+
+  test("EXERCISE 3.29 mapViaFold") {
+    import Tree.mapViaFold
+    assert(mapViaFold(Branch(Leaf(1), Leaf(2)))(v => v * 2) == Branch(Leaf(2), Leaf(4)))
+    assert(mapViaFold(Branch(Branch(Leaf(1), Leaf(2)), Leaf(3)))(v => v * 2) == Branch(Branch(Leaf(2), Leaf(4)), Leaf(6)))
+    assert(mapViaFold(Branch(Leaf(1), Branch(Leaf(2), Leaf(3))))(v => v * 2) == Branch(Leaf(2), Branch(Leaf(4), Leaf(6))))
+    assert(mapViaFold(Branch(Branch(Leaf(1), Leaf(2)), Branch(Leaf(3), Branch(Leaf(4), Leaf(5)))))(v => v * 2) ==
+      Branch(Branch(Leaf(2), Leaf(4)), Branch(Leaf(6), Branch(Leaf(8), Leaf(10)))))
+  }
 }
