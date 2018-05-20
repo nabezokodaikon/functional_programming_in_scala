@@ -290,4 +290,12 @@ class ListSpec extends FunSuite {
     assert(maximum(Branch(Leaf(1), Branch(Leaf(2), Leaf(3)))) == 3)
     assert(maximum(Branch(Branch(Leaf(1), Leaf(2)), Branch(Leaf(3), Leaf(4)))) == 4)
   }
+
+  test("EXERCISE 3.27 depth") {
+    import Tree.depth
+    assert(depth(Branch(Leaf(1), Leaf(2))) == 2)
+    assert(depth(Branch(Branch(Leaf(1), Leaf(2)), Leaf(3))) == 3)
+    assert(depth(Branch(Leaf(1), Branch(Leaf(2), Leaf(3)))) == 3)
+    assert(depth(Branch(Branch(Leaf(1), Leaf(2)), Branch(Leaf(3), Branch(Leaf(4), Leaf(5))))) == 4)
+  }
 }
