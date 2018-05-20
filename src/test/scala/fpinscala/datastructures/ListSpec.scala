@@ -298,4 +298,13 @@ class ListSpec extends FunSuite {
     assert(depth(Branch(Leaf(1), Branch(Leaf(2), Leaf(3)))) == 3)
     assert(depth(Branch(Branch(Leaf(1), Leaf(2)), Branch(Leaf(3), Branch(Leaf(4), Leaf(5))))) == 4)
   }
+
+  test("EXERCISE 3.28 map") {
+    import Tree.map
+    assert(map(Branch(Leaf(1), Leaf(2)))(v => v * 2) == Branch(Leaf(2), Leaf(4)))
+    assert(map(Branch(Branch(Leaf(1), Leaf(2)), Leaf(3)))(v => v * 2) == Branch(Branch(Leaf(2), Leaf(4)), Leaf(6)))
+    assert(map(Branch(Leaf(1), Branch(Leaf(2), Leaf(3))))(v => v * 2) == Branch(Leaf(2), Branch(Leaf(4), Leaf(6))))
+    assert(map(Branch(Branch(Leaf(1), Leaf(2)), Branch(Leaf(3), Branch(Leaf(4), Leaf(5)))))(v => v * 2) ==
+      Branch(Branch(Leaf(2), Leaf(4)), Branch(Leaf(6), Branch(Leaf(8), Leaf(10)))))
+  }
 }
