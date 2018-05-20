@@ -4,21 +4,17 @@ import org.scalatest.FunSuite
 
 class OptionSpec extends FunSuite {
 
-  // test("3-2 tail") {
-    // assertThrows[RuntimeException] {
-      // List.tail(Nil)
-    // }
-    // assert(List.tail(List(1)) == Nil)
-    // assert(List.tail(List(1, 2)) == List(2))
-  // }
+  test("List 4-1") {
+    import Option.failingFn
 
-  // test("EXERCISE 3.3 setHead") {
-    // assertThrows[RuntimeException] {
-      // List.setHead(1, Nil)
-    // }
+    val caught = intercept[Exception] {
+      failingFn(2)
+    }
+    assert(caught.getMessage == "fail!")
 
-    // assert(List.setHead(9, List(1)) == List(9))
-    // assert(List.setHead(9, List(1, 2)) == List(9, 2))
-  // }
-
+    val caught2 = intercept[Exception] {
+      failingFn(3)
+    }
+    assert(caught2.getMessage == "fail!")
+  }
 }
