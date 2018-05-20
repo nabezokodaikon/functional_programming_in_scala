@@ -263,4 +263,23 @@ class ListSpec extends FunSuite {
     assert(hasSubsequence_2(List(1, 2, 3, 4), List(2, 3)) == true)
     assert(hasSubsequence_2(List(1, 2, 3, 4), List(4)) == true)
   }
+
+  /*
+   * misstake
+  test("EXERCISE 3.25 size") {
+    import Tree.size
+    assert(size(Branch(Leaf(1), Leaf(2))) == 2)
+    assert(size(Branch(Branch(Leaf(1), Leaf(2)), Leaf(3))) == 3)
+    assert(size(Branch(Leaf(1), Branch(Leaf(2), Leaf(3)))) == 3)
+    assert(size(Branch(Branch(Leaf(1), Leaf(2)), Branch(Leaf(3), Leaf(4)))) == 4)
+  }
+   */
+
+  test("EXERCISE 3.26 size1") {
+    import Tree.size
+    assert(size(Branch(Leaf(1), Leaf(2))) == 3)
+    assert(size(Branch(Branch(Leaf(1), Leaf(2)), Leaf(3))) == 5)
+    assert(size(Branch(Leaf(1), Branch(Leaf(2), Leaf(3)))) == 5)
+    assert(size(Branch(Branch(Leaf(1), Leaf(2)), Branch(Leaf(3), Leaf(4)))) == 7)
+  }
 }

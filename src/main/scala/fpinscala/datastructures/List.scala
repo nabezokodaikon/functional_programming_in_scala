@@ -211,4 +211,21 @@ case class Leaf[A](value: A) extends Tree[A]
 case class Branch[A](left: Tree[A], right: Tree[A]) extends Tree[A]
 
 object Tree {
+
+  /*
+   * misstake
+  def size[A](b: Branch[A]): Int =
+    b match {
+      case Branch(Leaf(_), Leaf(_)) => 2
+      case Branch(Leaf(_), Branch(l, r)) => 1 + size(Branch(l, r))
+      case Branch(Branch(l, r), Leaf(_)) => 1 + size(Branch(l, r))
+      case Branch(Branch(l, r), Branch(l2, r2)) => size(Branch(l, r)) + size(Branch(l2, r2))
+    }
+  */
+
+  def size[A](t: Tree[A]): Int =
+    t match {
+      case Leaf(_) => 1
+      case Branch(l, r) => 1 + size(l) + size(r)
+    }
 }
