@@ -275,7 +275,7 @@ class ListSpec extends FunSuite {
   }
    */
 
-  test("EXERCISE 3.26 size1") {
+  test("EXERCISE 3.25 size") {
     import Tree.size
     assert(size(Branch(Leaf(1), Leaf(2))) == 3)
     assert(size(Branch(Branch(Leaf(1), Leaf(2)), Leaf(3))) == 5)
