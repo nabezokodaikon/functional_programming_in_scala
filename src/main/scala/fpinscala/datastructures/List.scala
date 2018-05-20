@@ -170,4 +170,38 @@ object List {
       case (_, Nil) => Nil
       case (Cons(h1, t1), Cons(h2, t2)) => Cons(f(h1, h2), zipWith(t1, t2)(f))
     }
+
+  def hasSubsequence[A](sup: List[A], sub: List[A]): Boolean = {
+
+    @annotation.tailrec
+    def loop(p: List[A], b: List[A], contine: Boolean): Boolean =
+      (p, b) match {
+        case (Nil, Nil) => false
+        case (Nil, Cons(_, _)) => false
+        case (Cons(h1, _), Cons(h2, Nil)) if (h1 == h2) => true
+        case (Cons(h1, Nil), Cons(h2, Nil)) if (h1 == h2) => true
+        case (Cons(h1, t1), Cons(h2, t2)) if (!contine && h1 != h2) => loop(t1, sub, false)
+        case (Cons(h1, t1), Cons(h2, t2)) if (!contine && h1 == h2) => loop(t1, t2, true)
+        case (Cons(h1, t1), Cons(h2, t2)) if (contine && h1 != h2) => loop(t1, t2, false)
+        case (Cons(h1, t1), Cons(h2, t2)) if (contine && h1 == h2) => loop(t1, t2, true)
+      }
+
+    loop(sup, sub, false)
+  }
+
+  @annotation.tailrec
+  def startsWith[A](l: List[A], prefix: List[A]): Boolean =
+    (l, prefix) match {
+      case (_, Nil) => true
+      case (Cons(h, t), Cons(h2, t2)) if h == h2 => startsWith(t, t2)
+      case _ => false
+    }
+
+  @annotation.tailrec
+  def hasSubsequence_2[A](sup: List[A], sub: List[A]): Boolean =
+    sup match {
+      case Nil => sub == Nil
+      case _ if startsWith(sup, sub) => true
+      case Cons(_, t) => hasSubsequence_2(t, sub)
+    }
 }

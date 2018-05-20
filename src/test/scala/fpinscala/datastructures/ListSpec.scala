@@ -239,4 +239,28 @@ class ListSpec extends FunSuite {
     def f2 = (a: String, b: String) => s"${a}${b}"
     assert(zipWith(List("a", "b", "c"), List("d", "e", "f"))(f2) == List("ad", "be", "cf"))
   }
+
+  test("EXERCISE 3.24 hasSubsequence") {
+    import List.hasSubsequence
+    assert(hasSubsequence(List(1, 2, 3, 4), List(0)) == false)
+    assert(hasSubsequence(List(1, 2, 3, 4), List(0, 1)) == false)
+    assert(hasSubsequence(List(1, 2, 3, 4), List(5)) == false)
+    assert(hasSubsequence(List(1, 2, 3, 4), List(4, 5)) == false)
+    assert(hasSubsequence(List(1, 2, 3, 4), List(1)) == true)
+    assert(hasSubsequence(List(1, 2, 3, 4), List(1, 2)) == true)
+    assert(hasSubsequence(List(1, 2, 3, 4), List(2, 3)) == true)
+    assert(hasSubsequence(List(1, 2, 3, 4), List(4)) == true)
+  }
+
+  test("EXERCISE 3.24 hasSubsequence_2") {
+    import List.hasSubsequence_2
+    assert(hasSubsequence_2(List(1, 2, 3, 4), List(0)) == false)
+    assert(hasSubsequence_2(List(1, 2, 3, 4), List(0, 1)) == false)
+    assert(hasSubsequence_2(List(1, 2, 3, 4), List(5)) == false)
+    assert(hasSubsequence_2(List(1, 2, 3, 4), List(4, 5)) == false)
+    assert(hasSubsequence_2(List(1, 2, 3, 4), List(1)) == true)
+    assert(hasSubsequence_2(List(1, 2, 3, 4), List(1, 2)) == true)
+    assert(hasSubsequence_2(List(1, 2, 3, 4), List(2, 3)) == true)
+    assert(hasSubsequence_2(List(1, 2, 3, 4), List(4)) == true)
+  }
 }
