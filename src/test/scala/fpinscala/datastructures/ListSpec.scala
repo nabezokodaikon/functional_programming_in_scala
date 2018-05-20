@@ -240,6 +240,8 @@ class ListSpec extends FunSuite {
     assert(zipWith(List("a", "b", "c"), List("d", "e", "f"))(f2) == List("ad", "be", "cf"))
   }
 
+  /*
+   * misstake
   test("EXERCISE 3.24 hasSubsequence") {
     import List.hasSubsequence
     assert(hasSubsequence(List(1, 2, 3, 4), List(0)) == false)
@@ -251,6 +253,7 @@ class ListSpec extends FunSuite {
     assert(hasSubsequence(List(1, 2, 3, 4), List(2, 3)) == true)
     assert(hasSubsequence(List(1, 2, 3, 4), List(4)) == true)
   }
+  */
 
   test("EXERCISE 3.24 hasSubsequence_2") {
     import List.hasSubsequence_2

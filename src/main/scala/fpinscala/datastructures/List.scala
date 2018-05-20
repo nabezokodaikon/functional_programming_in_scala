@@ -171,6 +171,8 @@ object List {
       case (Cons(h1, t1), Cons(h2, t2)) => Cons(f(h1, h2), zipWith(t1, t2)(f))
     }
 
+  /*
+   * misstake
   def hasSubsequence[A](sup: List[A], sub: List[A]): Boolean = {
 
     @annotation.tailrec
@@ -188,6 +190,7 @@ object List {
 
     loop(sup, sub, false)
   }
+  */
 
   @annotation.tailrec
   def startsWith[A](l: List[A], prefix: List[A]): Boolean =
