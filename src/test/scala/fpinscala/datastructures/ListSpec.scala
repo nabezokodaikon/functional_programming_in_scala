@@ -282,4 +282,12 @@ class ListSpec extends FunSuite {
     assert(size(Branch(Leaf(1), Branch(Leaf(2), Leaf(3)))) == 5)
     assert(size(Branch(Branch(Leaf(1), Leaf(2)), Branch(Leaf(3), Leaf(4)))) == 7)
   }
+
+  test("EXERCISE 3.26 maximum") {
+    import Tree.maximum
+    assert(maximum(Branch(Leaf(1), Leaf(2))) == 2)
+    assert(maximum(Branch(Branch(Leaf(1), Leaf(2)), Leaf(3))) == 3)
+    assert(maximum(Branch(Leaf(1), Branch(Leaf(2), Leaf(3)))) == 3)
+    assert(maximum(Branch(Branch(Leaf(1), Leaf(2)), Branch(Leaf(3), Leaf(4)))) == 4)
+  }
 }
