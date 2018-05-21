@@ -49,4 +49,31 @@ class OptionSpec extends FunSuite {
     assert(mean_2(Seq[Double]()) == None)
     assert(mean_2(Seq(0.1, 0.2)) == Some((0.1 + 0.2) / 2))
   }
+
+  test("EXERCISE 4.1 map") {
+    assert(None.map(a => a) == None)
+    assert(Some(2).map(a => a * 2) == Some(4))
+  }
+
+  test("EXERCISE 4.1 getOrElse") {
+    assert(None.getOrElse(0) == 0)
+    assert(Some(2).getOrElse(0) == 2)
+  }
+
+  test("EXERCISE 4.1 flatMap") {
+    assert(None.flatMap(a => a) == None)
+    assert(Some(2).flatMap(a => Some(a * 2)) == Some(4))
+  }
+
+  test("EXERCISE 4.1 orElse") {
+    assert(None.orElse(None) == None)
+    assert(None.orElse(Some(1)) == Some(1))
+    assert(Some(2).orElse(Some(1)) == Some(2))
+  }
+
+  test("EXERCISE 4.1 filter") {
+    assert(None.filter(a => a == 1) == None)
+    assert(Some(2).filter(a => a == 1) == None)
+    assert(Some(2).filter(a => a == 2) == Some(2))
+  }
 }
