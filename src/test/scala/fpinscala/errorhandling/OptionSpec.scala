@@ -17,4 +17,11 @@ class OptionSpec extends FunSuite {
     }
     assert(caught2.getMessage == "fail!")
   }
+
+  test("List 4-2") {
+    import Option.failingFn2
+
+    assert(failingFn2(2) == 43)
+    assert(failingFn2(3) == 43)
+  }
 }
