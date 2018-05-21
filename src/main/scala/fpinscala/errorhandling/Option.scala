@@ -68,4 +68,20 @@ object Option {
   def lift[A, B](f: A => B): Option[A] => Option[B] = a => a.map(f)
 
   val absO: Option[Double] => Option[Double] = lift(math.abs)
+
+  def insuranceRateQuote(age: Int, numberOfSpeedingTickets: Int): Double =
+    age + numberOfSpeedingTickets
+
+  def parseInsuranceRateQuote(age: String, numberOfSpeedingTickets: String): Option[Double] = {
+    val optAge: Option[Int] = Try(age.toInt)
+    val optTickets: Option[Int] = Try(numberOfSpeedingTickets.toInt)
+    map2(optAge, optTickets)(insuranceRateQuote)
+  }
+
+  def Try[A](a: => A): Option[A] =
+    try Some(a)
+    catch { case e: Exception => None }
+
+  def map2[A, B, C](a: Option[A], b: Option[B])(f: (A, B) => C): Option[C] =
+    a.flatMap(aa => b.map(bb => f(aa, bb)))
 }

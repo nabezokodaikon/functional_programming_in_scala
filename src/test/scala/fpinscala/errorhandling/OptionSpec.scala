@@ -88,4 +88,20 @@ class OptionSpec extends FunSuite {
     import Option.absO
     assert(absO(Some(-1)) == Some(1))
   }
+
+  test("EXERCISE 4.3 map2") {
+    import Option.map2
+    assert(map2(None, None)((a: Int, b: Int) => a + b) == None)
+    assert(map2(Some(1), None)((a, b) => a + b) == None)
+    assert(map2(None, Some(2))((a: Int, b: Int) => a + b) == None)
+    assert(map2(Some(1), Some(2))((a, b) => a + b) == Some(3))
+  }
+
+  test("insuranceRateQuote") {
+    import Option.parseInsuranceRateQuote
+    assert(parseInsuranceRateQuote("a", "b") == None)
+    assert(parseInsuranceRateQuote("1", "b") == None)
+    assert(parseInsuranceRateQuote("a", "2") == None)
+    assert(parseInsuranceRateQuote("1", "2") == Some(3.0))
+  }
 }
