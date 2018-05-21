@@ -104,4 +104,11 @@ class OptionSpec extends FunSuite {
     assert(parseInsuranceRateQuote("a", "2") == None)
     assert(parseInsuranceRateQuote("1", "2") == Some(3.0))
   }
+
+  test("EXERCISE 4.4 sequence") {
+    import Option.sequence
+    assert(sequence(List(None)) == None)
+    assert(sequence(List(Some(1), None)) == None)
+    assert(sequence(List(Some(1), Some(2))) == Some(List(1, 2)))
+  }
 }
