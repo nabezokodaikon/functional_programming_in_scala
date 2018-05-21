@@ -83,4 +83,9 @@ class OptionSpec extends FunSuite {
     assert(variance(Seq(0)) == Some(0.0))
     assert(variance(Seq(71, 80, 89)) == Some(54.0))
   }
+
+  test("lift") {
+    import Option.absO
+    assert(absO(Some(-1)) == Some(1))
+  }
 }
