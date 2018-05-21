@@ -10,4 +10,10 @@ class EitherSpec extends FunSuite {
     assert(mean(IndexedSeq(0.1)) == Right(0.1 / 1))
     assert(mean(IndexedSeq(0.1, 0.2)) == Right((0.1 + 0.2) / 2))
   }
+
+  test("List 4-8") {
+    import Either.safeDiv
+    assert(safeDiv(1, 0) == Left(new ArithmeticException()))
+    assert(safeDiv(4, 2) == Right(2))
+  }
 }
