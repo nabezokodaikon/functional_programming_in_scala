@@ -79,6 +79,8 @@ class OptionSpec extends FunSuite {
 
   test("EXERCISE 4.2 variance") {
     import Option.variance
+    assert(variance(Seq[Double]()) == None)
+    assert(variance(Seq(0)) == Some(0.0))
     assert(variance(Seq(71, 80, 89)) == Some(54.0))
   }
 }
