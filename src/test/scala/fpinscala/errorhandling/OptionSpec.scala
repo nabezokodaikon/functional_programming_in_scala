@@ -119,4 +119,19 @@ class OptionSpec extends FunSuite {
     assert(traverse(List(Some(1), Some(2)))(a => a) == Some(List(1, 2)))
     assert(traverse(List(1, 2))(a => Some(a * 2)) == Some(List(2, 4)))
   }
+
+  test("EXERCISE 4.5 traverse_2") {
+    import Option.traverse_2
+    assert(traverse_2(List(None))(a => a) == None)
+    assert(traverse_2(List(Some(1), None))(a => a) == None)
+    assert(traverse_2(List(Some(1), Some(2)))(a => a) == Some(List(1, 2)))
+    assert(traverse_2(List(1, 2))(a => Some(a * 2)) == Some(List(2, 4)))
+  }
+
+  test("EXERCISE 4.5 sequenceViaTraverse") {
+    import Option.sequenceViaTraverse
+    assert(sequenceViaTraverse(List(None)) == None)
+    assert(sequenceViaTraverse(List(Some(1), None)) == None)
+    assert(sequenceViaTraverse(List(Some(1), Some(2))) == Some(List(1, 2)))
+  }
 }

@@ -96,4 +96,13 @@ object Option {
       case Nil => Some(Nil)
       case h :: t => f(h) flatMap (hh => traverse(t)(f) map (hh :: _))
     }
+
+  def traverse_2[A, B](a: List[A])(f: A => Option[B]): Option[List[B]] =
+    a match {
+      case Nil => Some(Nil)
+      case h :: t => map2(f(h), traverse(t)(f))(_ :: _)
+    }
+
+  def sequenceViaTraverse[A](a: List[Option[A]]): Option[List[A]] =
+    traverse_2(a)(x => x)
 }
