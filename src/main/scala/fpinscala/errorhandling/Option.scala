@@ -60,4 +60,8 @@ object Option {
   def mean_2(xs: Seq[Double]): Option[Double] =
     if (xs.isEmpty) None
     else Some(xs.sum / xs.length)
+
+  def variance(xs: Seq[Double]): Option[Double] = {
+    mean_2(xs) flatMap (m => mean_2(xs.map(x => math.pow(x - m, 2))))
+  }
 }

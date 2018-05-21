@@ -76,4 +76,9 @@ class OptionSpec extends FunSuite {
     assert(Some(2).filter(a => a == 1) == None)
     assert(Some(2).filter(a => a == 2) == Some(2))
   }
+
+  test("EXERCISE 4.2 variance") {
+    import Option.variance
+    assert(variance(Seq(71, 80, 89)) == Some(54.0))
+  }
 }
