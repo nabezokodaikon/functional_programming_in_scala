@@ -97,6 +97,14 @@ class OptionSpec extends FunSuite {
     assert(map2(Some(1), Some(2))((a, b) => a + b) == Some(3))
   }
 
+  test("EXERCISE 4.3 map2ViaFor") {
+    import Option.map2ViaFor
+    assert(map2ViaFor(None, None)((a: Int, b: Int) => a + b) == None)
+    assert(map2ViaFor(Some(1), None)((a, b) => a + b) == None)
+    assert(map2ViaFor(None, Some(2))((a: Int, b: Int) => a + b) == None)
+    assert(map2ViaFor(Some(1), Some(2))((a, b) => a + b) == Some(3))
+  }
+
   test("insuranceRateQuote") {
     import Option.parseInsuranceRateQuote
     assert(parseInsuranceRateQuote("a", "b") == None)
