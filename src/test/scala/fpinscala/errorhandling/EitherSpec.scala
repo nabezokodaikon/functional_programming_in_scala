@@ -16,4 +16,10 @@ class EitherSpec extends FunSuite {
     assert(safeDiv(1, 0) == Left(new ArithmeticException()))
     assert(safeDiv(4, 2) == Right(2))
   }
+
+  test("List 4-9") {
+    import Either.Try
+    assert(Try(1 / 0) == Left(new ArithmeticException()))
+    assert(Try(2 / 2) == Right(1))
+  }
 }
