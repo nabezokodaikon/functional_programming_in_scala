@@ -33,4 +33,8 @@ object Option {
   def mean_1(xs: IndexedSeq[Double], onEmpty: Double): Double =
     if (xs.isEmpty) onEmpty
     else xs.sum / xs.length
+
+  def mean_2(xs: Seq[Double]): Option[Double] =
+    if (xs.isEmpty) None
+    else Some(xs.sum / xs.length)
 }

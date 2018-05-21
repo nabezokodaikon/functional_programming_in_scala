@@ -42,4 +42,11 @@ class OptionSpec extends FunSuite {
     assert(mean_1(IndexedSeq[Double](), 0.0) == 0.0)
     assert(mean_1(IndexedSeq(0.1, 0.2), 0.0) == (0.1 + 0.2) / 2)
   }
+
+  test("List 4-4") {
+    import Option.mean_2
+
+    assert(mean_2(Seq[Double]()) == None)
+    assert(mean_2(Seq(0.1, 0.2)) == Some((0.1 + 0.2) / 2))
+  }
 }
