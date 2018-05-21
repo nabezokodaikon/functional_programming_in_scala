@@ -24,4 +24,15 @@ class OptionSpec extends FunSuite {
     assert(failingFn2(2) == 43)
     assert(failingFn2(3) == 43)
   }
+
+  test("mean") {
+    import Option.mean
+
+    val caught = intercept[Exception] {
+      mean(Nil)
+    }
+    assert(caught.getMessage == "mean of empty list!")
+
+    assert(mean(List(0.1, 0.2)) == (0.1 + 0.2) / 2)
+  }
 }
