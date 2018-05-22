@@ -89,3 +89,35 @@ object Person {
   def mkPerson(name: String, age: Int): Either[String, Person] =
     mkName(name).map2(mkAge(age))(Person(_, _))
 }
+
+/*
+ * TODO
+ * エラーを累積するデータ型。
+ */
+sealed trait Partial[+A, +B] {
+
+  def map2[AA >: A, C, D](c: Partial[AA, C])(f: (B, C) => D): Partial[AA, D] =
+    (this, c) match {
+      case (Success(x), Success(y)) => Success(f(x, y))
+      case (Errors(x), Errors(y)) => Errors(x ++ y)
+      case (Errors(x), _) => Errors(x)
+      case (_, Errors(y)) => Errors(y)
+    }
+}
+
+case class Errors[+A](get: Seq[A]) extends Partial[A, Nothing]
+case class Success[+B](get: B) extends Partial[Nothing, B]
+
+object Person_2 {
+
+  def mkName(name: String): Partial[String, Name] =
+    if (name == "" || name == null) Errors(Seq("Name is empty."))
+    else Success(Name(name))
+
+  def mkAge(age: Int): Partial[String, Age] =
+    if (age < 0) Errors(Seq("Age is out of range."))
+    else Success(Age(age))
+
+  def mkPerson(name: String, age: Int): Partial[String, Person] =
+    mkName(name).map2(mkAge(age))(Person(_, _))
+}

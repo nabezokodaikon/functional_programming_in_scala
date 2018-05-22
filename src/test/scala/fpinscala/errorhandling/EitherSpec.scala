@@ -92,4 +92,12 @@ class EitherSpec extends FunSuite {
     assert(mkPerson("", -1) == Left("Name is empty."))
     assert(mkPerson("taro", 1) == Right(Person(Name("taro"), Age(1))))
   }
+
+  test("EXERCISE 4.8") {
+    import Person_2._
+    assert(mkPerson("", 1) == Errors(Seq("Name is empty.")))
+    assert(mkPerson("taro", -1) == Errors(Seq("Age is out of range.")))
+    assert(mkPerson("", -1) == Errors(Seq("Name is empty.", "Age is out of range.")))
+    assert(mkPerson("taro", 1) == Success(Person(Name("taro"), Age(1))))
+  }
 }
