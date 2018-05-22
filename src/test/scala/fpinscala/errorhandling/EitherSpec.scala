@@ -55,4 +55,24 @@ class EitherSpec extends FunSuite {
     assert(parseInsuranceRateQuote("a", "3").isInstanceOf[Left[Exception]])
     assert(parseInsuranceRateQuote("2", "3") == Right(6))
   }
+
+  test("EXERCISE 4.7 sequence") {
+    import Either.sequence
+    assert(sequence(List[Either[String, Int]]()) == Right(Nil))
+    assert(sequence(List(Left("a"))) == Left("a"))
+    assert(sequence(List(Left("a"), Left("b"))) == Left("a"))
+    assert(sequence(List(Right(1), Left("a"))) == Left("a"))
+    assert(sequence(List(Left("a"), Right(1))) == Left("a"))
+    assert(sequence(List(Right(1), Right(2))) == Right(List(1, 2)))
+  }
+
+  test("EXERCISE 4.7 sequence_2") {
+    import Either.sequence_2
+    assert(sequence_2(List[Either[String, Int]]()) == Right(Nil))
+    assert(sequence_2(List(Left("a"))) == Left("a"))
+    assert(sequence_2(List(Left("a"), Left("b"))) == Left("a"))
+    assert(sequence_2(List(Right(1), Left("a"))) == Left("a"))
+    assert(sequence_2(List(Left("a"), Right(1))) == Left("a"))
+    assert(sequence_2(List(Right(1), Right(2))) == Right(List(1, 2)))
+  }
 }

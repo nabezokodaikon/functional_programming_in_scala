@@ -54,4 +54,19 @@ object Either {
       a <- Try { age.toInt }
       tickets <- Try { numberOfSpeedingTickets.toInt }
     } yield insuranceRateQuote(a, tickets)
+
+  def traverse[E, A, B](as: List[A])(f: A => Either[E, B]): Either[E, List[B]] =
+    as match {
+      case Nil => Right(Nil)
+      case h :: t => f(h).map2(traverse(t)(f))(_ :: _)
+    }
+
+  def sequence[E, A](es: List[Either[E, A]]): Either[E, List[A]] =
+    es match {
+      case Nil => Right(Nil)
+      case h :: t => h.map2(sequence_2(t))(_ :: _)
+    }
+
+  def sequence_2[E, A](es: List[Either[E, A]]): Either[E, List[A]] =
+    traverse(es)(x => x)
 }
