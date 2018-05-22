@@ -47,4 +47,12 @@ class EitherSpec extends FunSuite {
     assert(Right(2).map2(lb)((a, b) => a * b) == Left("b"))
     assert(Right(2).map2(Right(3))((a, b) => a * b) == Right(6))
   }
+
+  test("parseInsuranceRateQuote") {
+    import Either.parseInsuranceRateQuote
+    assert(parseInsuranceRateQuote("a", "b").isInstanceOf[Left[Exception]])
+    assert(parseInsuranceRateQuote("2", "b").isInstanceOf[Left[Exception]])
+    assert(parseInsuranceRateQuote("a", "3").isInstanceOf[Left[Exception]])
+    assert(parseInsuranceRateQuote("2", "3") == Right(6))
+  }
 }
