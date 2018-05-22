@@ -75,4 +75,21 @@ class EitherSpec extends FunSuite {
     assert(sequence_2(List(Left("a"), Right(1))) == Left("a"))
     assert(sequence_2(List(Right(1), Right(2))) == Right(List(1, 2)))
   }
+
+  test("List 4-10 Person") {
+    import Person._
+
+    assert(mkName("") == Left("Name is empty."))
+    assert(mkName(null) == Left("Name is empty."))
+    assert(mkName("taro") == Right(Name("taro")))
+
+    assert(mkAge(-1) == Left("Age is out of range."))
+    assert(mkAge(0) == Right(Age(0)))
+    assert(mkAge(1) == Right(Age(1)))
+
+    assert(mkPerson("", 1) == Left("Name is empty."))
+    assert(mkPerson("taro", -1) == Left("Age is out of range."))
+    assert(mkPerson("", -1) == Left("Name is empty."))
+    assert(mkPerson("taro", 1) == Right(Person(Name("taro"), Age(1))))
+  }
 }
