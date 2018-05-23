@@ -123,4 +123,18 @@ class StreamSpec extends FunSuite {
     assert(ones.exists(_ % 2 != 0) == true)
     assert(ones.map(_ + 1).exists(_ % 2 == 0) == true)
   }
+
+  test("EXERCISE 5.8 constant") {
+    import Stream.constant
+    assert(constant(1).take(5).toList == List(1, 1, 1, 1, 1))
+    assert(constant(1).exists(_ % 2 != 0) == true)
+    assert(constant(1).map(_ + 1).exists(_ % 2 == 0) == true)
+  }
+
+  test("EXERCISE 5.8 constant_2") {
+    import Stream.constant_2
+    assert(constant_2(1).take(5).toList == List(1, 1, 1, 1, 1))
+    assert(constant_2(1).exists(_ % 2 != 0) == true)
+    assert(constant_2(1).map(_ + 1).exists(_ % 2 == 0) == true)
+  }
 }
