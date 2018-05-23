@@ -79,4 +79,10 @@ class StreamSpec extends FunSuite {
     assert(Stream(3, 2, 1).takeWhileViaFoldRight(a => a < 3) == empty)
     assert(Stream(1, 2, 3).takeWhileViaFoldRight(a => a < 3).toList == List(1, 2))
   }
+
+  test("EXERCISE 5.6 headOptionViaFoldRight") {
+    assert(Stream[Int]().headOptionViaFoldRight == None)
+    assert(Stream(1).headOptionViaFoldRight == Some(1))
+    assert(Stream(1, 2).headOptionViaFoldRight == Some(1))
+  }
 }
