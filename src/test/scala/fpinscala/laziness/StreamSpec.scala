@@ -137,4 +137,10 @@ class StreamSpec extends FunSuite {
     assert(constant_2(1).exists(_ % 2 != 0) == true)
     assert(constant_2(1).map(_ + 1).exists(_ % 2 == 0) == true)
   }
+
+  test("EXERCISE 5.9 from") {
+    import Stream.from
+    assert(from(1).take(3).toList == List(1, 2, 3))
+    assert(from(2).take(3).toList == List(2, 3, 4))
+  }
 }
