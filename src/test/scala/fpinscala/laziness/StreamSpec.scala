@@ -85,4 +85,29 @@ class StreamSpec extends FunSuite {
     assert(Stream(1).headOptionViaFoldRight == Some(1))
     assert(Stream(1, 2).headOptionViaFoldRight == Some(1))
   }
+
+  test("EXERCISE 5.7 map") {
+    assert(Stream[Int]().map(a => a.toString) == Stream[String]())
+    assert(Stream(1, 2, 3).map(a => a.toString).toList == List("1", "2", "3"))
+  }
+
+  test("EXERCISE 5.7 filter") {
+    assert(Stream[Int]().filter(a => a % 2 == 0).toList == List[Int]())
+    assert(Stream(1, 3, 5).filter(a => a % 2 == 0).toList == List[Int]())
+    assert(Stream(1, 2, 3, 4).filter(a => a % 2 == 0).toList == List(2, 4))
+  }
+
+  test("EXERCISE 5.7 append") {
+    assert(Stream[Int]().append(Stream[Int]()).toList == List[Int]())
+    assert(Stream(1, 2, 3).append(Stream[Int]()).toList == List(1, 2, 3))
+    assert(Stream[Int]().append(Stream(4, 5)).toList == List(4, 5))
+    assert(Stream(1, 2, 3).append(Stream(4, 5)).toList == List(1, 2, 3, 4, 5))
+  }
+
+  test("EXERCISE 5.7 flatMap") {
+    import Stream.empty
+    assert(empty[Int].flatMap(_ => empty[Int]) == empty[Int])
+    assert(Stream(1, 2, 3).flatMap(i => Stream(i, i)).toList == List(1, 1, 2, 2, 3, 3))
+    assert(Stream(Stream(1, 2), Stream(3, 4)).flatMap(i => i).toList == List(1, 2, 3, 4))
+  }
 }
