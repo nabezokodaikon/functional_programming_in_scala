@@ -64,4 +64,12 @@ class StreamSpec extends FunSuite {
     assert(Stream(3, 2, 1).existsViaFoldRight(a => a > 1) == true)
     assert(Stream(1, 2, 3).existsViaFoldRight(a => a > 3) == false)
   }
+
+  test("EXERCISE 5.4 forAll") {
+    // assert(Stream[Int]().forAll(a => a % 2 == 0) == false)
+    assert(Stream(1, 2, 4).forAll(a => a % 2 == 0) == false)
+    assert(Stream(2, 3, 4).forAll(a => a % 2 == 0) == false)
+    assert(Stream(2, 4, 5).forAll(a => a % 2 == 0) == false)
+    assert(Stream(2, 4, 6).forAll(a => a % 2 == 0) == true)
+  }
 }
