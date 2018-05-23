@@ -58,4 +58,10 @@ class StreamSpec extends FunSuite {
     assert(Stream(3, 2, 1).exists(a => a > 1) == true)
     assert(Stream(1, 2, 3).exists(a => a > 3) == false)
   }
+
+  test("List 5-4 existsViaFoldRight") {
+    assert(Stream[Int]().existsViaFoldRight(a => a > 1) == false)
+    assert(Stream(3, 2, 1).existsViaFoldRight(a => a > 1) == true)
+    assert(Stream(1, 2, 3).existsViaFoldRight(a => a > 3) == false)
+  }
 }
