@@ -45,4 +45,11 @@ class StreamSpec extends FunSuite {
     assert(Stream(1, 2, 3).drop(3) == empty)
     assert(Stream(1, 2, 3).drop(4) == empty)
   }
+
+  test("EXERCISE 5.3 takeWhile") {
+    import Stream.empty
+    assert(Stream[Int]().takeWhile(a => a < 3) == empty)
+    assert(Stream(3, 2, 1).takeWhile(a => a < 3) == empty)
+    assert(Stream(1, 2, 3).takeWhile(a => a < 3).toList == List(1, 2))
+  }
 }
