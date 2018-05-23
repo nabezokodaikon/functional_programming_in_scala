@@ -51,6 +51,12 @@ trait Stream[+A] {
       case Cons(h, t) => p(h()) || t().exists(p)
       case _ => false
     }
+
+  def foldRight[B](z: => B)(f: (A, => B) => B): B =
+    this match {
+      case Cons(h, t) => f(h(), t().foldRight(z)(f))
+      case _ => z
+    }
 }
 
 case object Empty extends Stream[Nothing]
