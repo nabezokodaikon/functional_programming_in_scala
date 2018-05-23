@@ -85,6 +85,9 @@ trait Stream[+A] {
 
   def flatMap[B](f: A => Stream[B]): Stream[B] =
     foldRight(empty[B])((h, t) => f(h) append (t))
+
+  def find(f: A => Boolean): Option[A] =
+    filter(f).headOptionViaFoldRight
 }
 
 case object Empty extends Stream[Nothing]

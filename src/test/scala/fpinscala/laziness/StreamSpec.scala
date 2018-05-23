@@ -110,4 +110,10 @@ class StreamSpec extends FunSuite {
     assert(Stream(1, 2, 3).flatMap(i => Stream(i, i)).toList == List(1, 1, 2, 2, 3, 3))
     assert(Stream(Stream(1, 2), Stream(3, 4)).flatMap(i => i).toList == List(1, 2, 3, 4))
   }
+
+  test("find") {
+    assert(Stream[Int]().find(a => a % 2 == 0) == None)
+    assert(Stream(1, 3, 5).find(a => a % 2 == 0) == None)
+    assert(Stream(1, 2, 3, 4).find(a => a % 2 == 0) == Some(2))
+  }
 }
