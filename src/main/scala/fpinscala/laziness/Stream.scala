@@ -126,6 +126,13 @@ trait Stream[+A] {
     zipAll(s)((_, _)).takeWhileViaUnfold(!_._2.isEmpty).forAll {
       case (h, h2) => h == h2
     }
+
+  def hasSubsequence[A](sub: Stream[A]): Boolean =
+    this match {
+      case Empty => sub == empty
+      case _ if startsWith(sub) => true
+      case Cons(_, t) => t().hasSubsequence(sub)
+    }
 }
 
 case object Empty extends Stream[Nothing]

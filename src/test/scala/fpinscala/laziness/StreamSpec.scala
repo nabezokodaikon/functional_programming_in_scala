@@ -239,4 +239,15 @@ class StreamSpec extends FunSuite {
     assert(Stream(3, 2, 1).startsWith(Stream(3, 2, 1)) == true)
     assert(Stream(1, 3).startsWith(Stream(1, 3)) == true)
   }
+
+  test("hasSubsequence") {
+    assert(Stream(1, 2, 3, 4).hasSubsequence(Stream(0)) == false)
+    assert(Stream(1, 2, 3, 4).hasSubsequence(Stream(0, 1)) == false)
+    assert(Stream(1, 2, 3, 4).hasSubsequence(Stream(5)) == false)
+    assert(Stream(1, 2, 3, 4).hasSubsequence(Stream(4, 5)) == false)
+    assert(Stream(1, 2, 3, 4).hasSubsequence(Stream(1)) == true)
+    assert(Stream(1, 2, 3, 4).hasSubsequence(Stream(1, 2)) == true)
+    assert(Stream(1, 2, 3, 4).hasSubsequence(Stream(2, 3)) == true)
+    assert(Stream(1, 2, 3, 4).hasSubsequence(Stream(4)) == true)
+  }
 }
