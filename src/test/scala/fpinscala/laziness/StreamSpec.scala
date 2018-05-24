@@ -175,4 +175,55 @@ class StreamSpec extends FunSuite {
     assert(onesViaUnfold.exists(_ % 2 != 0) == true)
     assert(onesViaUnfold.map(_ + 1).exists(_ % 2 == 0) == true)
   }
+
+  test("EXERCISE 5.13 mapViaUnfold") {
+    assert(Stream[Int]().mapViaUnfold(a => a.toString) == Stream[String]())
+    assert(Stream(1, 2, 3).mapViaUnfold(a => a.toString).toList == List("1", "2", "3"))
+  }
+
+  test("EXERCISE 5.13 takeViaUnfold") {
+    import Stream._
+    assert(Stream[Int]().takeViaUnfold(0) == empty)
+    assert(Stream[Int]().takeViaUnfold(1) == empty)
+    assert(Stream(1).takeViaUnfold(0) == empty)
+    assert(Stream(1).takeViaUnfold(1).toList == List(1))
+    assert(Stream(1, 2, 3).takeViaUnfold(0) == empty)
+    assert(Stream(1, 2, 3).takeViaUnfold(1).toList == List(1))
+    assert(Stream(1, 2, 3).takeViaUnfold(2).toList == List(1, 2))
+    assert(Stream(1, 2, 3).takeViaUnfold(3).toList == List(1, 2, 3))
+    assert(Stream(1, 2, 3, 4).takeViaUnfold(3).toList == List(1, 2, 3))
+  }
+
+  test("EXERCISE 5.13 takeWhileViaUnfold") {
+    import Stream.empty
+    assert(Stream[Int]().takeWhileViaUnfold(a => a < 3) == empty)
+    assert(Stream(3, 2, 1).takeWhileViaUnfold(a => a < 3) == empty)
+    assert(Stream(1, 2, 3).takeWhileViaUnfold(a => a < 3).toList == List(1, 2))
+  }
+
+  test("EXERCISE 5.13 zipWith") {
+    import Stream.empty
+
+    def f1 = (a: Int, b: Int) => a + b
+    assert(Stream(1, 2, 3).zipWith(empty)(f1) == empty)
+    assert(Stream(1, 2, 3).zipWith(Stream(4, 5, 6))(f1).toList == List(5, 7, 9))
+
+    def f2 = (a: String, b: String) => s"${a}${b}"
+    assert(Stream("a", "b", "c").zipWith(Stream("d", "e", "f"))(f2).toList == List("ad", "be", "cf"))
+  }
+
+  test("EXERCISE 5.13 zipAll") {
+    import Stream.empty
+    def f = (a: Option[Int], b: Option[Int]) =>
+      (a, b) match {
+        case (Some(a), Some(b)) => Some(a + b)
+        case (Some(a), _) => Some(a)
+        case (_, Some(b)) => Some(b)
+        case _ => None
+      }
+    assert(Stream(1, 2, 3).zipAll(empty)(f).toList == List(Some(1), Some(2), Some(3)))
+    assert(Stream(1, 2, 3).zipAll(Stream(4, 5, 6))(f).toList == List(Some(5), Some(7), Some(9)))
+    assert(Stream(1, 2, 3).zipAll(Stream(4, 5))(f).toList == List(Some(5), Some(7), Some(3)))
+    assert(Stream(1, 2).zipAll(Stream(4, 5, 6))(f).toList == List(Some(5), Some(7), Some(6)))
+  }
 }

@@ -88,6 +88,39 @@ trait Stream[+A] {
 
   def find(f: A => Boolean): Option[A] =
     filter(f).headOptionViaFoldRight
+
+  def mapViaUnfold[B](f: A => B): Stream[B] =
+    unfold(this) {
+      case Cons(h, t) => Some((f(h()), t()))
+      case _ => None
+    }
+
+  def takeViaUnfold(n: Int): Stream[A] =
+    unfold((this, n)) {
+      case (Cons(h, t), 1) => Some((h(), (empty, 0)))
+      case (Cons(h, t), c) if c > 1 => Some((h(), (t(), c - 1)))
+      case _ => None
+    }
+
+  def takeWhileViaUnfold(f: A => Boolean): Stream[A] =
+    unfold(this) {
+      case Cons(h, t) if f(h()) => Some((h(), t()))
+      case _ => None
+    }
+
+  def zipWith[B, C](s2: Stream[B])(f: (A, B) => C): Stream[C] =
+    unfold((this, s2)) {
+      case (Cons(h, t), Cons(h2, t2)) => Some(f(h(), h2()), (t(), t2()))
+      case _ => None
+    }
+
+  def zipAll[B, C](s2: Stream[B])(f: (Option[A], Option[B]) => C): Stream[C] =
+    unfold((this, s2)) {
+      case (Cons(h, t), Empty) => Some(f(Some(h()), Option.empty[B]) -> (t(), empty[B]))
+      case (Empty, Cons(h, t)) => Some(f(Option.empty[A], Some(h())) -> (empty[A], t()))
+      case (Cons(h, t), Cons(h2, t2)) => Some(f(Some(h()), Some(h2())) -> (t(), t2()))
+      case _ => None
+    }
 }
 
 case object Empty extends Stream[Nothing]
