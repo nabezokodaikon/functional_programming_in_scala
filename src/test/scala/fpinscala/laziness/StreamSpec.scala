@@ -149,4 +149,30 @@ class StreamSpec extends FunSuite {
     assert(fibs.take(0).toList == List[Int]())
     assert(fibs.take(6).toList == List(0, 1, 1, 2, 3, 5))
   }
+
+  test("EXERCISE 5.12 fibsViaUnfold") {
+    import Stream.fibsViaUnfold
+    assert(fibsViaUnfold.take(0).toList == List[Int]())
+    assert(fibsViaUnfold.take(6).toList == List(0, 1, 1, 2, 3, 5))
+  }
+
+  test("EXERCISE 5.12 fromViaUnfold") {
+    import Stream.fromViaUnfold
+    assert(fromViaUnfold(1).take(3).toList == List(1, 2, 3))
+    assert(fromViaUnfold(2).take(3).toList == List(2, 3, 4))
+  }
+
+  test("EXERCISE 5.12 constantViaUnfold") {
+    import Stream.constantViaUnfold
+    assert(constantViaUnfold(1).take(5).toList == List(1, 1, 1, 1, 1))
+    assert(constantViaUnfold(1).exists(_ % 2 != 0) == true)
+    assert(constantViaUnfold(1).map(_ + 1).exists(_ % 2 == 0) == true)
+  }
+
+  test("EXERCISE 5.12 onesViaUnfold") {
+    import Stream.onesViaUnfold
+    assert(onesViaUnfold.take(5).toList == List(1, 1, 1, 1, 1))
+    assert(onesViaUnfold.exists(_ % 2 != 0) == true)
+    assert(onesViaUnfold.map(_ + 1).exists(_ % 2 == 0) == true)
+  }
 }
