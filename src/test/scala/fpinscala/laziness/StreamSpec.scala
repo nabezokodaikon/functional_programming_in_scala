@@ -227,4 +227,16 @@ class StreamSpec extends FunSuite {
     assert(Stream(1, 2, 3).zipAll(Stream(4, 5))(f).toList == List(Some(5), Some(7), Some(3)))
     assert(Stream(1, 2).zipAll(Stream(4, 5, 6))(f).toList == List(Some(5), Some(7), Some(6)))
   }
+
+  test("EXERCISE 5.14 startsWith") {
+    assert(Stream(1, 2, 3).startsWith(Empty) == true)
+    assert(Stream(1, 2, 3).startsWith(Stream(4)) == false)
+    assert(Stream(1, 2, 3).startsWith(Stream(1, 3)) == false)
+    assert(Stream(1, 2, 3).startsWith(Stream(2, 3)) == false)
+    assert(Stream(1, 2, 3).startsWith(Stream(1)) == true)
+    assert(Stream(1, 2, 3).startsWith(Stream(1, 2)) == true)
+    assert(Stream(1, 2, 3).startsWith(Stream(1, 2, 3)) == true)
+    assert(Stream(3, 2, 1).startsWith(Stream(3, 2, 1)) == true)
+    assert(Stream(1, 3).startsWith(Stream(1, 3)) == true)
+  }
 }
