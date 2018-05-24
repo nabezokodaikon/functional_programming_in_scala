@@ -250,4 +250,10 @@ class StreamSpec extends FunSuite {
     assert(Stream(1, 2, 3, 4).hasSubsequence(Stream(2, 3)) == true)
     assert(Stream(1, 2, 3, 4).hasSubsequence(Stream(4)) == true)
   }
+
+  test("EXERCISE 5.15 tails") {
+    val r = Stream(Stream(1, 2, 3).toList, Stream(2, 3).toList, Stream(3).toList, Stream[Int]().toList).toList
+    assert(Stream(1, 2, 3).tails.map(_.toList).toList == r)
+  }
+
 }

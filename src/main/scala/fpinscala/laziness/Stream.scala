@@ -127,6 +127,12 @@ trait Stream[+A] {
       case (h, h2) => h == h2
     }
 
+  def tails: Stream[Stream[A]] =
+    unfold(this) {
+      case Empty => None
+      case s => Some((s, s drop 1))
+    } append Stream(empty)
+
   def hasSubsequence[A](sub: Stream[A]): Boolean =
     this match {
       case Empty => sub == empty
