@@ -143,4 +143,10 @@ class StreamSpec extends FunSuite {
     assert(from(1).take(3).toList == List(1, 2, 3))
     assert(from(2).take(3).toList == List(2, 3, 4))
   }
+
+  test("exercise 5.10 fibs") {
+    import Stream.fibs
+    assert(fibs.take(0).toList == List[Int]())
+    assert(fibs.take(6).toList == List(0, 1, 1, 2, 3, 5))
+  }
 }
