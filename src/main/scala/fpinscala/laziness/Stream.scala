@@ -134,11 +134,7 @@ trait Stream[+A] {
     } append Stream(empty)
 
   def hasSubsequence[A](sub: Stream[A]): Boolean =
-    this match {
-      case Empty => sub == empty
-      case _ if startsWith(sub) => true
-      case Cons(_, t) => t().hasSubsequence(sub)
-    }
+    tails exists (_ startsWith sub)
 }
 
 case object Empty extends Stream[Nothing]
