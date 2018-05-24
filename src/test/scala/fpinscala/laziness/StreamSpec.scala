@@ -206,6 +206,7 @@ class StreamSpec extends FunSuite {
 
     def f1 = (a: Int, b: Int) => a + b
     assert(Stream(1, 2, 3).zipWith(empty)(f1) == empty)
+    assert(Stream(1, 2, 3).zipWith(Stream(4, 5))(f1).toList == List(5, 7))
     assert(Stream(1, 2, 3).zipWith(Stream(4, 5, 6))(f1).toList == List(5, 7, 9))
 
     def f2 = (a: String, b: String) => s"${a}${b}"
