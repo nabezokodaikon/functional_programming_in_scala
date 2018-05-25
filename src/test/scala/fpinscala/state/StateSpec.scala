@@ -21,4 +21,13 @@ class StateSpec extends FunSuite {
     assert(n2 == rng.nonNegariveInt(rng)._1)
   }
 
+  test("EXERCISE 6.2 double") {
+    val rng = SimpleRNG(42)
+    val (n1, rng2) = rng.double(rng)
+    val (n2, rng3) = rng2.double(rng2)
+    assert(n1 < 1)
+    assert(n1 == rng.double(rng)._1)
+    assert(n1 != n2)
+  }
+
 }
