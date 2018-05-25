@@ -95,4 +95,14 @@ class StateSpec extends FunSuite {
     val r = SimpleRNG(42)
     assert(nonNegativeEven(r)._1 % 2 == 0)
   }
+
+  test("EXERCISE 6.5 doubleViaMap") {
+    import RNG.doubleViaMap
+    val rng = SimpleRNG(42)
+    val (n1, rng2) = doubleViaMap(rng)
+    val (n2, rng3) = doubleViaMap(rng2)
+    assert(n1 < 1)
+    assert(n1 == doubleViaMap(rng)._1)
+    assert(n1 != n2)
+  }
 }
