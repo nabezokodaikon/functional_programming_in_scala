@@ -60,4 +60,12 @@ class StateSpec extends FunSuite {
     assert(d1a != d1b && d2a != d2b && d3a != d3b)
     assert(d1a == d1c && d2a == d2c && d3a == d3c)
   }
+
+  test("EXERCISE 6.4 ints") {
+    import State.ints
+    val rng = SimpleRNG(42)
+    val (l, r1) = ints(3)(rng)
+    assert(ints(3)(r1)._1 != l)
+    assert(ints(3)(rng)._1 == l)
+  }
 }
