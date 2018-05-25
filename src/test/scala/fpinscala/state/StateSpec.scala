@@ -105,4 +105,29 @@ class StateSpec extends FunSuite {
     assert(n1 == doubleViaMap(rng)._1)
     assert(n1 != n2)
   }
+
+  test("EXERCISE 6.6 map2 randIntDouble") {
+    import RNG.randIntDouble
+    val rng = SimpleRNG(42)
+    val ((int1, double1), rng2) = randIntDouble(rng)
+    val ((int2, double2), rng3) = randIntDouble(rng2)
+    val ((int3, double3), _) = randIntDouble(rng)
+    assert(int1 != int2)
+    assert(double1 != double2)
+    assert(int1 == int3)
+    assert(double1 == double3)
+
+  }
+
+  test("EXERCISE 6.6 map2 randDoubleInt") {
+    import RNG.randDoubleInt
+    val rng = SimpleRNG(42)
+    val ((double1, int1), rng2) = randDoubleInt(rng)
+    val ((double2, int2), rng3) = randDoubleInt(rng2)
+    val ((double3, int3), _) = randDoubleInt(rng)
+    assert(int1 != int2)
+    assert(double1 != double2)
+    assert(int1 == int3)
+    assert(double1 == double3)
+  }
 }
