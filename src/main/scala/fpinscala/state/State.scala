@@ -2,20 +2,18 @@ package fpinscala.state
 
 trait RNG {
   def nextInt: (Int, RNG)
-  def nonNegariveInt(rng: RNG): (Int, RNG)
-  def double(rng: RNG): (Double, RNG)
-  def intDouble(rng: RNG): ((Int, Double), RNG)
-  def doubleInt(rng: RNG): ((Double, Int), RNG)
-  def double3(rng: RNG): ((Double, Double, Double), RNG)
 }
 
-case class SimpleRNG(seed: Long) extends RNG {
+object RNG {
 
-  def nextInt: (Int, RNG) = {
-    val newSeed = (seed * 0x5DEECE66DL + 0xBL) & 0xFFFFFFFFFFFFL
-    val nextRNG = SimpleRNG(newSeed)
-    val n = (newSeed >>> 16).toInt
-    (n, nextRNG)
+  case class SimpleRNG(seed: Long) extends RNG {
+
+    def nextInt: (Int, RNG) = {
+      val newSeed = (seed * 0x5DEECE66DL + 0xBL) & 0xFFFFFFFFFFFFL
+      val nextRNG = SimpleRNG(newSeed)
+      val n = (newSeed >>> 16).toInt
+      (n, nextRNG)
+    }
   }
 
   def nonNegariveInt(rng: RNG): (Int, RNG) = {
@@ -24,7 +22,7 @@ case class SimpleRNG(seed: Long) extends RNG {
   }
 
   def double(rng: RNG): (Double, RNG) = {
-    val (i, r) = rng.nonNegariveInt(rng)
+    val (i, r) = nonNegariveInt(rng)
     (i / (Int.MaxValue.toDouble + 1), r)
   }
 
@@ -45,17 +43,6 @@ case class SimpleRNG(seed: Long) extends RNG {
     val (d3, r3) = double(r2)
     ((d1, d2, d3), r3)
   }
-}
-
-object State {
-
-  type Rand[+A] = RNG => (A, RNG)
-
-  // val int: Rand[Int] = a => a.nextInt
-  val int: Rand[Int] = _.nextInt
-
-  def unit[A](a: A): Rand[A] =
-    rng => (a, rng)
 
   def ints(count: Int)(rng: RNG): (List[Int], RNG) = {
 
@@ -69,4 +56,24 @@ object State {
 
     loop(count, rng, Nil)
   }
+
+  type Rand[+A] = RNG => (A, RNG)
+
+  // val int: Rand[Int] = a => a.nextInt
+  val int: Rand[Int] = _.nextInt
+
+  def unit[A](a: A): Rand[A] =
+    rng => (a, rng)
+
+  def map[A, B](s: Rand[A])(f: A => B): Rand[B] =
+    rng => {
+      val (a, rng2) = s(rng)
+      (f(a), rng2)
+    }
+
+  def nonNegativeEven: Rand[Int] =
+    map(nonNegariveInt)(i => i - i % 2)
+}
+
+object State {
 }
