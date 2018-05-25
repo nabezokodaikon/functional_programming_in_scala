@@ -49,6 +49,8 @@ case class SimpleRNG(seed: Long) extends RNG {
 
 object State {
 
+  type Rand[+A] = RNG => (A, RNG)
+
   def ints(count: Int)(rng: RNG): (List[Int], RNG) = {
 
     @annotation.tailrec
