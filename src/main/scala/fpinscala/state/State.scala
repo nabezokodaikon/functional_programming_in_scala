@@ -54,6 +54,9 @@ object State {
   // val int: Rand[Int] = a => a.nextInt
   val int: Rand[Int] = _.nextInt
 
+  def unit[A](a: A): Rand[A] =
+    rng => (a, rng)
+
   def ints(count: Int)(rng: RNG): (List[Int], RNG) = {
 
     @annotation.tailrec

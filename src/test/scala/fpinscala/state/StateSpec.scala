@@ -68,4 +68,10 @@ class StateSpec extends FunSuite {
     assert(ints(3)(r1)._1 != l)
     assert(ints(3)(rng)._1 == l)
   }
+
+  test("List 6-6 unit") {
+    import State.unit
+    val r = SimpleRNG(42)
+    assert(unit(r)(r) == (r, r))
+  }
 }
