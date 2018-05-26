@@ -143,4 +143,11 @@ class StateSpec extends FunSuite {
     assert(nonNegativeLessThan(3)(SimpleRNG(42)) != nonNegativeLessThan(Int.MaxValue)(SimpleRNG(42)))
     assert(nonNegativeLessThan(3)(SimpleRNG(42)) == nonNegativeLessThan(3)(SimpleRNG(42)))
   }
+
+  test("nonNegativeLessThanViaFlatMap") {
+    import RNG.nonNegativeLessThanViaFlatMap
+    assert(nonNegativeLessThanViaFlatMap(3)(SimpleRNG(42)) != nonNegativeLessThanViaFlatMap(3)(SimpleRNG(41)))
+    assert(nonNegativeLessThanViaFlatMap(3)(SimpleRNG(42)) != nonNegativeLessThanViaFlatMap(Int.MaxValue)(SimpleRNG(42)))
+    assert(nonNegativeLessThanViaFlatMap(3)(SimpleRNG(42)) == nonNegativeLessThanViaFlatMap(3)(SimpleRNG(42)))
+  }
 }
