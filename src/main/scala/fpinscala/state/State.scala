@@ -146,5 +146,7 @@ object RNG {
     bothViaFlatMap(int, double)
 }
 
+case class State[S, +A](run: S => (A, S))
+
 object State {
 }
