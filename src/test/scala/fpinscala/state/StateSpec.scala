@@ -130,4 +130,10 @@ class StateSpec extends FunSuite {
     assert(int1 == int3)
     assert(double1 == double3)
   }
+
+  /*
+   * TODO: 確認方法がわからない。
+   */
+  test("EXERCISE 6.7 sequence") {
+  }
 }
