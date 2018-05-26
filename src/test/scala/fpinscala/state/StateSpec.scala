@@ -150,4 +150,24 @@ class StateSpec extends FunSuite {
     assert(nonNegativeLessThanViaFlatMap(3)(SimpleRNG(42)) != nonNegativeLessThanViaFlatMap(Int.MaxValue)(SimpleRNG(42)))
     assert(nonNegativeLessThanViaFlatMap(3)(SimpleRNG(42)) == nonNegativeLessThanViaFlatMap(3)(SimpleRNG(42)))
   }
+
+  test("EXERCISE 6.9 mapViaFlatMap") {
+    import RNG.{ mapViaFlatMap, Rand }
+    val r = SimpleRNG(42)
+    val s: Rand[Int] = _.nextInt
+    val s2 = mapViaFlatMap(s)(a => a.toString)
+    assert(s(r)._1.toString == s2(r)._1)
+  }
+
+  test("EXERCISE 6.9 map2ViaFlatMap randIntDouble") {
+    import RNG.randIntDoubleViaFlatMap
+    val rng = SimpleRNG(42)
+    val ((int1, double1), rng2) = randIntDoubleViaFlatMap(rng)
+    val ((int2, double2), rng3) = randIntDoubleViaFlatMap(rng2)
+    val ((int3, double3), _) = randIntDoubleViaFlatMap(rng)
+    assert(int1 != int2)
+    assert(double1 != double2)
+    assert(int1 == int3)
+    assert(double1 == double3)
+  }
 }

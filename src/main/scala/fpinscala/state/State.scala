@@ -122,6 +122,28 @@ object RNG {
       else
         nonNegativeLessThanViaFlatMap(n)
     }
+
+  def mapViaFlatMap[A, B](s: Rand[A])(f: A => B): Rand[B] =
+    flatMap(s)(a => unit(f(a)))
+
+  def map2ViaFlatMap[A, B, C](ra: Rand[A], rb: Rand[B])(f: (A, B) => C): Rand[C] =
+    flatMap(ra)(a => map(rb)(b => f(a, b)))
+
+  def map2ViaFlatMap_org[A, B, C](ra: Rand[A], rb: Rand[B])(f: (A, B) => C): Rand[C] =
+    flatMap {
+      rng =>
+        val (a, r1) = ra(rng)
+        val (b, r2) = rb(r1)
+        ((a, b), r2)
+    } {
+      ab => unit(f(ab._1, ab._2))
+    }
+
+  def bothViaFlatMap[A, B](ra: Rand[A], rb: Rand[B]): Rand[(A, B)] =
+    map2ViaFlatMap(ra, rb)((_, _))
+
+  val randIntDoubleViaFlatMap: Rand[(Int, Double)] =
+    bothViaFlatMap(int, double)
 }
 
 object State {
