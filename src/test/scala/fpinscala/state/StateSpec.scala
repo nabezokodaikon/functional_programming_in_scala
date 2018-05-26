@@ -131,9 +131,9 @@ class StateSpec extends FunSuite {
     assert(double1 == double3)
   }
 
-  /*
-   * TODO: 確認方法がわからない。
-   */
   test("EXERCISE 6.7 sequence") {
+    import RNG.intsViaSequence
+    assert(intsViaSequence(3)(SimpleRNG(42)) != intsViaSequence(3)(SimpleRNG(41)))
+    assert(intsViaSequence(3)(SimpleRNG(42)) == intsViaSequence(3)(SimpleRNG(42)))
   }
 }
