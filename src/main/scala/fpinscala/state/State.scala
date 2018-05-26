@@ -98,6 +98,15 @@ object RNG {
 
   def intsViaSequence(count: Int): Rand[List[Int]] =
     sequence(List.fill(count)(int))
+
+  def nonNegativeLessThan(n: Int): Rand[Int] = { rng =>
+    val (i, rng2) = nonNegariveInt(rng)
+    val mod = i % n
+    if (i + (n - 1) - mod >= 0)
+      (mod, rng2)
+    else
+      nonNegativeLessThan(n)(rng)
+  }
 }
 
 object State {
