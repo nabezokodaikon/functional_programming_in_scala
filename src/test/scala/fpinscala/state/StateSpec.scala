@@ -170,4 +170,23 @@ class StateSpec extends FunSuite {
     assert(int1 == int3)
     assert(double1 == double3)
   }
+
+  test("EXERCISE 6.10 unit") {
+    import State.unit
+    import RNG.SimpleRNG
+    val r = SimpleRNG(42)
+    assert(unit(r).run(r) == (r, r))
+  }
+
+  test("EXERCISE 6.10 map") {
+    val s = State.unit("-")
+    val (a1, _) = State.unit(1).map(a => a.toString).run(s)
+    val (a2, _) = State.unit("1").run(s)
+    assert(a1 == a2)
+  }
+
+  test("EXERCISE 6.10 map2") {
+    val (c, _) = (State.unit(1): State[Int, Int]).map2(State.unit(2): State[Int, Int])((a, b) => a + b).run(9)
+    assert(c == 3)
+  }
 }
