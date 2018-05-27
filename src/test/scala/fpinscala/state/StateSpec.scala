@@ -199,4 +199,10 @@ class StateSpec extends FunSuite {
     )
     assert(sequence(l).run("state") == unit(List(1, 2, 3)).run("state"))
   }
+
+  test("List 6-10 modify") {
+    import State.modify
+    val r = modify[Int](a => a * a)
+    assert(r.run(3) == ((), 9))
+  }
 }
