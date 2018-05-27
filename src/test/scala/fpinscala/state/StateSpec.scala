@@ -213,4 +213,11 @@ class StateSpec extends FunSuite {
     assert(s._1._1 == 14)
     assert(s._1._2 == 1)
   }
+
+  test("compose") {
+    val f = (x: Int) => x * 10
+    val g = (x: Int) => x + 10
+    assert(f(g(1)) == f.compose(g)(1))
+    assert(f(g(1)) == (f compose g)(1))
+  }
 }
