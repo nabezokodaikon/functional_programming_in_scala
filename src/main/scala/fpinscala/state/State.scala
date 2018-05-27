@@ -191,7 +191,8 @@ case class Machine(locked: Boolean, candies: Int, coins: Int)
 object Candy {
   import State._
 
-  private def update = (i: Input) => (s: Machine) =>
+  // private def update = (i: Input) => (s: Machine) =>
+  private def update = (i: Input, s: Machine) =>
     (i, s) match {
       case (_, Machine(_, 0, _)) => s
       case (Coin, Machine(false, _, _)) => s
@@ -202,7 +203,8 @@ object Candy {
 
   def simulateMachine(inputs: List[Input]): State[Machine, (Int, Int)] =
     for {
-      _ <- sequence(inputs map (modify[Machine] _ compose update))
+      // _ <- sequence(inputs map (modify[Machine] _ compose update))
+      _ <- sequence(inputs.map(i => modify[Machine](s => update(i, s))))
       s <- get
     } yield (s.coins, s.candies)
 }
