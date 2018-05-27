@@ -205,4 +205,12 @@ class StateSpec extends FunSuite {
     val r = modify[Int](a => a * a)
     assert(r.run(3) == ((), 9))
   }
+
+  test("EXERCISE 6.11") {
+    val m = Machine(true, 5, 10)
+    val r = Candy.simulateMachine(List(Coin, Turn, Coin, Turn, Coin, Turn, Coin, Turn))
+    val s = r.run(m)
+    assert(s._1._1 == 14)
+    assert(s._1._2 == 1)
+  }
 }
