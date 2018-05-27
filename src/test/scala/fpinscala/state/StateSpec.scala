@@ -189,4 +189,14 @@ class StateSpec extends FunSuite {
     val (c, _) = (State.unit(1): State[Int, Int]).map2(State.unit(2): State[Int, Int])((a, b) => a + b).run(9)
     assert(c == 3)
   }
+
+  test("EXERCISE 6.10 sequence") {
+    import State.{ sequence, unit }
+    val l = List[State[String, Int]](
+      State.unit(1),
+      State.unit(2),
+      State.unit(3)
+    )
+    assert(sequence(l).run("state") == unit(List(1, 2, 3)).run("state"))
+  }
 }
