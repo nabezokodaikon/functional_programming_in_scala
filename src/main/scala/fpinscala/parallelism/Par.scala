@@ -44,7 +44,7 @@ object Par {
     a(s)
 
   // EXERCISE 7.4
-  def asyncF[A, B](f: A => B): A => Par[B]
+  def asyncF[A, B](f: A => B): A => Par[B] =
     a => lazyUnit(f(a))
 }
 
