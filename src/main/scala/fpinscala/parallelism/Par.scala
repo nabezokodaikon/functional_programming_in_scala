@@ -35,13 +35,17 @@ object Par {
 
   // 式aをrunによる並列評価のためにラッピング。
   // 並列評価の対象としてマークする。
-  // def lazyUnit[A](a: => A): Par[A] =
-  // fork(unit(a))
+  def lazyUnit[A](a: => A): Par[A] =
+    fork(unit(a))
 
   // 与えられたParを完全に評価し、forkによって要求される並列計算を生成し、結果の値を取得。
   // 実際に計算を行うことで、Parから値を取得する。
   def run[A](s: ExecutorService)(a: Par[A]): Future[A] =
     a(s)
+
+  // EXERCISE 7.4
+  def asyncF[A, B](f: A => B): A => Par[B]
+    a => lazyUnit(f(a))
 }
 
 object Examples {
