@@ -4,6 +4,7 @@ import org.scalatest.FunSuite
 
 class ParSpec extends FunSuite {
 
+  /*
   test("List 7-1 sum") {
     import Par.sum
     assert(sum(IndexedSeq[Int]()) == 0)
@@ -31,4 +32,5 @@ class ParSpec extends FunSuite {
     assert(sum_4(IndexedSeq(1)) == Par(1))
     assert(sum_4(IndexedSeq(1, 2, 3, 4)) == Par(10))
   }
+  */
 }
