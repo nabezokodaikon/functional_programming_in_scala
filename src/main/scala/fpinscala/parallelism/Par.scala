@@ -20,8 +20,10 @@ object Par {
       sum(l) + sum(r)
     }
 
-  def unit[A](a: => A): Par[A] =
+  def unit[A](a: A): Par[A] =
     Par[A](a)
+
+  def lazyUnit[A](a: => A): Par[A] = fork(unit(a))
 
   def get[A](a: Par[A]): A =
     a.a
