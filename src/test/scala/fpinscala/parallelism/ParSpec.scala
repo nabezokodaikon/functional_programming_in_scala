@@ -28,4 +28,13 @@ class ParSpec extends FunSuite {
     val r = f.get
     assert(r == List(2, 4, 6))
   }
+
+  test("EXERCISE 7.6 parFilter") {
+    val es = Executors.newFixedThreadPool(2)
+    val l = List(1, 2, 3)
+    val pl = Par.parFilter(l)(a => a % 2 == 1)
+    val f = pl(es)
+    val r = f.get
+    assert(r == List(1, 3))
+  }
 }
