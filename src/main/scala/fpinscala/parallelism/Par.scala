@@ -26,6 +26,9 @@ object Par {
       UnitFuture(f(af.get, bf.get))
     }
 
+  def map[A, B](pa: Par[A])(f: A => B): Par[B] =
+    map2(pa, unit(()))((a, _) => f(a))
+
   // runによる並列評価の対象としてマーク。
   // この評価はrunによって強制されるまで実際には発生しない。
   def fork[A](a: => Par[A]): Par[A] =
@@ -48,7 +51,7 @@ object Par {
     a => lazyUnit(f(a))
 
   def sortPar(parList: Par[List[Int]]): Par[List[Int]] =
-    map2(parList, unit(()))((a, _) => a.sorted)
+    map(parList)(_.sorted)
 }
 
 object Examples {
