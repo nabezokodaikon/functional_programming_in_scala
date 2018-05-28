@@ -52,6 +52,14 @@ object Par {
 
   def sortPar(parList: Par[List[Int]]): Par[List[Int]] =
     map(parList)(_.sorted)
+
+  def sequence[A](l: List[Par[A]]): Par[List[A]] =
+    l.foldRight[Par[List[A]]](unit(List()))((h, t) => map2(h, t)(_ :: _))
+
+  def parMap[A, B](ps: List[A])(f: A => B): Par[List[B]] = fork {
+    val fbs: List[Par[B]] = ps.map(asyncF(f))
+    sequence(fbs)
+  }
 }
 
 object Examples {

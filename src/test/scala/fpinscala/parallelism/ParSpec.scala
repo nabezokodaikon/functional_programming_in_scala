@@ -19,4 +19,13 @@ class ParSpec extends FunSuite {
     val r = f.get
     assert(r == List(1, 2, 3, 4, 5, 6))
   }
+
+  test("EXERCISE 7.5 parMap via sequence") {
+    val es = Executors.newFixedThreadPool(2)
+    val l = List(1, 2, 3)
+    val pl = Par.parMap(l)(a => a * 2)
+    val f = pl(es)
+    val r = f.get
+    assert(r == List(2, 4, 6))
+  }
 }
