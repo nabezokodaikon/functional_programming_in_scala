@@ -1,5 +1,25 @@
 package fpinscala.parallelism
 
+/*
+ * java.util.concurrent.ExecutorserviceをScalaで表現
+ *
+class ExecutorService {
+  def submit[A](a: Callable[A]): Future[A]
+}
+
+trait Callable[A] {
+  def call: A
+}
+
+trait Future[A] {
+  def get: A
+  def get(timeout: Long, unit: TimeUnit): A
+  def cancel(evenIfRUnning: Boolean): Boolean
+  def isDone: Boolean
+  def isCancelled: Boolean
+}
+*/
+
 case class Par[A](a: A) {
   import Par._
 
