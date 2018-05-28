@@ -28,6 +28,9 @@ object Par {
   def get[A](a: Par[A]): A =
     a.a
 
+  def run[A](a: Par[A]): A =
+    a.a
+
   def map2[A, B, C](a: Par[A], b: Par[B])(f: (A, B) => C): Par[C] =
     a.flatMap(aa => b.map(bb => f(aa, bb)))
 
