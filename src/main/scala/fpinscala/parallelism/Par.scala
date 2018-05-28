@@ -29,6 +29,9 @@ object Par {
   def map2[A, B, C](a: Par[A], b: Par[B])(f: (A, B) => C): Par[C] =
     a.flatMap(aa => b.map(bb => f(aa, bb)))
 
+  def fork[A](a: => Par[A]): Par[A] =
+    a
+
   def sum_2(ints: IndexedSeq[Int]): Int =
     if (ints.size <= 1)
       ints.headOption getOrElse 0
@@ -47,6 +50,13 @@ object Par {
       Par.map2(sum_3(l), sum_3(r))(_ + _)
     }
 
+  def sum_4(ints: IndexedSeq[Int]): Par[Int] =
+    if (ints.length <= 1)
+      Par.unit(ints.headOption getOrElse 0)
+    else {
+      val (l, r) = ints.splitAt(ints.length / 2)
+      Par.map2(Par.fork(sum_4(l)), Par.fork(sum_4(r)))(_ + _)
+    }
 }
 
 object Examples {

@@ -24,4 +24,11 @@ class ParSpec extends FunSuite {
     val b = Par(2)
     assert(map2(a, b)((a, b) => a + b) == Par(3))
   }
+
+  test("sum_4") {
+    import Par.sum_4
+    assert(sum_4(IndexedSeq[Int]()) == Par(0))
+    assert(sum_4(IndexedSeq(1)) == Par(1))
+    assert(sum_4(IndexedSeq(1, 2, 3, 4)) == Par(10))
+  }
 }
