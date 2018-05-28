@@ -2,37 +2,6 @@ package fpinscala.parallelism
 
 import java.util.concurrent._
 
-/*
- * java.util.concurrent.ExecutorserviceをScalaで表現
- *
-class ExecutorService {
-  def submit[A](a: Callable[A]): Future[A]
-}
-
-trait Callable[A] {
-  def call: A
-}
-
-trait Future[A] {
-  def get: A
-  def get(timeout: Long, unit: TimeUnit): A
-  def cancel(evenIfRUnning: Boolean): Boolean
-  def isDone: Boolean
-  def isCancelled: Boolean
-}
-*/
-
-/*
-case class Par[A](a: A) {
-
-  def flatMap[B](f: A => Par[B]): Par[B] =
-    f(a)
-
-  def map[B](f: A => B): Par[B] =
-    flatMap(a => Par.unit(f(a)))
-}
-*/
-
 object Par {
 
   type Par[A] = ExecutorService => Future[A]
@@ -73,45 +42,6 @@ object Par {
   // 実際に計算を行うことで、Parから値を取得する。
   def run[A](s: ExecutorService)(a: Par[A]): Future[A] =
     a(s)
-
-  /*
-  def get[A](a: Par[A]): A =
-    a.a
-
-  def sum(ints: IndexedSeq[Int]): Int =
-    if (ints.size <= 1)
-      ints.headOption getOrElse 0
-    else {
-      val (l, r) = ints.splitAt(ints.length / 2)
-      sum(l) + sum(r)
-    }
-
-  def sum_2(ints: IndexedSeq[Int]): Int =
-    if (ints.size <= 1)
-      ints.headOption getOrElse 0
-    else {
-      val (l, r) = ints.splitAt(ints.length / 2)
-      val sumL: Par[Int] = Par.unit(sum_2(l))
-      val sumR: Par[Int] = Par.unit(sum_2(r))
-      Par.get(sumL) + Par.get(sumR)
-    }
-
-  def sum_3(ints: IndexedSeq[Int]): Par[Int] =
-    if (ints.size <= 1)
-      Par.unit(ints.headOption getOrElse 0)
-    else {
-      val (l, r) = ints.splitAt(ints.length / 2)
-      Par.map2(sum_3(l), sum_3(r))(_ + _)
-    }
-
-  def sum_4(ints: IndexedSeq[Int]): Par[Int] =
-    if (ints.length <= 1)
-      Par.unit(ints.headOption getOrElse 0)
-    else {
-      val (l, r) = ints.splitAt(ints.length / 2)
-      Par.map2(Par.fork(sum_4(l)), Par.fork(sum_4(r)))(_ + _)
-    }
-    */
 }
 
 object Examples {
