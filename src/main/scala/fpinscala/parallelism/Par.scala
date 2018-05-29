@@ -83,6 +83,12 @@ object Par {
       val i = run(es)(n).get
       run(es)(choices(i))
     }
+
+  def choiceMap[K, V](key: Par[K])(choices: Map[K, Par[V]]): Par[V] =
+    es => {
+      val k = run(es)(key).get
+      run(es)(choices(k))
+    }
 }
 
 object Examples {

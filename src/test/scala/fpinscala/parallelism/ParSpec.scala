@@ -71,4 +71,11 @@ class ParSpec extends FunSuite {
     assert(Par.equal(es)(Par.choiceN(Par.unit(1))(l), Par.unit(List(3, 4, 5))) == true)
     assert(Par.equal(es)(Par.choiceN(Par.unit(2))(l), Par.unit(List(2, 4, 6))) == true)
   }
+
+  test("EXERCISE 7.12 choiceMap") {
+    val es = Executors.newFixedThreadPool(2)
+    val key = Par.unit("a")
+    val map = Map("a" -> Par.unit(1))
+    assert(Par.equal(es)(Par.choiceMap(key)(map), Par.unit(1)) == true)
+  }
 }
