@@ -78,4 +78,38 @@ class ParSpec extends FunSuite {
     val map = Map("a" -> Par.unit(1))
     assert(Par.equal(es)(Par.choiceMap(key)(map), Par.unit(1)) == true)
   }
+
+  test("EXERCISE 7.13 choiceViaChooser") {
+    val es = Executors.newFixedThreadPool(2)
+
+    val tb = Par.unit(true)
+    val tl = List(1, 2, 3)
+    val tpl = Par.parFilter(tl)(a => a % 2 == 1)
+
+    val fb = Par.unit(false)
+    val fl = List(1, 2, 3)
+    val fpl = Par.parMap(fl)(a => a * 2)
+
+    assert(Par.equal(es)(Par.choiceViaChooser(tb)(tpl, fpl), Par.unit(List(1, 3))) == true)
+    assert(Par.equal(es)(Par.choiceViaChooser(fb)(tpl, fpl), Par.unit(List(2, 4, 6))) == true)
+  }
+
+  test("EXERCISE 7.13 choiceNViaChooser") {
+    val es = Executors.newFixedThreadPool(2)
+
+    val al = List(1, 2, 3)
+    val apl = Par.parFilter(al)(a => a % 2 == 1)
+
+    val bl = List(1, 2, 3)
+    val bpl = Par.parMap(bl)(a => a + 2)
+
+    val cl = List(1, 2, 3)
+    val cpl = Par.parMap(cl)(a => a * 2)
+
+    val l = List(apl, bpl, cpl)
+
+    assert(Par.equal(es)(Par.choiceNViaChooser(Par.unit(0))(l), Par.unit(List(1, 3))) == true)
+    assert(Par.equal(es)(Par.choiceNViaChooser(Par.unit(1))(l), Par.unit(List(3, 4, 5))) == true)
+    assert(Par.equal(es)(Par.choiceNViaChooser(Par.unit(2))(l), Par.unit(List(2, 4, 6))) == true)
+  }
 }

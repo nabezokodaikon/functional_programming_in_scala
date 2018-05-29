@@ -89,6 +89,18 @@ object Par {
       val k = run(es)(key).get
       run(es)(choices(k))
     }
+
+  def chooser[A, B](pa: Par[A])(choices: A => Par[B]): Par[B] =
+    es => {
+      val k = run(es)(pa).get
+      run(es)(choices(k))
+    }
+
+  def choiceViaChooser[A](b: Par[Boolean])(t: Par[A], f: Par[A]): Par[A] =
+    chooser(b)(b => if (b) t else f)
+
+  def choiceNViaChooser[A](p: Par[Int])(choices: List[Par[A]]): Par[A] =
+    chooser(p)(i => choices(i))
 }
 
 object Examples {
