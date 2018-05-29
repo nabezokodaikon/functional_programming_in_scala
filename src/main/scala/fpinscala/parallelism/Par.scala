@@ -72,6 +72,11 @@ object Par {
 
   def equal[A](e: ExecutorService)(p: Par[A], p2: Par[A]): Boolean =
     p(e).get == p2(e).get
+
+  def choice[A](cond: Par[Boolean])(t: Par[A], f: Par[A]): Par[A] =
+    es =>
+      if (run(es)(cond).get) t(es)
+      else f(es)
 }
 
 object Examples {

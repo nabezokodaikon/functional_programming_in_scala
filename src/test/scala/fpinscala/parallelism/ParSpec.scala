@@ -37,4 +37,19 @@ class ParSpec extends FunSuite {
     val r = f.get
     assert(r == List(1, 3))
   }
+
+  test("List 7-15 choice") {
+    val es = Executors.newFixedThreadPool(2)
+
+    val tb = Par.unit(true)
+    val tl = List(1, 2, 3)
+    val tpl = Par.parFilter(tl)(a => a % 2 == 1)
+
+    val fb = Par.unit(false)
+    val fl = List(1, 2, 3)
+    val fpl = Par.parMap(fl)(a => a * 2)
+
+    assert(Par.equal(es)(Par.choice(tb)(tpl, fpl), Par.unit(List(1, 3))) == true)
+    assert(Par.equal(es)(Par.choice(fb)(tpl, fpl), Par.unit(List(2, 4, 6))) == true)
+  }
 }
