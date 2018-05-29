@@ -112,4 +112,18 @@ class ParSpec extends FunSuite {
     assert(Par.equal(es)(Par.choiceNViaChooser(Par.unit(1))(l), Par.unit(List(3, 4, 5))) == true)
     assert(Par.equal(es)(Par.choiceNViaChooser(Par.unit(2))(l), Par.unit(List(2, 4, 6))) == true)
   }
+
+  test("EXERCISE 7.14 flatMapViaJoin") {
+    val es = Executors.newFixedThreadPool(2)
+    val pa = Par.unit(1)
+    val pb = Par.flatMapViaJoin(pa)(a => Par.unit(a.toString))
+    assert(Par.equal(es)(pb, Par.unit("1")) == true)
+  }
+
+  test("EXERCISE 7.14 joinViaFlatMap") {
+    val es = Executors.newFixedThreadPool(2)
+    val a = Par.unit(1)
+    val b = Par.unit(a)
+    assert(Par.equal(es)(Par.joinViaFlatMap(b), a) == true)
+  }
 }

@@ -90,6 +90,7 @@ object Par {
       run(es)(choices(k))
     }
 
+  // flatMap
   def chooser[A, B](pa: Par[A])(choices: A => Par[B]): Par[B] =
     es => {
       val k = run(es)(pa).get
@@ -101,6 +102,16 @@ object Par {
 
   def choiceNViaChooser[A](p: Par[Int])(choices: List[Par[A]]): Par[A] =
     chooser(p)(i => choices(i))
+
+  def join[A](a: Par[Par[A]]): Par[A] =
+    es => run(es)(run(es)(a).get())
+
+  def flatMapViaJoin[A, B](p: Par[A])(f: A => Par[B]): Par[B] =
+    join(map(p)(f))
+
+  def joinViaFlatMap[A](a: Par[Par[A]]): Par[A] =
+    chooser(a)(pa => pa)
+
 }
 
 object Examples {
