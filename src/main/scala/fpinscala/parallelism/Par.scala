@@ -50,6 +50,9 @@ object Par {
   def asyncF[A, B](f: A => B): A => Par[B] =
     a => lazyUnit(f(a))
 
+  def delay[A](fa: => Par[A]): Par[A] =
+    es => fa(es)
+
   def sortPar(parList: Par[List[Int]]): Par[List[Int]] =
     map(parList)(_.sorted)
 
