@@ -2,6 +2,7 @@ package fpinscala.testing
 
 import org.scalatest.FunSuite
 import fpinscala.state.RNG.SimpleRNG
+import fpinscala.state.State
 
 class GenSpec extends FunSuite {
 
@@ -21,5 +22,12 @@ class GenSpec extends FunSuite {
     val rng = SimpleRNG(1)
     val a = Gen.boolean.sample.run(rng)._1
     assert(a == true || a == false)
+  }
+
+  test("EXERCISE 8.5 listOfN") {
+    val rng = SimpleRNG(1)
+    val g = Gen.unit(3)
+    val a = Gen.listOfN(5, g)
+    assert(a.sample.run(rng)._1 == List(3, 3, 3, 3, 3))
   }
 }
