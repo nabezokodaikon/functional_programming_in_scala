@@ -38,4 +38,17 @@ object ScalaCheck extends App {
     }
     c.check
   }
+
+  {
+    println("EXERCISE 8.2")
+    val al = Gen.listOf(Gen.choose(0, 10))
+    val a = forAll(al) { ns =>
+      ns match {
+        case Nil => try { ns.max; false } catch { case _: UnsupportedOperationException => true }
+        case (h :: Nil) => ns.max == h
+        case _ => ns.exists(_ == ns.max)
+      }
+    }
+    a.check
+  }
 }
