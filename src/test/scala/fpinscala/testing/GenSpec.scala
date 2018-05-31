@@ -45,4 +45,17 @@ class GenSpec extends FunSuite {
     val l = g.listOfN(s)
     assert(l.sample.run(rng)._1 == List(3, 3, 3, 3, 3))
   }
+
+  test("EXERCISE 8.7 union") {
+    val rng1 = SimpleRNG(1)
+    val rng2 = SimpleRNG(2)
+    val g1 = Gen.unit(3)
+    val g2 = Gen.unit(5)
+
+    assert(Gen.union(g1, g2).sample.run(rng1)._1 == g1.sample.run(rng1)._1)
+    assert(Gen.union(g1, g2).sample.run(rng2)._1 != g1.sample.run(rng1)._1)
+
+    assert(Gen.union(g1, g2).sample.run(rng2)._1 == g2.sample.run(rng2)._1)
+    assert(Gen.union(g1, g2).sample.run(rng1)._1 != g2.sample.run(rng1)._1)
+  }
 }
