@@ -22,7 +22,13 @@ object Prop {
 
 }
 
-case class Gen[+A](sample: State[RNG, A])
+case class Gen[+A](sample: State[RNG, A]) {
+  import Gen._
+
+  def flatMap[B](f: A => Gen[B]): Gen[B] =
+    Gen(sample.flatMap(a => f(a).sample))
+
+}
 
 object Gen {
 
@@ -38,6 +44,7 @@ object Gen {
 
   def listOfN[A](n: Int, g: Gen[A]): Gen[List[A]] =
     Gen(State.sequence(List.fill(n)(g.sample)))
+
 }
 
 // object Gen {
