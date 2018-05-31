@@ -10,4 +10,10 @@ class GenSpec extends FunSuite {
     val a = Gen.choose(2, 5).sample.run(rng)._1
     assert(2 <= a && a <= 5)
   }
+
+  test("EXERCISE 8.5 unit") {
+    val rng = SimpleRNG(1)
+    val a = Gen.unit(2).sample.run(rng)._1
+    assert(a == 2)
+  }
 }

@@ -29,6 +29,9 @@ object Gen {
   // EXERCISE 8.4
   def choose(start: Int, stopExclusive: Int): Gen[Int] =
     Gen(State(RNG.nonNegariveInt).map(n => start + n % (stopExclusive - start)))
+
+  def unit[A](a: => A): Gen[A] =
+    Gen(State.unit(a))
 }
 
 // object Gen {
