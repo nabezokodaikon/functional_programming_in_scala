@@ -1,9 +1,8 @@
 package fpinscala.testing
 
-import org.scalacheck.Gen
-import org.scalacheck.Prop.forAll
-
 object ScalaCheck extends App {
+  import org.scalacheck.Gen
+  import org.scalacheck.Prop.forAll
 
   {
     println("List 8-1")
