@@ -58,4 +58,24 @@ class GenSpec extends FunSuite {
     assert(Gen.union(g1, g2).sample.run(rng2)._1 == g2.sample.run(rng2)._1)
     assert(Gen.union(g1, g2).sample.run(rng1)._1 != g2.sample.run(rng1)._1)
   }
+
+  test("EXERCISE 8.8 weighted") {
+    val rng = SimpleRNG(1)
+
+    {
+      val g1 = (Gen.unit(2), 0.1)
+      val g2 = (Gen.unit(3), 0.5)
+
+      assert(Gen.weighted(g1, g2).sample.run(rng)._1 == g1._1.sample.run(rng)._1)
+      assert(Gen.weighted(g1, g2).sample.run(rng)._1 != g2._1.sample.run(rng)._1)
+    }
+
+    {
+      val g1 = (Gen.unit(2), 0.0)
+      val g2 = (Gen.unit(3), 0.5)
+
+      assert(Gen.weighted(g1, g2).sample.run(rng)._1 != g1._1.sample.run(rng)._1)
+      assert(Gen.weighted(g1, g2).sample.run(rng)._1 == g2._1.sample.run(rng)._1)
+    }
+  }
 }
