@@ -37,4 +37,12 @@ class GenSpec extends FunSuite {
     val b = g.flatMap(a => Gen.unit(a.toString))
     assert(b.sample.run(rng)._1 == "3")
   }
+
+  test("EXERCISE 8.6 listOfN") {
+    val rng = SimpleRNG(1)
+    val g = Gen.unit(3)
+    val s = Gen.unit(5)
+    val l = g.listOfN(s)
+    assert(l.sample.run(rng)._1 == List(3, 3, 3, 3, 3))
+  }
 }
