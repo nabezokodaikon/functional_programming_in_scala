@@ -51,3 +51,13 @@ object ScalaCheck extends App {
     a.check
   }
 }
+
+sealed trait Prop {
+
+  def check: Boolean
+
+  // EXERCISE 8.3
+  def &&(p: Prop): Prop = new Prop {
+    def check = Prop.this.check && p.check
+  }
+}
