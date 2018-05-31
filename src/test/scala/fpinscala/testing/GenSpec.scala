@@ -16,4 +16,10 @@ class GenSpec extends FunSuite {
     val a = Gen.unit(2).sample.run(rng)._1
     assert(a == 2)
   }
+
+  test("EXERCISE 8.5 boolean") {
+    val rng = SimpleRNG(1)
+    val a = Gen.boolean.sample.run(rng)._1
+    assert(a == true || a == false)
+  }
 }
