@@ -24,6 +24,16 @@ object Main extends App {
     val s2 = Gen.unit(Some(5)).map { s => s match { case Some(a) => a } }
     println(s2.sample.run(rng))
   }
+
+  {
+    println("Chapter 8.4.1")
+    val smallInt = Gen.choose(-10, 10)
+    val maxProp = forAll(Gen.listOf(smallInt)) { ns =>
+      val max = ns.max
+      !ns.exists(_ > max)
+    }
+    Prop.run(maxProp)
+  }
 }
 
 case class Prop(run: (MaxSize, TestCases, RNG) => Result) {
