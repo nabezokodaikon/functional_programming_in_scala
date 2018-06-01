@@ -164,6 +164,9 @@ object Gen {
       if (d < g1Threshold) g1._1.sample else g2._1.sample))
   }
 
+  def listOf[A](g: Gen[A]): SGen[List[A]] =
+    SGen(n => g.listOfN(n))
+
   def pair(start: Int, stopExclusive: Int): Gen[(Int, Int)] =
     for {
       a <- choose(start, stopExclusive)
