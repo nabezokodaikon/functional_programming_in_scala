@@ -93,6 +93,12 @@ case class Gen[+A](sample: State[RNG, A]) {
   def map[B](f: A => B): Gen[B] =
     flatMap(a => Gen.unit(f(a)))
 
+  def map2[B, C](b: Gen[B])(f: (A, B) => C): Gen[C] =
+    for {
+      aa <- this
+      bb <- b
+    } yield f(aa, bb)
+
   def listOfN(size: Int): Gen[List[A]] =
     Gen.listOfN(size, this)
 
