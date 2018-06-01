@@ -2,6 +2,7 @@ package fpinscala.testing
 
 import fpinscala.laziness.Stream
 import fpinscala.state.{ RNG, State }
+import fpinscala.state.RNG.SimpleRNG
 import Prop._
 
 // sealed trait Prop {
@@ -16,6 +17,18 @@ import Prop._
 // def check = Prop.this.check && p.check
 // }
 // }
+
+object Main extends App {
+
+  val rng = SimpleRNG(1)
+
+  {
+    println("pair")
+    val s = Gen.pair(1, 10)
+    val a = s.sample.run(rng)
+    println(a)
+  }
+}
 
 case class Prop(run: (MaxSize, TestCases, RNG) => Result) {
 
@@ -154,6 +167,12 @@ object Gen {
     Gen(State(RNG.double).flatMap(d =>
       if (d < g1Threshold) g1._1.sample else g2._1.sample))
   }
+
+  def pair(start: Int, stopExclusive: Int): Gen[(Int, Int)] =
+    for {
+      a <- choose(start, stopExclusive)
+      b <- choose(start, stopExclusive)
+    } yield (a, b)
 }
 
 case class SGen[+A](forSize: Int => Gen[A]) {
