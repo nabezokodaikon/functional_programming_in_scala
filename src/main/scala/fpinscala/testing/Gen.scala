@@ -125,11 +125,3 @@ object Gen {
       if (d < g1Threshold) g1._1.sample else g2._1.sample))
   }
 }
-
-// object Gen {
-
-// def listOf[A](a: Gen[A]): Gen[List[A]]
-// def listOf[A](n: Int, a: Gen[A]): Gen[List[A]]
-
-// def forAll[A](a: Gen[A])(f: A => Boolean): Prop
-// }
