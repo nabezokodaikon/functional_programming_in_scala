@@ -125,3 +125,5 @@ object Gen {
       if (d < g1Threshold) g1._1.sample else g2._1.sample))
   }
 }
+
+case class SGen[+A](forSize: Int => Gen[A])
