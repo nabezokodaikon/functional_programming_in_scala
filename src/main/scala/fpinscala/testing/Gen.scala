@@ -83,6 +83,25 @@ object Prop {
       generated an exception: ${e.getMessage}
       stack trace:
       ${e.getStackTrace.mkString("\n")}"""
+
+  def forAll[A](g: SGen[A])(f: A => Boolean): Prop =
+    forAll(g.forSize)(f)
+
+  def forAll[A](g: Int => Gen[A])(f: A => Boolean): Prop =
+    Prop { (max, n, rng) =>
+      // サイズごとに、この数のランダムケースを生成。
+      val casesPerSize = (n + (max - 1)) / max
+
+      // サイズごとにプロパティを1つ作成するが、プロパティの数がn個を超えないようにする。
+      val props: Stream[Prop] = Stream.from(0).take((n.min(max)) + 1).map(i => forAll(g(i))(f))
+
+      // すべてを1つのプロパティにまとめる。
+      val prop: Prop = props.map(p => Prop { (max, _, rng) =>
+        p.run(max, casesPerSize, rng)
+      }).toList.reduce(_ && _)
+
+      prop.run(max, n, rng)
+    }
 }
 
 case class Gen[+A](sample: State[RNG, A]) {
