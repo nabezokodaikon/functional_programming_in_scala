@@ -15,6 +15,15 @@ object Main extends App {
     val a = s.sample.run(rng)
     println(a)
   }
+
+  {
+    println("With Option")
+    val s1 = Gen.unit(5).map(a => Some(a))
+    println(s1.sample.run(rng))
+
+    val s2 = Gen.unit(Some(5)).map { s => s match { case Some(a) => a } }
+    println(s2.sample.run(rng))
+  }
 }
 
 case class Prop(run: (MaxSize, TestCases, RNG) => Result) {
