@@ -104,4 +104,30 @@ class GenSpec extends FunSuite {
     val gb = Gen.unit(2)
     assert((ga ** gb).sample.run(rng)._1 == (1, 2))
   }
+
+  test("EXERCISE 8.11 apply") {
+    val rng = SimpleRNG(42)
+    val g = Gen.unit(1)
+    val s = SGen((a: Int) => Gen.unit(a))
+    assert(s.apply(1).sample.run(rng)._1 == g.sample.run(rng)._1)
+  }
+
+  test("EXERCISE 8.11 map") {
+    val rng = SimpleRNG(42)
+    val s1 = Gen.unit(5).unsized
+    assert(s1.map(_.toString).apply(1).sample.run(rng)._1 == "5")
+  }
+
+  test("EXERCISE 8.11 flatMap") {
+    val rng = SimpleRNG(42)
+    val s = Gen.unit(5).unsized
+    assert(s.flatMap(a => Gen.unit(a.toString).unsized).apply(1).sample.run(rng)._1 == "5")
+  }
+
+  test("EXERCISE 8.11 `**`") {
+    val rng = SimpleRNG(42)
+    val sa = Gen.unit(5).unsized
+    val sb = Gen.unit(6).unsized
+    assert((sa ** sb).apply(1).sample.run(rng)._1 == (5, 6))
+  }
 }
