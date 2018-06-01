@@ -4,17 +4,19 @@ import fpinscala.laziness.Stream
 import fpinscala.state.{ RNG, State }
 import Prop._
 
-sealed trait Prop {
-  import Prop.{ FailedCase, SuccessCount }
+// sealed trait Prop {
+// import Prop.{ FailedCase, SuccessCount }
 
-  // def check: Boolean
+// def check: Boolean
 
-  def check: Either[(FailedCase, SuccessCount), SuccessCount]
+// def check: Either[(FailedCase, SuccessCount), SuccessCount]
 
-  // EXERCISE 8.3
-  // def &&(p: Prop): Prop = new Prop {
-  // def check = Prop.this.check && p.check
-  // }
+// EXERCISE 8.3
+// def &&(p: Prop): Prop = new Prop {
+// def check = Prop.this.check && p.check
+// }
+// }
+
 case class Prop(run: (MaxSize, TestCases, RNG) => Result) {
 
   // EXERCISE 8.9
