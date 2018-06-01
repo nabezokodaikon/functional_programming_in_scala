@@ -84,4 +84,10 @@ class GenSpec extends FunSuite {
     val sg = g.unsized
     assert(sg.forSize(1) == g)
   }
+
+  test("map") {
+    val rng = SimpleRNG(42)
+    val g = Gen.unit(1)
+    assert(g.map(_.toString).sample.run(rng)._1 == "1")
+  }
 }
