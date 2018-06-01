@@ -155,4 +155,7 @@ case class SGen[+A](forSize: Int => Gen[A]) {
 
   def **[B](s2: SGen[B]): SGen[(A, B)] =
     SGen(n => apply(n) ** s2(n))
+
+  def listOf[A](g: Gen[A]): SGen[List[A]] =
+    SGen(n => g.listOfN(n))
 }

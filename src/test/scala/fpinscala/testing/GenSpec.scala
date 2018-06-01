@@ -130,4 +130,12 @@ class GenSpec extends FunSuite {
     val sb = Gen.unit(6).unsized
     assert((sa ** sb).apply(1).sample.run(rng)._1 == (5, 6))
   }
+
+  test("EXERCISE 8.12 listOf") {
+    val rng = SimpleRNG(1)
+    val g = Gen.unit(3)
+    val s = Gen.unit(1).unsized
+    val l = s.listOf(g)
+    assert(l.forSize(5).sample.run(rng)._1 == List(3, 3, 3, 3, 3))
+  }
 }
