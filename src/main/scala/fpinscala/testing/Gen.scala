@@ -5,19 +5,6 @@ import fpinscala.state.{ RNG, State }
 import fpinscala.state.RNG.SimpleRNG
 import Prop._
 
-// sealed trait Prop {
-// import Prop.{ FailedCase, SuccessCount }
-
-// def check: Boolean
-
-// def check: Either[(FailedCase, SuccessCount), SuccessCount]
-
-// EXERCISE 8.3
-// def &&(p: Prop): Prop = new Prop {
-// def check = Prop.this.check && p.check
-// }
-// }
-
 object Main extends App {
 
   val rng = SimpleRNG(1)
