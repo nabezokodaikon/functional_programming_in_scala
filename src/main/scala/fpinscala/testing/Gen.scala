@@ -16,10 +16,19 @@ sealed trait Prop {
 }
 
 object Prop {
-
-  type FailedCase = String
   type SuccessCount = Int
+  type FailedCase = String
+  sealed trait Result {
+    def isFalsified: Boolean
+  }
 
+  case object Passed extends Result {
+    def isFalsified = false
+  }
+
+  case class Falsified(failure: FailedCase, sucesses: SuccessCount) extends Result {
+    def isFalsified = true
+  }
 }
 
 case class Gen[+A](sample: State[RNG, A]) {
