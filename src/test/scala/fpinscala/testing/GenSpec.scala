@@ -97,4 +97,11 @@ class GenSpec extends FunSuite {
     val gb = Gen.unit(2)
     assert(ga.map2(gb)((a, b) => a + b).sample.run(rng)._1 == 3)
   }
+
+  test("`**` function") {
+    val rng = SimpleRNG(42)
+    val ga = Gen.unit(1)
+    val gb = Gen.unit(2)
+    assert((ga ** gb).sample.run(rng)._1 == (1, 2))
+  }
 }
