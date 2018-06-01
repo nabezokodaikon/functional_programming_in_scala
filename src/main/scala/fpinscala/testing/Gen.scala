@@ -1,6 +1,8 @@
 package fpinscala.testing
 
+import fpinscala.laziness.Stream
 import fpinscala.state.{ RNG, State }
+import Prop._
 
 sealed trait Prop {
   import Prop.{ FailedCase, SuccessCount }
@@ -17,7 +19,10 @@ sealed trait Prop {
 
 object Prop {
   type SuccessCount = Int
+  type TestCases = Int
+  type MaxSize = Int
   type FailedCase = String
+
   sealed trait Result {
     def isFalsified: Boolean
   }
@@ -29,6 +34,27 @@ object Prop {
   case class Falsified(failure: FailedCase, sucesses: SuccessCount) extends Result {
     def isFalsified = true
   }
+
+  def forAll[A](as: Gen[A])(f: A => Boolean): Prop = Prop {
+    (max, n, rng) =>
+      randomStream(as)(rng).zip(Stream.from(0)).take(n).map {
+        case (a, i) => try {
+          if (f(a)) Passed else Falsified(a.toString, i)
+        } catch {
+          case e: Exception => Falsified(buildMsg(a, e), i)
+        }
+      }.find(_.isFalsified).getOrElse(Passed)
+  }
+
+  // ジェネレータを繰り返しサンプリングすることにより、A値の無限ストリームを生成
+  def randomStream[A](g: Gen[A])(rng: RNG): Stream[A] =
+    Stream.unfold(rng)(rng => Some(g.sample.run(rng)))
+
+  def buildMsg[A](s: A, e: Exception): String =
+    s"""test case: ${s}
+      generated an exception: ${e.getMessage}
+      stack trace:
+      ${e.getStackTrace.mkString("\n")}"""
 }
 
 case class Gen[+A](sample: State[RNG, A]) {
