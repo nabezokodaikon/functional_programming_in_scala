@@ -213,6 +213,13 @@ class StreamSpec extends FunSuite {
     assert(Stream("a", "b", "c").zipWith(Stream("d", "e", "f"))(f2).toList == List("ad", "be", "cf"))
   }
 
+  test("zip") {
+    import Stream.empty
+    assert(Stream(1, 2, 3).zip(empty).toList == List[(Int, Int)]())
+    assert(Stream(1, 2, 3).zip(Stream(4, 5)).toList == List((1, 4), (2, 5)))
+    assert(Stream(1, 2, 3).zip(Stream(4, 5, 6)).toList == List((1, 4), (2, 5), (3, 6)))
+  }
+
   test("EXERCISE 5.13 zipAll") {
     import Stream.empty
     def f = (a: Option[Int], b: Option[Int]) =>
