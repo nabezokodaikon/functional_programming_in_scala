@@ -111,6 +111,20 @@ object Prop {
 
       prop.run(max, n, rng)
     }
+
+  def run(
+    p: Prop,
+    maxSize: Int = 100,
+    testCases: Int = 100,
+    rng: RNG = SimpleRNG(System.currentTimeMillis)
+  ): Unit = {
+    p.run(maxSize, testCases, rng) match {
+      case Falsified(msg, n) =>
+        println(s"! Falsified after ${n} passed tests:\n ${msg}")
+      case Passed =>
+        println(s"+ OK, passed ${testCases} test.")
+    }
+  }
 }
 
 case class Gen[+A](sample: State[RNG, A]) {
