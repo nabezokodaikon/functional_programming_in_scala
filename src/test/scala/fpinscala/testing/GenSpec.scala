@@ -78,4 +78,10 @@ class GenSpec extends FunSuite {
       assert(Gen.weighted(g1, g2).sample.run(rng)._1 == g2._1.sample.run(rng)._1)
     }
   }
+
+  test("EXERCISE 8.10 unsized") {
+    val g = Gen.unit(1)
+    val sg = g.unsized
+    assert(sg.forSize(1) == g)
+  }
 }

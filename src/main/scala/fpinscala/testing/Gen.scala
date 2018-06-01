@@ -98,6 +98,8 @@ case class Gen[+A](sample: State[RNG, A]) {
 
   def listOfN(size: Gen[Int]): Gen[List[A]] =
     size.flatMap(n => this.listOfN(n))
+
+  def unsized: SGen[A] = SGen(_ => this)
 }
 
 object Gen {
