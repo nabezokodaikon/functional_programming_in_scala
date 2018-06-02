@@ -224,6 +224,7 @@ case class Gen[+A](sample: State[RNG, A]) {
 
   def unsized: SGen[A] = SGen(_ => this)
 
+  // List 8-11
   def **[B](g: Gen[B]): Gen[(A, B)] =
     (this map2 g)((_, _))
 }
