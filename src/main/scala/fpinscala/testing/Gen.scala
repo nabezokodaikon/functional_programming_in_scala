@@ -61,7 +61,7 @@ case class Prop(run: (MaxSize, TestCases, RNG) => Result) {
   def &&(p: Prop): Prop = Prop {
     (max, n, rng) =>
       run(max, n, rng) match {
-        case Passed => p.run(max, n, rng)
+        case Passed | Proved => p.run(max, n, rng)
         case x => x
       }
   }
@@ -99,6 +99,10 @@ object Prop {
 
   case class Falsified(failure: FailedCase, sucesses: SuccessCount) extends Result {
     def isFalsified = true
+  }
+
+  case object Proved extends Result {
+    def isFalsified = false
   }
 
   def forAll[A](as: Gen[A])(f: A => Boolean): Prop = Prop {
@@ -152,8 +156,11 @@ object Prop {
         println(s"! Falsified after ${n} passed tests:\n ${msg}")
       case Passed =>
         println(s"+ OK, passed ${testCases} test.")
+      case Proved =>
+        println(s"+ OK, proved property.")
     }
   }
+
   val ES: ExecutorService = Executors.newCachedThreadPool
   val p1 = Prop.forAll(Gen.unit(Par.unit(1)))(i =>
     Par.map(i)(_ + 1)(ES).get == Par.unit(2)(ES).get)
