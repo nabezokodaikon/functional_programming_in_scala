@@ -289,10 +289,14 @@ object Gen {
     def unapply[A, B](p: (A, B)) = Some(p)
   }
 
-  // EXERCISE 8.16 
+  // EXERCISE 8.16
   val pint2: Gen[Par[Int]] = Gen.choose(-100, 100).listOfN(Gen.choose(0, 20)).map(l =>
     l.foldLeft(Par.unit(0))((p, i) =>
       Par.fork { Par.map2(p, Par.unit(i))(_ + _) }))
+
+  // List 8-16
+  def genStringIntFn(g: Gen[Int]): Gen[String => Int] =
+    g map (i => (s => i))
 }
 
 case class SGen[+A](forSize: Int => Gen[A]) {
