@@ -175,10 +175,16 @@ object Prop {
     if (p) Passed else Falsified("()", 0)
   }
 
-  val p2 = Prop.check {
-    val p = Par.map(Par.unit(1))(_ + 1)
-    val p2 = Par.unit(2)
-    p(ES).get == p2(ES).get
+  // val p2 = Prop.check {
+  // val p = Par.map(Par.unit(1))(_ + 1)
+  // val p2 = Par.unit(2)
+  // p(ES).get == p2(ES).get
+  // }
+  val p2 = checkPar {
+    equal(
+      Par.map(Par.unit(1))(_ + 1),
+      Par.unit(2)
+    )
   }
 
   // List 8-9
@@ -201,6 +207,13 @@ object Prop {
   // List 8-12
   def forAllPar[A](g: Gen[A])(f: A => Par[Boolean]): Prop =
     forAll(S ** g) { case (s, a) => f(a)(s).get }
+
+  def checkPar(p: Par[Boolean]): Prop =
+    forAllPar(Gen.unit(()))(_ => p)
+
+  // List 8-15
+  val pint = Gen.choose(0, 10) map (Par.unit(_))
+  val p4 = forAllPar(pint)(n => equal(Par.map(n)(y => y), n))
 }
 
 case class Gen[+A](sample: State[RNG, A]) {
