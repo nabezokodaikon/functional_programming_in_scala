@@ -3,7 +3,8 @@ package fpinscala.testing
 import fpinscala.laziness.Stream
 import fpinscala.state.{ RNG, State }
 import fpinscala.state.RNG.SimpleRNG
-import fpinscala.parallelism.Par
+import fpinscala.parallelism._
+import fpinscala.parallelism.Par.Par
 import Prop._
 import java.util.concurrent.{ Executors, ExecutorService }
 
@@ -172,6 +173,22 @@ object Prop {
 
   def check(p: => Boolean): Prop = Prop { (_, _, _) =>
     if (p) Passed else Falsified("()", 0)
+  }
+
+  val p2 = Prop.check {
+    val p = Par.map(Par.unit(1))(_ + 1)
+    val p2 = Par.unit(2)
+    p(ES).get == p2(ES).get
+  }
+
+  def equal[A](p: Par[A], p2: Par[A]): Par[Boolean] =
+    Par.map2(p, p2)(_ == _)
+
+  val p3 = check {
+    equal(
+      Par.map(Par.unit(1))(_ + 1),
+      Par.unit(2)
+    )(ES).get
   }
 }
 
