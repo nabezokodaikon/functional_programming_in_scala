@@ -181,6 +181,7 @@ object Prop {
     p(ES).get == p2(ES).get
   }
 
+  // List 8-9
   def equal[A](p: Par[A], p2: Par[A]): Par[Boolean] =
     Par.map2(p, p2)(_ == _)
 
