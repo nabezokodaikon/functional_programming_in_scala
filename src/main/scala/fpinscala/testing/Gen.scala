@@ -3,7 +3,9 @@ package fpinscala.testing
 import fpinscala.laziness.Stream
 import fpinscala.state.{ RNG, State }
 import fpinscala.state.RNG.SimpleRNG
+import fpinscala.parallelism.Par
 import Prop._
+import java.util.concurrent.{ Executors, ExecutorService }
 
 object Main {
 
@@ -151,6 +153,18 @@ object Prop {
       case Passed =>
         println(s"+ OK, passed ${testCases} test.")
     }
+  }
+  val ES: ExecutorService = Executors.newCachedThreadPool
+  val p1 = Prop.forAll(Gen.unit(Par.unit(1)))(i =>
+    Par.map(i)(_ + 1)(ES).get == Par.unit(2)(ES).get)
+
+  // def check(p: => Boolean): Prop = {
+  // lazy val result = p
+  // forAll(Gen.unit(()))(_ => result)
+  // }
+
+  def check(p: => Boolean): Prop = Prop { (_, _, _) =>
+    if (p) Passed else Falsified("()", 0)
   }
 }
 
