@@ -215,13 +215,8 @@ object Prop {
   val pint = Gen.choose(0, 10) map (Par.unit(_))
   val p4 = forAllPar(pint)(n => equal(Par.map(n)(y => y), n))
 
-  // EXERCISE 8.16
-  val pint2: Gen[Par[Int]] = Gen.choose(-100, 100).listOfN(Gen.choose(0, 20)).map(l =>
-    l.foldLeft(Par.unit(0))((p, i) =>
-      Par.fork { Par.map2(p, Par.unit(i))(_ + _) }))
-
   // EXERCISE 8.17
-  val forkProp = Prop.forAllPar(pint2)(i => equal(Par.fork(i), i)) tag "fork"
+  val forkProp = Prop.forAllPar(Gen.pint2)(i => equal(Par.fork(i), i)) tag "fork"
 }
 
 case class Gen[+A](sample: State[RNG, A]) {
@@ -293,6 +288,11 @@ object Gen {
   object ** {
     def unapply[A, B](p: (A, B)) = Some(p)
   }
+
+  // EXERCISE 8.16 
+  val pint2: Gen[Par[Int]] = Gen.choose(-100, 100).listOfN(Gen.choose(0, 20)).map(l =>
+    l.foldLeft(Par.unit(0))((p, i) =>
+      Par.fork { Par.map2(p, Par.unit(i))(_ + _) }))
 }
 
 case class SGen[+A](forSize: Int => Gen[A]) {
