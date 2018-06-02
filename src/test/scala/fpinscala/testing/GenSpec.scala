@@ -6,9 +6,9 @@ import fpinscala.state.State
 
 class GenSpec extends FunSuite {
 
-  test("testRunner") {
-    Main.testRunner()
-  }
+  // test("testRunner") {
+  // Main.testRunner()
+  // }
 
   test("EXERCISE 8.4 choose") {
     val rng = SimpleRNG(1)
