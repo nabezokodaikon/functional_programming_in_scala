@@ -190,6 +190,15 @@ object Prop {
       Par.unit(2)
     )(ES).get
   }
+
+  // List 8-10
+  val S = Gen.weighted(
+    Gen.choose(1, 4).map(Executors.newFixedThreadPool) -> 0.75,
+    Gen.unit(Executors.newCachedThreadPool) -> 0.25
+  )
+
+  def forAllPar[A](g: Gen[A])(f: A => Par[Boolean]): Prop =
+    forAll(S.map2(g)((_, _))) { case (s, a) => f(a)(s).get }
 }
 
 case class Gen[+A](sample: State[RNG, A]) {
