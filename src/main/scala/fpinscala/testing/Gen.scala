@@ -198,8 +198,9 @@ object Prop {
     Gen.unit(Executors.newCachedThreadPool) -> 0.25
   )
 
+  // List 8-12
   def forAllPar[A](g: Gen[A])(f: A => Par[Boolean]): Prop =
-    forAll(S.map2(g)((_, _))) { case (s, a) => f(a)(s).get }
+    forAll(S ** g) { case (s, a) => f(a)(s).get }
 }
 
 case class Gen[+A](sample: State[RNG, A]) {
