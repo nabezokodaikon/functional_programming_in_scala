@@ -5,46 +5,51 @@ import fpinscala.state.{ RNG, State }
 import fpinscala.state.RNG.SimpleRNG
 import Prop._
 
-object Main extends App {
+object Main {
 
-  val rng = SimpleRNG(1)
+  def testRunner() = {
+    val rng = SimpleRNG(1)
 
-  {
-    println("pair")
-    val s = Gen.pair(1, 10)
-    val a = s.sample.run(rng)
-    println(a)
-  }
-
-  {
-    println("With Option")
-    val s1 = Gen.unit(5).map(a => Some(a))
-    println(s1.sample.run(rng))
-
-    val s2 = Gen.unit(Some(5)).map { s => s match { case Some(a) => a } }
-    println(s2.sample.run(rng))
-  }
-
-  {
-    println("Chapter 8.4.1 with EXERCISE 8.13")
-    val smallInt = Gen.choose(-10, 10)
-    val maxProp = forAll(Gen.listOf1(smallInt)) { ns =>
-      val max = ns.max
-      !ns.exists(_ > max)
+    {
+      println("pair")
+      val s = Gen.pair(1, 10)
+      val a = s.sample.run(rng)
+      println(a)
     }
-    Prop.run(maxProp)
+
+    {
+      println("With Option")
+      val s1 = Gen.unit(5).map(a => Some(a))
+      println(s1.sample.run(rng))
+
+      val s2 = Gen.unit(Some(5)).map { s => s match { case Some(a) => a } }
+      println(s2.sample.run(rng))
+    }
+
+    {
+      println("Chapter 8.4.1 with EXERCISE 8.13")
+      val smallInt = Gen.choose(-10, 10)
+      val maxProp = forAll(Gen.listOf1(smallInt)) { ns =>
+        val max = ns.max
+        !ns.exists(_ > max)
+      }
+      Prop.run(maxProp)
+    }
+
+    {
+      println("EXERCISE 8.14 sortedProp")
+      val smallInt = Gen.choose(-10, 10)
+      val sortedProp = forAll(Gen.listOf(smallInt)) {
+        l =>
+          val ls = l.sorted
+          l.isEmpty || ls.tail.isEmpty || !ls.zip(ls.tail).exists { case (a, b) => a > b }
+      }
+      Prop.run(sortedProp)
+    }
   }
 
-  {
-    println("EXERCISE 8.14 sortedProp")
-    val smallInt = Gen.choose(-10, 10)
-    // EXERCISE 8.14
-    val sortedProp = forAll(Gen.listOf(smallInt)) {
-      l =>
-        val ls = l.sorted
-        l.isEmpty || ls.tail.isEmpty || !ls.zip(ls.tail).exists { case (a, b) => a > b }
-    }
-    Prop.run(sortedProp)
+  def main(args: Array[String]): Unit = {
+    testRunner()
   }
 }
 
