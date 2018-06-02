@@ -219,6 +219,9 @@ object Prop {
   val pint2: Gen[Par[Int]] = Gen.choose(-100, 100).listOfN(Gen.choose(0, 20)).map(l =>
     l.foldLeft(Par.unit(0))((p, i) =>
       Par.fork { Par.map2(p, Par.unit(i))(_ + _) }))
+
+  // EXERCISE 8.17
+  val forkProp = Prop.forAllPar(pint2)(i => equal(Par.fork(i), i)) tag "fork"
 }
 
 case class Gen[+A](sample: State[RNG, A]) {
