@@ -34,6 +34,18 @@ object Main extends App {
     }
     Prop.run(maxProp)
   }
+
+  {
+    println("EXERCISE 8.14 sortedProp")
+    val smallInt = Gen.choose(-10, 10)
+    // EXERCISE 8.14
+    val sortedProp = forAll(Gen.listOf(smallInt)) {
+      l =>
+        val ls = l.sorted
+        l.isEmpty || ls.tail.isEmpty || !ls.zip(ls.tail).exists { case (a, b) => a > b }
+    }
+    Prop.run(sortedProp)
+  }
 }
 
 case class Prop(run: (MaxSize, TestCases, RNG) => Result) {
