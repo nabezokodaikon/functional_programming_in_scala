@@ -267,6 +267,11 @@ object Gen {
       a <- choose(start, stopExclusive)
       b <- choose(start, stopExclusive)
     } yield (a, b)
+
+  // List 8-14
+  object ** {
+    def unapply[A, B](p: (A, B)) = Some(p)
+  }
 }
 
 case class SGen[+A](forSize: Int => Gen[A]) {
