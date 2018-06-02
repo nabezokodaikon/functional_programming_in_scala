@@ -214,6 +214,11 @@ object Prop {
   // List 8-15
   val pint = Gen.choose(0, 10) map (Par.unit(_))
   val p4 = forAllPar(pint)(n => equal(Par.map(n)(y => y), n))
+
+  // EXERCISE 8.16
+  val pint2: Gen[Par[Int]] = Gen.choose(-100, 100).listOfN(Gen.choose(0, 20)).map(l =>
+    l.foldLeft(Par.unit(0))((p, i) =>
+      Par.fork { Par.map2(p, Par.unit(i))(_ + _) }))
 }
 
 case class Gen[+A](sample: State[RNG, A]) {
