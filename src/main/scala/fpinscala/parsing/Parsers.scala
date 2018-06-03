@@ -42,6 +42,11 @@ trait Parsers[ParseError, Parser[+_]] { self =>
     map(product(p, p2))(f.tupled)
   // map(product(p, p2))(ab => f(ab._1, ab._2))
 
+  // EXERCISE 9.4
+  def listOfN[A](n: Int, p: Parser[A]): Parser[List[A]] =
+    if (n <= 0) succeed(List())
+    else map2(p, listOfN(n - 1, p))(_ :: _)
+
   // Parsersの定義にParserOpsからデリゲートする。
   case class ParserOps[A](p: Parser[A]) {
 
@@ -73,8 +78,6 @@ trait Parsers[ParseError, Parser[+_]] { self =>
   def or[A](s1: Parser[A], s2: Parser[A]): Parser[A]
 
   def orString(s1: String, s2: String): Parser[String]
-
-  def listOfN[A](n: Int, p: Parser[A]): Parser[List[A]]
 
   val numA: Parser[Int] = char('a').many.map(_.size)
 }
