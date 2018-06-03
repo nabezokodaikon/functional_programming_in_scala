@@ -10,35 +10,45 @@ import language.implicitConversions
 // 主要な定義をParsersに配置する。
 trait Parsers[ParseError, Parser[+_]] { self =>
 
-  def run[A](p: Parser[A])(input: String): Either[ParseError, A]
-
-  // run(or(string("abc"), string("def")))("abc") == Right("abc")
-  // run(or(string("123"), string("456")))("456") == Right("456")
-  def or[A](s1: Parser[A], s2: Parser[A]): Parser[A]
-
-  def orString(s1: String, s2: String): Parser[String]
-
-  // run(char(c))(c.toString) == Right(c)
-  def char(c: Char): Parser[Char] =
-    string(c.toString) map (_.charAt(0))
-
-  // run(listOfN(3, "ab" | "cad"))("ababcad") == Right("ababcad")
-  // run(listOfN(3, "ab" | "cad"))("cadabab") == Right("cadabab")
-  // run(listOfN(3, "ab" | "cad"))("ababab") == Right("ababab")
-  def listOfN[A](n: Int, p: Parser[A]): Parser[List[A]]
-
   // run(string(s))(s) == Right(s)
   implicit def string(s: String): Parser[String]
   implicit def operators[A](p: Parser[A]) = ParserOps[A](p)
   implicit def asStringParser[A](a: A)(implicit f: A => Parser[String]): ParserOps[String] = ParserOps(f(a))
 
+  def char(c: Char): Parser[Char] =
+    string(c.toString) map (_.charAt(0))
+
+  def succeed[A](a: A): Parser[A]
+
+  def slice[A](p: Parser[A]): Parser[String]
+
+  def many1[A](p: Parser[A]): Parser[List[A]]
+
+  def many[A](p: Parser[A]): Parser[List[A]]
+
+  def flatMap[A, B](a: Parser[A])(f: A => Parser[B]): Parser[B]
+
+  def product[A, B](p: Parser[A], p2: Parser[B]): Parser[(A, B)]
+
+  def map[A, B](a: Parser[A])(f: A => B): Parser[B] =
+    flatMap(a)(f andThen succeed)
+
   // Parsersの定義にParserOpsからデリゲートする。
   case class ParserOps[A](p: Parser[A]) {
+
     def |[B >: A](p2: Parser[B]): Parser[B] = self.or(p, p2)
+
     def or[B >: A](p2: => Parser[B]): Parser[B] = self.or(p, p2)
+
+    def map[B](f: A => B): Parser[B] = self.map(p)(f)
+
+    def many = self.many(p)
+
+    def slice[A](p: Parser[A]): Parser[String] = self.slice(p)
+
+    def product[A, B](p: Parser[A], p2: Parser[B]): Parser[(A, B)] = self.product(p, p2)
   }
 
-  // List 9-2
   object Laws {
     def equal[A](p1: Parser[A], p2: Parser[A])(in: Gen[String]): Prop =
       forAll(in)(s => run(p1)(s) == run(p2)(s))
@@ -47,14 +57,13 @@ trait Parsers[ParseError, Parser[+_]] { self =>
       equal(p, p.map(a => a))(in)
   }
 
-  // map(char('a'))(_.size)
-  def many[A](p: Parser[A]): Parser[List[A]]
+  def run[A](p: Parser[A])(input: String): Either[ParseError, A]
 
-  // map(p)(a => a) == p
-  def map[A, B](a: Parser[A])(f: A => B): Parser[B]
+  def or[A](s1: Parser[A], s2: Parser[A]): Parser[A]
+
+  def orString(s1: String, s2: String): Parser[String]
+
+  def listOfN[A](n: Int, p: Parser[A]): Parser[List[A]]
 
   val numA: Parser[Int] = char('a').many.map(_.size)
-
-  def succeed[A](a: A): Parser[A] =
-    string(" ") map (_ => a)
 }
