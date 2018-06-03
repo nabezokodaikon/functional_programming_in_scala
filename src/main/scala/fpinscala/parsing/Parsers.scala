@@ -16,8 +16,11 @@ trait Parsers[ParseError, Parser[+_]] { self =>
   // run(or(string("123"), string("456")))("456") == Right("456")
   def or[A](s1: Parser[A], s2: Parser[A]): Parser[A]
 
+  def orString(s1: String, s2: String): Parser[String]
+
   // run(char(c))(c.toString) == Right(c)
-  def char(c: Char): Parser[Char]
+  def char(c: Char): Parser[Char] =
+    string(c.toString) map (_.charAt(0))
 
   // run(listOfN(3, "ab" | "cad"))("ababcad") == Right("ababcad")
   // run(listOfN(3, "ab" | "cad"))("cadabab") == Right("cadabab")
@@ -51,4 +54,7 @@ trait Parsers[ParseError, Parser[+_]] { self =>
   def map[A, B](a: Parser[A])(f: A => B): Parser[B]
 
   val numA: Parser[Int] = char('a').many.map(_.size)
+
+  def succeed[A](a: A): Parser[A] =
+    string(" ") map (_ => a)
 }
