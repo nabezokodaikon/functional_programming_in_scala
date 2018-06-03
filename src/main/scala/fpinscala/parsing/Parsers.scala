@@ -22,16 +22,25 @@ trait Parsers[ParseError, Parser[+_]] { self =>
 
   def slice[A](p: Parser[A]): Parser[String]
 
-  def many1[A](p: Parser[A]): Parser[List[A]]
+  // EXERCISE 9.3
+  def many[A](p: Parser[A]): Parser[List[A]] =
+    map2(p, many(p))(_ :: _) or succeed(List())
 
-  def many[A](p: Parser[A]): Parser[List[A]]
+  def many1[A](p: Parser[A]): Parser[List[A]] =
+    map2(p, many(p))(_ :: _)
 
   def flatMap[A, B](a: Parser[A])(f: A => Parser[B]): Parser[B]
 
+  // EXERCISE 9.1
   def product[A, B](p: Parser[A], p2: Parser[B]): Parser[(A, B)]
 
   def map[A, B](a: Parser[A])(f: A => B): Parser[B] =
     flatMap(a)(f andThen succeed)
+
+  // EXERCISE 9.1
+  def map2[A, B, C](p: Parser[A], p2: Parser[B])(f: (A, B) => C): Parser[C] =
+    map(product(p, p2))(f.tupled)
+  // map(product(p, p2))(ab => f(ab._1, ab._2))
 
   // Parsersの定義にParserOpsからデリゲートする。
   case class ParserOps[A](p: Parser[A]) {
@@ -39,6 +48,8 @@ trait Parsers[ParseError, Parser[+_]] { self =>
     def |[B >: A](p2: Parser[B]): Parser[B] = self.or(p, p2)
 
     def or[B >: A](p2: => Parser[B]): Parser[B] = self.or(p, p2)
+
+    def flatMap[A, B](a: Parser[A])(f: A => Parser[B]): Parser[B] = self.flatMap(a)(f)
 
     def map[B](f: A => B): Parser[B] = self.map(p)(f)
 
