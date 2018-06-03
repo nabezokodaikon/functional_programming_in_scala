@@ -32,13 +32,13 @@ trait Parsers[ParseError, Parser[+_]] { self =>
   def flatMap[A, B](a: Parser[A])(f: A => Parser[B]): Parser[B]
 
   // EXERCISE 9.1
-  def product[A, B](p: Parser[A], p2: Parser[B]): Parser[(A, B)]
+  def product[A, B](p: Parser[A], p2: => Parser[B]): Parser[(A, B)]
 
   def map[A, B](a: Parser[A])(f: A => B): Parser[B] =
     flatMap(a)(f andThen succeed)
 
   // EXERCISE 9.1
-  def map2[A, B, C](p: Parser[A], p2: Parser[B])(f: (A, B) => C): Parser[C] =
+  def map2[A, B, C](p: Parser[A], p2: => Parser[B])(f: (A, B) => C): Parser[C] =
     map(product(p, p2))(f.tupled)
   // map(product(p, p2))(ab => f(ab._1, ab._2))
 
