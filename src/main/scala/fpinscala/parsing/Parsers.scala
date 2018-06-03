@@ -34,4 +34,21 @@ trait Parsers[ParseError, Parser[+_]] { self =>
     def |[B >: A](p2: Parser[B]): Parser[B] = self.or(p, p2)
     def or[B >: A](p2: => Parser[B]): Parser[B] = self.or(p, p2)
   }
+
+  // List 9-2
+  object Laws {
+    def equal[A](p1: Parser[A], p2: Parser[A])(in: Gen[String]): Prop =
+      forAll(in)(s => run(p1)(s) == run(p2)(s))
+
+    def mapLaw[A](p: Parser[A])(in: Gen[String]): Prop =
+      equal(p, p.map(a => a))(in)
+  }
+
+  // map(char('a'))(_.size)
+  def many[A](p: Parser[A]): Parser[List[A]]
+
+  // map(p)(a => a) == p
+  def map[A, B](a: Parser[A])(f: A => B): Parser[B]
+
+  val numA: Parser[Int] = char('a').many.map(_.size)
 }
