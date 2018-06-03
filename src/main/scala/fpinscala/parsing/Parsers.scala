@@ -22,9 +22,12 @@ trait Parsers[ParseError, Parser[+_]] { self =>
 
   def slice[A](p: Parser[A]): Parser[String]
 
+  // EXERCISE 9.5
+  def wrap[A](p: => Parser[A]): Parser[A]
+
   // EXERCISE 9.3
   def many[A](p: Parser[A]): Parser[List[A]] =
-    map2(p, many(p))(_ :: _) or succeed(List())
+    map2(p, wrap(many(p)))(_ :: _) or succeed(List())
 
   def many1[A](p: Parser[A]): Parser[List[A]] =
     map2(p, many(p))(_ :: _)
