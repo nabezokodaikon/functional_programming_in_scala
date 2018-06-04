@@ -1,4 +1,8 @@
 package fpinscala.parsing
 
-import language.higherKinds
-import language.implicitConversions
+/*
+def jsonParser[Err, Parser[+_]](P: Parsers[Err, Parser]): Parser[JSON] = {
+  import P._
+  val spaces = char(' ').many.slice
+}
+*/
