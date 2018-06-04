@@ -10,7 +10,7 @@ import language.implicitConversions
 // 主要な定義をParsersに配置する。
 trait Parsers[ParseError, Parser[+_]] { self =>
 
-  // run(string(s))(s) == Right(s)
+  // Stringを1つ認識して返す。
   implicit def string(s: String): Parser[String]
   implicit def operators[A](p: Parser[A]) = ParserOps[A](p)
   implicit def asStringParser[A](a: A)(implicit f: A => Parser[String]): ParserOps[String] = ParserOps(f(a))
@@ -18,8 +18,10 @@ trait Parsers[ParseError, Parser[+_]] { self =>
   def char(c: Char): Parser[Char] =
     string(c.toString) map (_.charAt(0))
 
+  // 常にaの値で成功する。
   def succeed[A](a: A): Parser[A]
 
+  // 成功した場合はpが調べた部分の入力を返す。
   def slice[A](p: Parser[A]): Parser[String]
 
   // EXERCISE 9.5
@@ -35,8 +37,11 @@ trait Parsers[ParseError, Parser[+_]] { self =>
   def flatMap[A, B](a: Parser[A])(f: A => Parser[B]): Parser[B]
 
   // EXERCISE 9.1
+  // 2つのパーサーを逐次化してp1を実行したあとにp2を実行し、
+  // 両方が成功した場合にそれらの結果をペアで返す。
   def product[A, B](p: Parser[A], p2: => Parser[B]): Parser[(A, B)]
 
+  // 成功した場合はpの結果に関数fを適用する。
   def map[A, B](a: Parser[A])(f: A => B): Parser[B] =
     flatMap(a)(f andThen succeed)
 
@@ -78,6 +83,8 @@ trait Parsers[ParseError, Parser[+_]] { self =>
 
   def run[A](p: Parser[A])(input: String): Either[ParseError, A]
 
+  // 2つのパーサーのどちらかを選択し、
+  // 最初にp1を試した後、p1が失敗した場合にp2を試す。
   def or[A](s1: Parser[A], s2: => Parser[A]): Parser[A]
 
   def orString(s1: String, s2: String): Parser[String]
