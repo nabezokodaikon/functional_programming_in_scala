@@ -53,8 +53,10 @@ trait Parsers[ParseError, Parser[+_]] { self =>
     flatMap(p)(a => map(p2)(b => (a, b)))
 
   // 成功した場合はpの結果に関数fを適用する。
-  def map[A, B](a: Parser[A])(f: A => B): Parser[B] =
-    flatMap(a)(f andThen succeed)
+  // EXERCISE 9.8
+  def map[A, B](p: Parser[A])(f: A => B): Parser[B] =
+    flatMap(p)(a => succeed(f(a)))
+  // flatMap(a)(f andThen succeed)
 
   // EXERCISE 9.1 and EXERCISE 9.7
   def map2[A, B, C](p: Parser[A], p2: => Parser[B])(f: (A, B) => C): Parser[C] =
