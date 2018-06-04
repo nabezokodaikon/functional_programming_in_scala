@@ -46,19 +46,30 @@ trait Parsers[ParseError, Parser[+_]] { self =>
 
   def flatMap[A, B](a: Parser[A])(f: A => Parser[B]): Parser[B]
 
-  // EXERCISE 9.1
+  // EXERCISE 9.1 and EXERCISE 9.7
   // 2つのパーサーを逐次化してp1を実行したあとにp2を実行し、
   // 両方が成功した場合にそれらの結果をペアで返す。
-  def product[A, B](p: Parser[A], p2: => Parser[B]): Parser[(A, B)]
+  def product[A, B](p: Parser[A], p2: => Parser[B]): Parser[(A, B)] =
+    flatMap(p)(a => map(p2)(b => (a, b)))
 
   // 成功した場合はpの結果に関数fを適用する。
   def map[A, B](a: Parser[A])(f: A => B): Parser[B] =
     flatMap(a)(f andThen succeed)
 
-  // EXERCISE 9.1
+  // EXERCISE 9.1 and EXERCISE 9.7
   def map2[A, B, C](p: Parser[A], p2: => Parser[B])(f: (A, B) => C): Parser[C] =
     map(product(p, p2))(f.tupled)
-  // map(product(p, p2))(ab => f(ab._1, ab._2))
+  /*
+    EXERCISE 9.1
+      map(product(p, p2))(f.tupled)
+      map(product(p, p2))(ab => f(ab._1, ab._2))
+
+    EXERCISE 9.7
+      for {
+        a <- p
+        b <- p2
+      } yield f(a, b)
+   */
 
   // EXERCISE 9.4
   def listOfN[A](n: Int, p: Parser[A]): Parser[List[A]] =
