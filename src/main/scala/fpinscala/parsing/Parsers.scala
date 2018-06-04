@@ -14,6 +14,16 @@ trait Parsers[ParseError, Parser[+_]] { self =>
   implicit def string(s: String): Parser[String]
   implicit def operators[A](p: Parser[A]) = ParserOps[A](p)
   implicit def asStringParser[A](a: A)(implicit f: A => Parser[String]): ParserOps[String] = ParserOps(f(a))
+  implicit def regex(r: Regex): Parser[String]
+
+  /* EXERCISE 9.6
+   * This code compile error.
+  for {
+    digit <- """(\d+)""".r
+    val n: Int = digit.toInt
+    _ <- listOfN(n, char('a'))
+  } yield n
+  */
 
   def char(c: Char): Parser[Char] =
     string(c.toString) map (_.charAt(0))
