@@ -78,7 +78,7 @@ trait Parsers[ParseError, Parser[+_]] { self =>
 
   def run[A](p: Parser[A])(input: String): Either[ParseError, A]
 
-  def or[A](s1: Parser[A], s2: Parser[A]): Parser[A]
+  def or[A](s1: Parser[A], s2: => Parser[A]): Parser[A]
 
   def orString(s1: String, s2: String): Parser[String]
 
