@@ -8,7 +8,7 @@ import language.higherKinds
 import language.implicitConversions
 
 // 主要な定義をParsersに配置する。
-trait Parsers[ParseError, Parser[+_]] { self =>
+trait Parsers[Parser[+_]] { self =>
 
   // Stringを1つ認識して返す。
   implicit def string(s: String): Parser[String]
@@ -78,10 +78,60 @@ trait Parsers[ParseError, Parser[+_]] { self =>
     if (n <= 0) succeed(List())
     else map2(p, listOfN(n - 1, p))(_ :: _)
 
+  def attempt[A](p: Parser[A]): Parser[A]
+
+  def token[A](p: Parser[A]): Parser[A] =
+    attempt(p) <* whitespace
+
+  def skipL[B](p: Parser[Any], p2: => Parser[B]): Parser[B] =
+    map2(slice(p), p2)((_, b) => b)
+
+  def skipR[A](p: Parser[A], p2: => Parser[Any]): Parser[A] =
+    map2(p, slice(p2))((a, b) => a)
+
+  def whitespace: Parser[String] = "\\s*".r
+
+  def doubleString: Parser[String] =
+    token("[-+]?([0-9]*\\.)?[0-9]+([eE][-+]?[0-9]+)?".r)
+
+  def double: Parser[Double] =
+    doubleString map (_.toDouble) label "double literal"
+
+  def label[A](msg: String)(p: Parser[A]): Parser[A]
+
+  def surround[A](start: Parser[Any], stop: Parser[Any])(p: => Parser[A]) =
+    start *> p <* stop
+
+  def sep[A](p: Parser[A], p2: Parser[Any]): Parser[List[A]] =
+    sep1(p, p2) or succeed(List())
+
+  def sep1[A](p: Parser[A], p2: Parser[Any]): Parser[List[A]] =
+    map2(p, many(p2 *> p))(_ :: _)
+
+  def thru(s: String): Parser[String] =
+    (".*?" + Pattern.quote(s)).r
+
+  def quoted: Parser[String] =
+    string("\"") *> thru("\"").map(_.dropRight(1))
+
+  def escapedQuoted: Parser[String] =
+    token(quoted label "string literal")
+
+  def scope[A](msg: String)(p: Parser[A]): Parser[A]
+
+  def eof: Parser[String] =
+    regex("\\z".r).label("unexpected trailing characters")
+
+  def root[A](p: Parser[A]): Parser[A] =
+    p <* eof
+
   // Parsersの定義にParserOpsからデリゲートする。
   case class ParserOps[A](p: Parser[A]) {
 
-    def |[B >: A](p2: Parser[B]): Parser[B] = self.or(p, p2)
+    def |[B >: A](p2: => Parser[B]): Parser[B] = self.or(p, p2)
+
+    def **[B](p2: => Parser[B]): Parser[(A, B)] =
+      self.product(p, p2)
 
     def or[B >: A](p2: => Parser[B]): Parser[B] = self.or(p, p2)
 
@@ -94,6 +144,16 @@ trait Parsers[ParseError, Parser[+_]] { self =>
     def slice[A](p: Parser[A]): Parser[String] = self.slice(p)
 
     def product[A, B](p: Parser[A], p2: Parser[B]): Parser[(A, B)] = self.product(p, p2)
+
+    def label(msg: String): Parser[A] = self.label(msg)(p)
+
+    def scope(msg: String): Parser[A] = self.scope(msg)(p)
+
+    def *>[B](p2: => Parser[B]) = self.skipL(p, p2)
+    def <*(p2: => Parser[Any]) = self.skipR(p, p2)
+    def token = self.token(p)
+    def sep(separator: Parser[Any]) = self.sep(p, separator)
+    def as[B](b: B): Parser[B] = self.map(self.slice(p))(_ => b)
   }
 
   object Laws {
@@ -114,3 +174,7 @@ trait Parsers[ParseError, Parser[+_]] { self =>
 
   val numA: Parser[Int] = char('a').many.map(_.size)
 }
+
+// TODO: Location
+
+// TODO: PaseError
