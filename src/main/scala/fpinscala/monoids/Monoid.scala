@@ -51,4 +51,9 @@ object Monoid {
 
   def firstOptionMonoid[A]: Monoid[Option[A]] = optionMonoid
   def lastOptionMonoid[A]: Monoid[Option[A]] = dual(firstOptionMonoid)
+
+  def endMonoid[A]: Monoid[A => A] = new Monoid[A => A] {
+    def op(f: A => A, g: A => A) = f compose g
+    def zero = (a: A) => a
+  }
 }
