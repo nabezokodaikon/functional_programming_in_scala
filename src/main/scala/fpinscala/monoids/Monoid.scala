@@ -93,4 +93,6 @@ object Monoid {
       val (l, r) = as.splitAt(as.length / 2)
       m.op(foldMapV(l, m)(f), foldMapV(r, m)(f))
     }
+
+  // TODO: EXERCISE 10.8
 }
