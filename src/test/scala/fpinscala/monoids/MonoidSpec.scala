@@ -1,5 +1,7 @@
 package fpinscala.monoids
 
+import fpinscala.state.RNG.SimpleRNG
+import fpinscala.testing.{ Gen, Prop }
 import org.scalatest.FunSuite
 
 class MonoidSpec extends FunSuite {
@@ -90,5 +92,56 @@ class MonoidSpec extends FunSuite {
     import Monoid.endMonoid
     val a = endMonoid.op(endMonoid.op(((x: Int) => x + 1), ((x: Int) => x + 2)), ((x: Int) => x + 3))
     assert(a(2) == 8)
+  }
+
+  test("EXERCISE 10.4 monoidLaws") {
+    import fpinscala.monoids.Monoid._
+    {
+      val gen = Gen.unit("a")
+      val p = monoidLaws(stringMonoid, gen)
+      Prop.run(p)
+    }
+
+    {
+      val gen = Gen.unit(Nil)
+      val p = monoidLaws(listMonoid, gen)
+      Prop.run(p)
+    }
+
+    {
+      val gen = Gen.unit(1)
+      val p = monoidLaws(intAddition, gen)
+      Prop.run(p)
+    }
+
+    {
+      val gen = Gen.unit(1)
+      val p = monoidLaws(intMultiplication, gen)
+      Prop.run(p)
+    }
+
+    {
+      val gen = Gen.unit(false)
+      val p = monoidLaws(booleanOr, gen)
+      Prop.run(p)
+    }
+
+    {
+      val gen = Gen.unit(false)
+      val p = monoidLaws(booleanAnd, gen)
+      Prop.run(p)
+    }
+
+    {
+      val gen = Gen.unit(None)
+      val p = monoidLaws(firstOptionMonoid, gen)
+      Prop.run(p)
+    }
+
+    {
+      val gen = Gen.unit(None)
+      val p = monoidLaws(lastOptionMonoid, gen)
+      Prop.run(p)
+    }
   }
 }
