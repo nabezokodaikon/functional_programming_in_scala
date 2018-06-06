@@ -164,4 +164,10 @@ class MonoidSpec extends FunSuite {
     val res = foldMap(List("3", "4"), m)(a => a.toInt)
     assert(res == 9)
   }
+
+  test("EXERCISE 10.6 foldRight") {
+    import Monoid.foldRight
+    val res = foldRight(List(1, 2, 3))(0)((a, b) => a + b)
+    assert(res == 6)
+  }
 }
