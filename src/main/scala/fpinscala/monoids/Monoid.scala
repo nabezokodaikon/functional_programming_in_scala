@@ -55,7 +55,7 @@ object Monoid {
   def firstOptionMonoid[A]: Monoid[Option[A]] = optionMonoid
   def lastOptionMonoid[A]: Monoid[Option[A]] = dual(firstOptionMonoid)
 
-  def endMonoid[A]: Monoid[A => A] = new Monoid[A => A] {
+  def endoMonoid[A]: Monoid[A => A] = new Monoid[A => A] {
     def op(f: A => A, g: A => A) = f compose g
     def zero = (a: A) => a
   }
@@ -79,8 +79,8 @@ object Monoid {
     as.foldLeft(m.zero)((b, a) => m.op(b, f(a)))
 
   def foldRight[A, B](as: List[A])(z: B)(f: (A, B) => B): B =
-    foldMap(as, endMonoid[B])(f.curried)(z)
+    foldMap(as, endoMonoid[B])(f.curried)(z)
 
   def foldLeft[A, B](as: List[A])(z: B)(f: (B, A) => B): B =
-    foldMap(as, dual(endMonoid[B]))(a => b => f(b, a))(z)
+    foldMap(as, dual(endoMonoid[B]))(a => b => f(b, a))(z)
 }

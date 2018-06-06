@@ -89,8 +89,8 @@ class MonoidSpec extends FunSuite {
   }
 
   test("EXERCISE 10.3 endMonoid") {
-    import Monoid.endMonoid
-    val a = endMonoid.op(endMonoid.op(((x: Int) => x + 1), ((x: Int) => x + 2)), ((x: Int) => x + 3))
+    import Monoid.endoMonoid
+    val a = endoMonoid.op(endoMonoid.op(((x: Int) => x + 1), ((x: Int) => x + 2)), ((x: Int) => x + 3))
     assert(a(2) == 8)
   }
 
