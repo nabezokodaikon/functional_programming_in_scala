@@ -61,4 +61,16 @@ class MonoidSpec extends FunSuite {
     assert(c == d == e == f == g == h)
     assert(a != c)
   }
+
+  test("EXERCISE 10.2 firstOptionMonoid") {
+    import Monoid.firstOptionMonoid
+    val a = firstOptionMonoid.op(firstOptionMonoid.op(Some(1), Some(2)), Some(3))
+    assert(a.isInstanceOf[Some[Int]] == true)
+    val b = firstOptionMonoid.op(firstOptionMonoid.op(Some(1), None), Some(3))
+    assert(b.isInstanceOf[Some[Int]] == true)
+    val c = firstOptionMonoid.op(firstOptionMonoid.op(Some(1), None), None)
+    assert(c.isInstanceOf[Some[Int]] == true)
+    val d = firstOptionMonoid.op(firstOptionMonoid.op(None, None), None)
+    assert(d == None)
+  }
 }
