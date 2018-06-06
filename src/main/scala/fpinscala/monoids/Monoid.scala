@@ -43,5 +43,12 @@ object Monoid {
     def op(a1: Option[A], a2: Option[A]) = a1 orElse a2
     val zero = None
   }
+
+  def dual[A](m: Monoid[A]): Monoid[A] = new Monoid[A] {
+    def op(a1: A, a2: A) = m.op(a2, a1)
+    def zero = m.zero
+  }
+
   def firstOptionMonoid[A]: Monoid[Option[A]] = optionMonoid
+  def lastOptionMonoid[A]: Monoid[Option[A]] = dual(firstOptionMonoid)
 }
