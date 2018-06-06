@@ -80,4 +80,7 @@ object Monoid {
 
   def foldRight[A, B](as: List[A])(z: B)(f: (A, B) => B): B =
     foldMap(as, endMonoid[B])(f.curried)(z)
+
+  def foldLeft[A, B](as: List[A])(z: B)(f: (B, A) => B): B =
+    foldMap(as, dual(endMonoid[B]))(a => b => f(b, a))(z)
 }

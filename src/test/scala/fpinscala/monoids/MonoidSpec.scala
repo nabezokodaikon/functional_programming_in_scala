@@ -170,4 +170,10 @@ class MonoidSpec extends FunSuite {
     val res = foldRight(List(1, 2, 3))(0)((a, b) => a + b)
     assert(res == 6)
   }
+
+  test("EXERCISE 10.6 foldLeft") {
+    import Monoid.foldLeft
+    val res = foldLeft(List(1, 2, 3))(0)((a, b) => a + b)
+    assert(res == 6)
+  }
 }
