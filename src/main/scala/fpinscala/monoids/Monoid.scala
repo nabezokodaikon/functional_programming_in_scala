@@ -71,4 +71,7 @@ object Monoid {
       // Identity
       forAll(gen)((a: A) =>
         m.op(a, m.zero) == a && m.op(m.zero, a) == a)
+
+  def concatenate[A](as: List[A], m: Monoid[A]): A =
+    as.foldLeft(m.zero)(m.op)
 }

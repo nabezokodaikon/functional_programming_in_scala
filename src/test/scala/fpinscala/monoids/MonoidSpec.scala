@@ -144,4 +144,14 @@ class MonoidSpec extends FunSuite {
       Prop.run(p)
     }
   }
+
+  test("List 10-4 concatenate") {
+    import Monoid.concatenate
+    val m = new Monoid[Int] {
+      def op(a: Int, b: Int) = a + b
+      val zero = 0
+    }
+    val res = concatenate(List(3, 4), m)
+    assert(res == 7)
+  }
 }
