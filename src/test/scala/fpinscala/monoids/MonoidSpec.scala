@@ -186,4 +186,10 @@ class MonoidSpec extends FunSuite {
     val res = foldMapV(IndexedSeq("3", "4"), m)(a => a.toInt)
     assert(res == 7)
   }
+
+  test("EXERCISE 10.9 orderd") {
+    import Monoid.ordered
+    assert(ordered(IndexedSeq(3, 2, 1)) == false)
+    assert(ordered(IndexedSeq(1, 3, 5)) == true)
+  }
 }
