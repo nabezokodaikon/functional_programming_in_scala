@@ -26,7 +26,7 @@ object Monoid {
 
   val intMultiplication = new Monoid[Int] {
     def op(a1: Int, a2: Int) = a1 * a2
-    val zero = 0
+    val zero = 1
   }
 
   val booleanOr = new Monoid[Boolean] {
@@ -36,6 +36,6 @@ object Monoid {
 
   val booleanAnd = new Monoid[Boolean] {
     def op(a1: Boolean, a2: Boolean) = a1 && a2
-    val zero = false
+    val zero = true
   }
 }
