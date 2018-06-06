@@ -23,4 +23,9 @@ object Monoid {
     def op(a1: Int, a2: Int) = a1 + a2
     val zero = 0
   }
+
+  val intMultiplication = new Monoid[Int] {
+    def op(a1: Int, a2: Int) = a1 * a2
+    val zero = 0
+  }
 }

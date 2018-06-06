@@ -24,4 +24,11 @@ class MonoidSpec extends FunSuite {
     val b = op(1, op(2, 3))
     assert(a == b)
   }
+
+  test("EXERCISE 10.1 intMultiplication") {
+    import Monoid.intMultiplication.op
+    val a = op(op(1, 2), 3)
+    val b = op(1, op(2, 3))
+    assert(a == b)
+  }
 }
