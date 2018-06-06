@@ -46,4 +46,19 @@ class MonoidSpec extends FunSuite {
     assert(c == d)
     assert(a != c)
   }
+
+  test("EXERCISE 10.1 booleanAnd") {
+    import Monoid.booleanOr.op
+    val a = op(op(true, true), true)
+    val b = op(true, op(true, true))
+    val c = op(op(false, false), false)
+    val d = op(false, op(false, false))
+    val e = op(op(false, true), false)
+    val f = op(false, op(true, false))
+    val g = op(op(false, true), true)
+    val h = op(true, op(true, false))
+    assert(a == b)
+    assert(c == d == e == f == g == h)
+    assert(a != c)
+  }
 }

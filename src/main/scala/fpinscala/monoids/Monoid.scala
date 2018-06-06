@@ -33,4 +33,9 @@ object Monoid {
     def op(a1: Boolean, a2: Boolean) = a1 | a2
     val zero = false
   }
+
+  val booleanAnd = new Monoid[Boolean] {
+    def op(a1: Boolean, a2: Boolean) = a1 && a2
+    val zero = false
+  }
 }
