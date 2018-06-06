@@ -154,4 +154,14 @@ class MonoidSpec extends FunSuite {
     val res = concatenate(List(3, 4), m)
     assert(res == 7)
   }
+
+  test("EXERCISE 10.5 foldMap") {
+    import Monoid.foldMap
+    val m = new Monoid[Int] {
+      def op(a: Int, b: Int) = a + b
+      val zero = 2
+    }
+    val res = foldMap(List("3", "4"), m)(a => a.toInt)
+    assert(res == 9)
+  }
 }
