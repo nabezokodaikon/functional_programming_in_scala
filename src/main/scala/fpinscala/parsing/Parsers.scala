@@ -81,6 +81,10 @@ trait Parsers[Parser[+_]] { self =>
 
   def attempt[A](p: Parser[A]): Parser[A]
 
+  def furthest[A](p: Parser[A]): Parser[A]
+
+  def latest[A](p: Parser[A]): Parser[A]
+
   def token[A](p: Parser[A]): Parser[A] =
     attempt(p) <* whitespace
 
