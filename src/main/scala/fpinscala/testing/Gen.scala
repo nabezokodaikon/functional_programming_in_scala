@@ -107,13 +107,11 @@ object Prop {
   }
 
   def forAll[A](as: Gen[A])(f: A => Boolean): Prop = Prop {
-    (max, n, rng) =>
+    (n, rng) =>
       randomStream(as)(rng).zip(Stream.from(0)).take(n).map {
         case (a, i) => try {
           if (f(a)) Passed else Falsified(a.toString, i)
-        } catch {
-          case e: Exception => Falsified(buildMsg(a, e), i)
-        }
+        } catch { case e: Exception => Falsified(buildMsg(a, e), i) }
       }.find(_.isFalsified).getOrElse(Passed)
   }
 
@@ -126,6 +124,9 @@ object Prop {
       generated an exception: ${e.getMessage}
       stack trace:
       ${e.getStackTrace.mkString("\n")}"""
+
+  def apply(f: (TestCases, RNG) => Result): Prop =
+    Prop { (_, n, rng) => f(n, rng) }
 
   def forAll[A](g: SGen[A])(f: A => Boolean): Prop =
     forAll(g.forSize)(f)
@@ -175,17 +176,17 @@ object Prop {
     if (p) Passed else Falsified("()", 0)
   }
 
-  // val p2 = Prop.check {
-  // val p = Par.map(Par.unit(1))(_ + 1)
-  // val p2 = Par.unit(2)
-  // p(ES).get == p2(ES).get
-  // }
-  val p2 = checkPar {
-    equal(
-      Par.map(Par.unit(1))(_ + 1),
-      Par.unit(2)
-    )
+  val p2 = Prop.check {
+    val p = Par.map(Par.unit(1))(_ + 1)
+    val p2 = Par.unit(2)
+    p(ES).get == p2(ES).get
   }
+  // val p2 = checkPar {
+  // equal(
+  // Par.map(Par.unit(1))(_ + 1),
+  // Par.unit(2)
+  // )
+  // }
 
   // List 8-9
   def equal[A](p: Par[A], p2: Par[A]): Par[Boolean] =
@@ -208,8 +209,10 @@ object Prop {
   def forAllPar[A](g: Gen[A])(f: A => Par[Boolean]): Prop =
     forAll(S ** g) { case (s, a) => f(a)(s).get }
 
-  def checkPar(p: Par[Boolean]): Prop =
-    forAllPar(Gen.unit(()))(_ => p)
+  def checkPar(p: => Boolean): Prop = Prop { (_, _, _) =>
+    if (p) Passed else Falsified("()", 0)
+    // forAllPar(Gen.unit(()))(_ => p)
+  }
 
   // List 8-15
   val pint = Gen.choose(0, 10) map (Par.unit(_))
