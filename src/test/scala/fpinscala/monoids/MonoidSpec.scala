@@ -17,4 +17,11 @@ class MonoidSpec extends FunSuite {
     val b = listMonoid.op((List(1, 2)), listMonoid.op(List(3, 4), List(5, 6)))
     assert(a == b)
   }
+
+  test("EXERCISE 10.1 intAddition") {
+    import Monoid.intAddition.op
+    val a = op(op(1, 2), 3)
+    val b = op(1, op(2, 3))
+    assert(a == b)
+  }
 }
