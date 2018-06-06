@@ -30,7 +30,7 @@ object Monoid {
   }
 
   val booleanOr = new Monoid[Boolean] {
-    def op(a1: Boolean, a2: Boolean) = a1 | a2
+    def op(a1: Boolean, a2: Boolean) = a1 || a2
     val zero = false
   }
 
