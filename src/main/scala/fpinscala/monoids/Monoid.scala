@@ -243,4 +243,15 @@ object Monoid {
         (A.op(x._1, y._1), B.op(x._2, y._2))
       val zero = (A.zero, B.zero)
     }
+
+  def mapMergeMonoid[K, V](V: Monoid[V]): Monoid[Map[K, V]] =
+    new Monoid[Map[K, V]] {
+      def zero = Map[K, V]()
+
+      def op(a: Map[K, V], b: Map[K, V]) =
+        (a.keySet ++ b.keySet).foldLeft(zero) {
+          (acc, k) =>
+            acc.updated(k, V.op(a.getOrElse(k, V.zero), b.getOrElse(k, V.zero)))
+        }
+    }
 }
