@@ -203,4 +203,16 @@ class MonoidSpec extends FunSuite {
     assert(op(Part("Mon Tue", 1, "Wed"), Part("Thu", 0, "Fri")) == Part("Mon Tue", 2, "Fri"))
     assert(op(Part("Mon Tue Wed Thu Fri", 3, ""), Part("", 0, "")) == Part("Mon Tue Wed Thu Fri", 3, ""))
   }
+
+  test("EXERCISE 10.11 count") {
+    import Monoid.count
+    assert(count("") == 0)
+    assert(count("Mon") == 1)
+    assert(count("Mon Tue") == 2)
+    assert(count("Mon Tue Wed Thu Fri") == 5)
+    assert(count(" ") == 0)
+    assert(count(" Mon ") == 1)
+    assert(count(" Mon Tue ") == 2)
+    assert(count(" Mon Tue Wed Thu Fri ") == 5)
+  }
 }
