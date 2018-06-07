@@ -82,6 +82,9 @@ object Option {
     try Some(a)
     catch { case e: Exception => None }
 
+  /*
+   * 2項関数を使ってOption型の2つの値を結合する総称関数。
+   */
   def map2[A, B, C](a: Option[A], b: Option[B])(f: (A, B) => C): Option[C] =
     a.flatMap(aa => b.map(bb => f(aa, bb)))
 
@@ -91,12 +94,22 @@ object Option {
       bb <- b
     } yield f(aa, bb)
 
+  /*
+   * Optionのリストを1つのOptionにまとめる関数。
+   * 新しいOptionにはSome値のリストが含まれる。
+   * 元のリストにNoneが1つでも含まれていた場合、この関数の結果はNoneになる。
+   * それ以外の場合は、すべての値のリストを含んだSomeになる。
+   */
   def sequence[A](a: List[Option[A]]): Option[List[A]] =
     a match {
       case Nil => Some(Nil)
       case h :: t => h flatMap (hh => sequence(t) map (hh :: _))
     }
 
+  /*
+   * 失敗する可能性のある関数を使ってリストをマッピングし、
+   * リストのいずれかの要素に適用した結果としてNoneが返された場合は、Noneを返す。
+   */
   def traverse[A, B](a: List[A])(f: A => Option[B]): Option[List[B]] =
     a match {
       case Nil => Some(Nil)

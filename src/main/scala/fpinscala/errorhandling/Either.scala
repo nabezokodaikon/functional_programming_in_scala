@@ -55,6 +55,9 @@ object Either {
       tickets <- Try { numberOfSpeedingTickets.toInt }
     } yield insuranceRateQuote(a, tickets)
 
+  /*
+   * 最初に検出されたエラーを返すもの。
+   */
   def traverse[E, A, B](as: List[A])(f: A => Either[E, B]): Either[E, List[B]] =
     as match {
       case Nil => Right(Nil)

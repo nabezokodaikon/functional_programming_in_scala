@@ -18,7 +18,9 @@ object Par {
     def cancel(evenIfRunning: Boolean): Boolean = false
   }
 
-  // 2つの並列計算の結果を2項関数で結合。
+  /*
+   * 2つの並列計算の結果を2項関数で結合。
+   */
   def map2[A, B, C](a: Par[A], b: Par[B])(f: (A, B) => C): Par[C] =
     (es: ExecutorService) => {
       val af = a(es)

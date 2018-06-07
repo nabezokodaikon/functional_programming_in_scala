@@ -67,6 +67,10 @@ object RNG {
   // val int: Rand[Int] = a => a.nextInt
   val int: Rand[Int] = _.nextInt
 
+  /*
+   * RNGの単純な状態遷移であり、RNGの状態を未使用のまま渡し、
+   * 常に乱数値ではなく定数値を返します。
+   */
   def unit[A](a: A): Rand[A] =
     rng => (a, rng)
 
@@ -82,6 +86,11 @@ object RNG {
   def doubleViaMap: Rand[Double] =
     map(nonNegariveInt)(_ / (Int.MaxValue.toDouble + 1))
 
+  /*
+   * map2コンビネータを一度記述すれば、任意のRNG状態アクションの結合に利用できるようになります。
+   * たとえば、A型の値を生成するアクションとB型の値を生成するアクションがある場合は、
+   * それらを組み合わせてAとのペアを生成する1つのアクションにまとめることができます。
+   */
   def map2[A, B, C](ra: Rand[A], rb: Rand[B])(f: (A, B) => C): Rand[C] =
     rang => {
       val (a, r1) = ra(rang)
@@ -98,6 +107,9 @@ object RNG {
   val randDoubleInt: Rand[(Double, Int)] =
     both(double, int)
 
+  /*
+   * 遷移のListを1つの遷移にまとめるための関数。
+   */
   def sequence[A](fs: List[Rand[A]]): Rand[List[A]] =
     fs.foldRight(unit(List[A]()))((f, acc) => map2(f, acc)(_ :: _))
 

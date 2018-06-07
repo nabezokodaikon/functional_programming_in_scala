@@ -251,16 +251,25 @@ case class Gen[+A](sample: State[RNG, A]) {
 
 object Gen {
 
-  // EXERCISE 8.4
+  /*
+   * EXERCISE 8.4
+   * startからstopExclusiveno範囲内の整数を生成する。
+   */
   def choose(start: Int, stopExclusive: Int): Gen[Int] =
     Gen(State(RNG.nonNegariveInt).map(n => start + n % (stopExclusive - start)))
 
+  /*
+   * 常にaの値を生成する。
+   */
   def unit[A](a: => A): Gen[A] =
     Gen(State.unit(a))
 
   def boolean: Gen[Boolean] =
     Gen(State(RNG.boolean))
 
+  /*
+   * ジェネレータgを使って長さnのリストを生成する。
+   */
   def listOfN[A](n: Int, g: Gen[A]): Gen[List[A]] =
     Gen(State.sequence(List.fill(n)(g.sample)))
 
@@ -274,12 +283,25 @@ object Gen {
       if (d < g1Threshold) g1._1.sample else g2._1.sample))
   }
 
+  /*
+   * Doubleの乱数を生成。
+   */
+  val uniform: Gen[Double] = Gen(State(RNG.double))
+
   def listOf[A](g: Gen[A]): SGen[List[A]] =
     SGen(n => g.listOfN(n))
 
   // EXERCISE 8.13
   def listOf1[A](g: Gen[A]): SGen[List[A]] =
     SGen(n => g.listOfN(n max 1))
+
+  /*
+   * 指定された長さのランダムな文字列を生成。
+   */
+  def stringN(n: Int): Gen[String] =
+    listOfN(n, choose(0, 127)).map(_.map(_.toChar).mkString)
+
+  def string: SGen[String] = SGen(stringN)
 
   def pair(start: Int, stopExclusive: Int): Gen[(Int, Int)] =
     for {
