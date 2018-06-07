@@ -240,4 +240,13 @@ class MonoidSpec extends FunSuite {
     import Monoid._
     assert(TreeFoldable.toList(Branch(Leaf(1), Branch(Leaf(2), Leaf(3)))) == List(1, 2, 3))
   }
+
+  test("10.6.2 合成されたモノイドを使った走査") {
+    import Monoid._
+    // 平均を計算するためにリストの長さと合計を同時に取得する。
+    val m = productMonoid(intAddition, intAddition)
+    val (length, sum) = ListFoldable.foldMap(List(1, 2, 3, 4))(a => (1, a))(m)
+    assert(length == 4)
+    assert(sum == 10)
+  }
 }
