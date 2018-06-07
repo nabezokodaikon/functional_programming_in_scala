@@ -20,4 +20,12 @@ class MonadSpec extends FunSuite {
     import Functor._
     assert(listFunctor.distribute(List((1, "a"), (2, "b"), (3, "c"))) == (List(1, 2, 3), List("a", "b", "c")))
   }
+
+  test("List 11-4 condistribute") {
+    import Functor._
+    val a = listFunctor.condistribute(Left(List(1, 2, 3)))
+    assert(a == List(Left(1), Left(2), Left(3)))
+    val b = listFunctor.condistribute(Right(List(1, 2, 3)))
+    assert(b == List(Right(1), Right(2), Right(3)))
+  }
 }
