@@ -192,4 +192,15 @@ class MonoidSpec extends FunSuite {
     assert(ordered(IndexedSeq(3, 2, 1)) == false)
     assert(ordered(IndexedSeq(1, 3, 5)) == true)
   }
+
+  test("EXERCISE 10.10 wcMonoid") {
+    import Monoid._
+    import wcMonoid._
+
+    assert(op(Stub("Mon Tue"), Stub("Wed Thu Fri")) == Stub("Mon TueWed Thu Fri"))
+    assert(op(Stub("Mon Tue"), Part("Wed", 1, "Fri")) == Part("Mon TueWed", 1, "Fri"))
+    assert(op(Part("Mon Tue", 1, "Wed"), Stub("Thu Fri")) == Part("Mon Tue", 1, "WedThu Fri"))
+    assert(op(Part("Mon Tue", 1, "Wed"), Part("Thu", 0, "Fri")) == Part("Mon Tue", 2, "Fri"))
+    assert(op(Part("Mon Tue Wed Thu Fri", 3, ""), Part("", 0, "")) == Part("Mon Tue Wed Thu Fri", 3, ""))
+  }
 }
