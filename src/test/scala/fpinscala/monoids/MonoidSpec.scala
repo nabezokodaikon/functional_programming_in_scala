@@ -235,4 +235,9 @@ class MonoidSpec extends FunSuite {
     assert(StreamFoldable.foldRight(Stream(1, 2))(0)((b, a) => b + a) == 3)
     assert(StreamFoldable.foldLeft(Stream(1, 2))(0)((a, b) => a + b) == 3)
   }
+
+  test("EXERCISE 10.15 toList") {
+    import Monoid._
+    assert(TreeFoldable.toList(Branch(Leaf(1), Branch(Leaf(2), Leaf(3)))) == List(1, 2, 3))
+  }
 }
