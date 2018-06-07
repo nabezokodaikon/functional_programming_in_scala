@@ -28,4 +28,10 @@ class MonadSpec extends FunSuite {
     val b = listFunctor.condistribute(Right(List(1, 2, 3)))
     assert(b == List(Right(1), Right(2), Right(3)))
   }
+
+  test("List 11-7 Mon trait") {
+    import Mon._
+    val a = optionMon.map2(Some(1), Some(2))((a, b) => a + b)
+    assert(a == Some(3))
+  }
 }
