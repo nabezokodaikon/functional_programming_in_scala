@@ -72,6 +72,7 @@ object Monoid {
       forAll(gen)((a: A) =>
         m.op(a, m.zero) == a && m.op(m.zero, a) == a)
 
+  // モノイドを使ってリストを畳み込む総称関数。
   def concatenate[A](as: List[A], m: Monoid[A]): A =
     as.foldLeft(m.zero)(m.op)
 
