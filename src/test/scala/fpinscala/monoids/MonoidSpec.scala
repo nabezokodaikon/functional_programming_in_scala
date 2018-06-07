@@ -215,4 +215,24 @@ class MonoidSpec extends FunSuite {
     assert(count(" Mon Tue ") == 2)
     assert(count(" Mon Tue Wed Thu Fri ") == 5)
   }
+
+  test("EXERCISE 10.12 ListFoldable") {
+    import Monoid._
+    assert(ListFoldable.foldRight(List(1, 2))(0)((b, a) => b + a) == 3)
+    assert(ListFoldable.foldLeft(List(1, 2))(0)((a, b) => a + b) == 3)
+    assert(ListFoldable.concatenate(List(1, 2))(intAddition) == 3)
+  }
+
+  test("EXERCISE 10.12 IndexedSeqFoldable") {
+    import Monoid._
+    assert(IndexedSeqFoldable.foldRight(IndexedSeq(1, 2))(0)((b, a) => b + a) == 3)
+    assert(IndexedSeqFoldable.foldLeft(IndexedSeq(1, 2))(0)((a, b) => a + b) == 3)
+    assert(IndexedSeqFoldable.concatenate(IndexedSeq(1, 2))(intAddition) == 3)
+  }
+
+  test("EXERCISE 10.12 StreamFoldable") {
+    import Monoid._
+    assert(StreamFoldable.foldRight(Stream(1, 2))(0)((b, a) => b + a) == 3)
+    assert(StreamFoldable.foldLeft(Stream(1, 2))(0)((a, b) => a + b) == 3)
+  }
 }
