@@ -46,4 +46,12 @@ class MonadSpec extends FunSuite {
     val a = listMonad.map2(List(1, 2, 3), List(4, 5, 6))((a, b) => a + b)
     assert(a == List(5, 6, 7, 6, 7, 8, 7, 8, 9))
   }
+
+  test("EXERCISE 11.1 Stream Monad") {
+    import Monad._
+    val a = streamMonad.map2(Stream(1, 2, 3), Stream(4, 5, 6))((a, b) => a + b)
+    assert(a.toList == List(5, 6, 7, 6, 7, 8, 7, 8, 9))
+    val b = streamMonad.map(Stream(1, 2, 3))(a => a * 2)
+    assert(b.toList == List(2, 4, 6))
+  }
 }
