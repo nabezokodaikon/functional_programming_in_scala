@@ -44,7 +44,6 @@ trait Mon[F[_]] {
   // List 11-6 map2のためのMonトレイト。
   def map2[A, B, C](fa: F[A], fb: F[B])(f: (A, B) => C): F[C] =
     flatMap(fa)(a => map(fb)(b => f(a, b)))
-
 }
 
 object Mon {
@@ -68,6 +67,26 @@ trait Monad[F[_]] extends Functor[F] {
 
   def map2[A, B, C](ma: F[A], mb: F[B])(f: (A, B) => C): F[C] =
     flatMap(ma)(a => map(mb)(b => f(a, b)))
+
+  def sequence[A](lma: List[F[A]]): F[List[A]] =
+    lma.foldRight(unit(List[A]()))((ma, mla) => map2(ma, mla)(_ :: _))
+
+  // 末尾再帰でないため駄目。
+  def sequence_2[A](lma: List[F[A]]): F[List[A]] =
+    lma match {
+      case Nil => unit(Nil)
+      case h :: t => map2(h, sequence_2(t))(_ :: _)
+    }
+
+  def traverse[A, B](la: List[A])(f: A => F[B]): F[List[B]] =
+    la.foldRight(unit(List[B]()))((h, t) => map2(f(h), t)(_ :: _))
+
+  // 末尾再帰でないため駄目。
+  def traverse_2[A, B](la: List[A])(f: A => F[B]): F[List[B]] =
+    la match {
+      case Nil => unit(Nil)
+      case h :: t => map2(f(h), traverse_2(t)(f))(_ :: _)
+    }
 }
 
 object Monad {
