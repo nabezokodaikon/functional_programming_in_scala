@@ -87,6 +87,9 @@ trait Monad[F[_]] extends Functor[F] {
       case Nil => unit(Nil)
       case h :: t => map2(f(h), traverse_2(t)(f))(_ :: _)
     }
+
+  def replicateM[A](n: Int, ma: F[A]): F[List[A]] =
+    sequence(List.fill(n)(ma))
 }
 
 object Monad {
