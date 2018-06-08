@@ -74,4 +74,9 @@ class MonadSpec extends FunSuite {
     import Monad._
     assert(optionMonad.replicateM(3, Some(5)) == Some(List(5, 5, 5)))
   }
+
+  test("P240 product") {
+    import Monad._
+    assert(optionMonad.product(Some(1), Some(2)) == Some((1, 2)))
+  }
 }
