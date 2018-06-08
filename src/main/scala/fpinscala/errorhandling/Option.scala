@@ -22,12 +22,19 @@ trait Option[+A] {
 
   def filter(f: A => Boolean): Option[A] =
     flatMap(a => if (f(a)) Some(a) else None)
+
 }
 
 case class Some[+A](get: A) extends Option[A]
 case object None extends Option[Nothing]
 
 object Option {
+
+  /*
+   * 常にaの値を生成する。
+   */
+  def unit[A](a: A): Option[A] =
+    Some(a)
 
   def failingFn(i: Int): Int = {
     val y: Int = throw new Exception("fail!")

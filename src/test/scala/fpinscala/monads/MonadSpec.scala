@@ -2,6 +2,7 @@ package fpinscala
 package monads
 
 import org.scalatest.FunSuite
+import errorhandling._
 import parsing._
 import testing._
 import parallelism._
@@ -33,5 +34,11 @@ class MonadSpec extends FunSuite {
     import Mon._
     val a = optionMon.map2(Some(1), Some(2))((a, b) => a + b)
     assert(a == Some(3))
+  }
+
+  test("EXERCISE 11.1 Option Monad") {
+    import Monad._
+    val a = optionMonad.map2(Some(2), Some(3))((a, b) => a * b)
+    assert(a == Some(6))
   }
 }

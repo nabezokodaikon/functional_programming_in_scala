@@ -1,6 +1,7 @@
 package fpinscala
 package monads
 
+import errorhandling._
 import parsing._
 import testing._
 import parallelism._
@@ -58,7 +59,7 @@ object Mon {
   }
 }
 
-// List 11-8
+// List 11-8 Monad
 trait Monad[F[_]] extends Functor[F] {
   def unit[A](a: => A): F[A]
   def flatMap[A, B](ma: F[A])(f: A => F[B]): F[B]
@@ -68,4 +69,15 @@ trait Monad[F[_]] extends Functor[F] {
 
   def map2[A, B, C](ma: F[A], mb: F[B])(f: (A, B) => C): F[C] =
     flatMap(ma)(a => map(mb)(b => f(a, b)))
+}
+
+object Monad {
+
+  val optionMonad = new Monad[Option] {
+    def unit[A](a: => A): Option[A] =
+      Option.unit(a)
+
+    def flatMap[A, B](o: Option[A])(f: A => Option[B]): Option[B] =
+      o flatMap f
+  }
 }
