@@ -2,7 +2,6 @@ package fpinscala
 package monads
 
 import org.scalatest.FunSuite
-import errorhandling._
 import parsing._
 import testing._
 import parallelism._

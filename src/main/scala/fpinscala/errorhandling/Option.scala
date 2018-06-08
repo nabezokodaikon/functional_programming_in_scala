@@ -30,12 +30,6 @@ case object None extends Option[Nothing]
 
 object Option {
 
-  /*
-   * 常にaの値を生成する。
-   */
-  def unit[A](a: A): Option[A] =
-    Some(a)
-
   def failingFn(i: Int): Int = {
     val y: Int = throw new Exception("fail!")
     try {

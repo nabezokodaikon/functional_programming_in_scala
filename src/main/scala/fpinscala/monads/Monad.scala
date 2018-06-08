@@ -74,8 +74,7 @@ trait Monad[F[_]] extends Functor[F] {
 object Monad {
 
   val optionMonad = new Monad[Option] {
-    def unit[A](a: => A): Option[A] =
-      Option.unit(a)
+    def unit[A](a: => A): Option[A] = Some(a)
 
     def flatMap[A, B](o: Option[A])(f: A => Option[B]): Option[B] =
       o flatMap f
