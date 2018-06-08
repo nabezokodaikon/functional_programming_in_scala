@@ -40,4 +40,10 @@ class MonadSpec extends FunSuite {
     val a = optionMonad.map2(Some(2), Some(3))((a, b) => a * b)
     assert(a == Some(6))
   }
+
+  test("EXERCISE 11.1 List Monad") {
+    import Monad._
+    val a = listMonad.map2(List(1, 2, 3), List(4, 5, 6))((a, b) => a + b)
+    assert(a == List(5, 6, 7, 6, 7, 8, 7, 8, 9))
+  }
 }

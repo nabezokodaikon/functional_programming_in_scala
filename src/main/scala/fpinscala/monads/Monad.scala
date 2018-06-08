@@ -1,7 +1,6 @@
 package fpinscala
 package monads
 
-import errorhandling._
 import parsing._
 import testing._
 import parallelism._
@@ -78,5 +77,12 @@ object Monad {
 
     def flatMap[A, B](o: Option[A])(f: A => Option[B]): Option[B] =
       o flatMap f
+  }
+
+  val listMonad = new Monad[List] {
+    def unit[A](a: => A): List[A] = List(a)
+
+    def flatMap[A, B](l: List[A])(f: A => List[B]): List[B] =
+      l flatMap f
   }
 }
