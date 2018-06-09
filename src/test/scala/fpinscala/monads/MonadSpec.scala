@@ -79,4 +79,9 @@ class MonadSpec extends FunSuite {
     import Monad._
     assert(optionMonad.product(Some(1), Some(2)) == Some((1, 2)))
   }
+
+  test("EXERCISE 11.6 filterM") {
+    import Monad._
+    assert(listMonad.filterM(List(1, 2, 3, 4))(a => listMonad.unit(a % 2 == 0)) == listMonad.unit(List(2, 4)))
+  }
 }
