@@ -44,6 +44,7 @@ trait Mon[F[_]] {
   // List 11-6 map2のためのMonトレイト。
   def map2[A, B, C](fa: F[A], fb: F[B])(f: (A, B) => C): F[C] =
     flatMap(fa)(a => map(fb)(b => f(a, b)))
+
 }
 
 object Mon {
@@ -60,7 +61,10 @@ object Mon {
 // List 11-8 Monad
 trait Monad[F[_]] extends Functor[F] {
   def unit[A](a: => A): F[A]
-  def flatMap[A, B](ma: F[A])(f: A => F[B]): F[B]
+
+  // EXERCISE 11.8 composeベースのflatMap。
+  def flatMap[A, B](ma: F[A])(f: A => F[B]): F[B] =
+    compose((_: Unit) => ma, f)(())
 
   def map[A, B](ma: F[A])(f: A => B): F[B] =
     flatMap(ma)(a => unit(f(a)))
@@ -105,29 +109,20 @@ trait Monad[F[_]] extends Functor[F] {
   // EXERCISE 11.7 クライスリ合成関数。
   def compose[A, B, C](f: A => F[B], g: B => F[C]): A => F[C] =
     a => flatMap(f(a))(g)
-  // a => flatMap(f(a))(b => g(b))
+    // a => flatMap(f(a))(b => g(b))
 }
 
 object Monad {
 
   val optionMonad = new Monad[Option] {
     def unit[A](a: => A): Option[A] = Some(a)
-
-    def flatMap[A, B](o: Option[A])(f: A => Option[B]): Option[B] =
-      o flatMap f
   }
 
   val listMonad = new Monad[List] {
     def unit[A](a: => A): List[A] = List(a)
-
-    def flatMap[A, B](l: List[A])(f: A => List[B]): List[B] =
-      l flatMap f
   }
 
   val streamMonad = new Monad[Stream] {
     def unit[A](a: => A): Stream[A] = Stream(a)
-
-    def flatMap[A, B](s: Stream[A])(f: A => Stream[B]): Stream[B] =
-      s flatMap f
   }
 }
