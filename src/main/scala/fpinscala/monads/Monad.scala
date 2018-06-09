@@ -62,12 +62,16 @@ object Mon {
 trait Monad[F[_]] extends Functor[F] {
   def unit[A](a: => A): F[A]
 
+  def map[A, B](ma: F[A])(f: A => B): F[B] =
+    flatMap(ma)(a => unit(f(a)))
+
+  // EXERCISE 11.12
+  def join[A](mma: F[F[A]]): F[A] =
+    flatMap(mma)(ma => ma)
+
   // EXERCISE 11.8 composeベースのflatMap。
   def flatMap[A, B](ma: F[A])(f: A => F[B]): F[B] =
     compose((_: Unit) => ma, f)(())
-
-  def map[A, B](ma: F[A])(f: A => B): F[B] =
-    flatMap(ma)(a => unit(f(a)))
 
   def map2[A, B, C](ma: F[A], mb: F[B])(f: (A, B) => C): F[C] =
     flatMap(ma)(a => map(mb)(b => f(a, b)))
@@ -110,10 +114,6 @@ trait Monad[F[_]] extends Functor[F] {
   def compose[A, B, C](f: A => F[B], g: B => F[C]): A => F[C] =
     a => flatMap(f(a))(g)
   // a => flatMap(f(a))(b => g(b))
-
-  // EXERCISE 11.12
-  def join[A](mma: F[F[A]]): F[A] =
-    flatMap(mma)(ma => ma)
 }
 
 object Monad {
