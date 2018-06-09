@@ -99,10 +99,10 @@ class MonadSpec extends FunSuite {
     val f = (a: Int) => Some(a + 1)
     val g = (b: Int) => Some(b + 2)
     val h = (c: Int) => Some(c + 3)
-    assert(compose(compose(f, g), h) == compose(f, compose(g, h)))
+    assert(compose(compose(f, g), h)(9) == compose(f, compose(g, h))(9))
     val a = (a: Int) => flatMap(compose(f, g)(a))(h)
     val b = (b: Int) => flatMap(f(b))(compose(g, h))
-    assert(a == b)
+    assert(a(9) == b(9))
   }
 
   test("EXERCISE 11.11") {
