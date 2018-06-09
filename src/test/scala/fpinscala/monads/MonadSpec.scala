@@ -84,4 +84,12 @@ class MonadSpec extends FunSuite {
     import Monad._
     assert(listMonad.filterM(List(1, 2, 3, 4))(a => listMonad.unit(a % 2 == 0)) == listMonad.unit(List(2, 4)))
   }
+
+  test("EXERCISE 11.7") {
+    import Monad._
+    val f = (a: Int) => Some(a + 2)
+    val g = (b: Int) => Some(b * 2)
+    val c = optionMonad.compose(f, g)
+    assert(c(2) == Some(8))
+  }
 }
