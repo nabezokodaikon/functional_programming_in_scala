@@ -104,4 +104,10 @@ class MonadSpec extends FunSuite {
     val b = (b: Int) => flatMap(f(b))(compose(g, h))
     assert(a == b)
   }
+
+  test("EXERCISE 11.11") {
+    import Monad.optionMonad._
+    assert(flatMap(None)(Some(_)) == None)
+    assert(flatMap(Some(1))(Some(_)) == Some(1))
+  }
 }
