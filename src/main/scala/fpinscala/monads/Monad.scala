@@ -73,6 +73,11 @@ trait Monad[F[_]] extends Functor[F] {
   def flatMap[A, B](ma: F[A])(f: A => F[B]): F[B] =
     compose((_: Unit) => ma, f)(())
 
+  // EXERCISE 11.7 クライスリ合成関数。
+  def compose[A, B, C](f: A => F[B], g: B => F[C]): A => F[C] =
+    a => flatMap(f(a))(g)
+  // a => flatMap(f(a))(b => g(b))
+
   def map2[A, B, C](ma: F[A], mb: F[B])(f: (A, B) => C): F[C] =
     flatMap(ma)(a => map(mb)(b => f(a, b)))
 
@@ -109,11 +114,6 @@ trait Monad[F[_]] extends Functor[F] {
         if (!b) filterM(t)(f)
         else map(filterM(t)(f))(h :: _))
     }
-
-  // EXERCISE 11.7 クライスリ合成関数。
-  def compose[A, B, C](f: A => F[B], g: B => F[C]): A => F[C] =
-    a => flatMap(f(a))(g)
-  // a => flatMap(f(a))(b => g(b))
 }
 
 object Monad {
