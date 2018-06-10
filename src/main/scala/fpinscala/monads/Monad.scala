@@ -180,5 +180,5 @@ object Reader {
       Reader(r => f(st.run(r)).run(r))
   }
 
-  def ask[R]: Reader[R, R] = reader(r => r)
+  def ask[R]: Reader[R, R] = Reader(r => r)
 }
