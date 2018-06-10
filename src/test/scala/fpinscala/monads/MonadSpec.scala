@@ -118,5 +118,11 @@ class MonadSpec extends FunSuite {
     import Id.idMonad
     assert(idMonad.unit(17) == Id(17))
     assert(idMonad.flatMap(Id(17))(a => idMonad.unit(a + 1)) == Id(18))
+
+    val s = for {
+      a <- Id("Hello, ")
+      b <- Id("monad!")
+    } yield a + b
+    assert(s == Id("Hello, monad!"))
   }
 }
