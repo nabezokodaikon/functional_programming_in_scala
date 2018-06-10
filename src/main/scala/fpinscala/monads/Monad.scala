@@ -142,3 +142,17 @@ object Id {
     override def flatMap[A, B](ida: Id[A])(f: A => Id[B]): Id[B] = ida flatMap f
   }
 }
+
+object StateMonads {
+  type IntState[A] = State[Int, A]
+
+  object IntStateMonad extends Monad[IntState] {
+    def unit[A](a: => A): IntState[A] = State(s => (a, s))
+    override def flatMap[A, B](s: IntState[A])(f: A => IntState[B]): IntState[B] = s flatMap f
+  }
+
+  def stateMonad[S] = new Monad[({ type lambda[x] = State[S, x] })#lambda] {
+    def unit[A](a: => A): State[S, A] = State(s => (a, s))
+    override def flatMap[A, B](s: State[S, A])(f: A => State[S, B]): State[S, B] = s flatMap f
+  }
+}
