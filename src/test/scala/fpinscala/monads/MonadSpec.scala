@@ -70,6 +70,12 @@ class MonadSpec extends FunSuite {
     assert(optionMonad.traverse(List(1, 2))(a => Some(a * 2)) == Some(List(2, 4)))
   }
 
+  test("EXERCISE 11.3 traverse for List") {
+    import Monad._
+    assert(listMonad.traverse(List(List(1, 2, 3)))(a => a) == List(List(1), List(2), List(3)))
+    assert(listMonad.traverse(List(1, 2, 3))(a => List(a)) == List(List(1, 2, 3)))
+  }
+
   test("EXERCISE 11.4 replicateM") {
     import Monad._
     assert(optionMonad.replicateM(3, Some(5)) == Some(List(5, 5, 5)))
