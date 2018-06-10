@@ -157,4 +157,16 @@ object StateMonads {
     def getState[S]: State[S, S] = State(s => (s, s))
     def setState[S](s: => S): State[S, Unit] = State(_ => ((), s))
   }
+
+  def getState[S]: State[S, S] = State(s => (s, s))
+  def setState[S](s: => S): State[S, Unit] = State(_ => ((), s))
+
+  val F = stateMonad[Int]
+
+  def zipWidthIndex[A](as: List[A]): List[(Int, A)] =
+    as.foldLeft(F.unit(List[(Int, A)]()))((acc, a) => for {
+      xs <- acc
+      n <- getState
+      _ <- setState(n + 1)
+    } yield (n, a) :: xs).run(0)._1.reverse
 }

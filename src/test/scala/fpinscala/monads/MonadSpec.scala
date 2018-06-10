@@ -133,4 +133,8 @@ class MonadSpec extends FunSuite {
     assert(m.getState.run(1) == (1, 1))
     assert(m.setState(2).run(1) == ((), 2))
   }
+
+  test("List 11-12 zipWithIndex") {
+    assert(StateMonads.zipWidthIndex(List(5, 7, 9)) == List((0, 5), (1, 7), (2, 9)))
+  }
 }
