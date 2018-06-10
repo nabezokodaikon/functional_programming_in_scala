@@ -125,4 +125,12 @@ class MonadSpec extends FunSuite {
     } yield a + b
     assert(s == Id("Hello, monad!"))
   }
+
+  test("stateMonad") {
+    val m = StateMonads.stateMonad[Int]
+    assert(m.unit(1).run(2) == (1, 2))
+    assert(m.flatMap(m.unit(1))(a => m.unit(a.toString)).run(2) == ("1", 2))
+    assert(m.getState.run(1) == (1, 1))
+    assert(m.setState(2).run(1) == ((), 2))
+  }
 }
