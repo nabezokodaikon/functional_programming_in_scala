@@ -110,4 +110,13 @@ class MonadSpec extends FunSuite {
     assert(flatMap(None)(Some(_)) == None)
     assert(flatMap(Some(1))(Some(_)) == Some(1))
   }
+
+  test("exercise 11.17 Id") {
+    assert(Id(17).map((a: Int) => a + 1) == Id(18))
+    assert(Id(17).flatMap((a: Int) => Id(a + 1)) == Id(18))
+
+    import Id.idMonad
+    assert(idMonad.unit(17) == Id(17))
+    assert(idMonad.flatMap(Id(17))(a => idMonad.unit(a + 1)) == Id(18))
+  }
 }
