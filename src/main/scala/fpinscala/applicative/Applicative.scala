@@ -48,4 +48,12 @@ trait Applicative[F[_]] extends Functor[F] {
   def applyViaMap2[A, B](fab: F[A => B])(fa: F[A]): F[B] =
     map2(fab, fa)(_(_))
   // map2(fab, fa)((a, b) => a(b))
+
+  // EXERCISE 12.3 map3
+  def map3[A, B, C, D](fa: F[A], fb: F[B], fc: F[C])(f: (A, B, C) => D): F[D] =
+    apply(apply(apply(unit(f.curried))(fa))(fb))(fc)
+
+  // EXERCISE 12.3 map4
+  def map3[A, B, C, D, E](fa: F[A], fb: F[B], fc: F[C], fd: F[D])(f: (A, B, C, D) => E): F[E] =
+    apply(apply(apply(apply(unit(f.curried))(fa))(fb))(fc))(fd)
 }
