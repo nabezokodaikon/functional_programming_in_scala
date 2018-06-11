@@ -75,3 +75,18 @@ trait Monad[F[_]] extends Applicative[F] {
   override def map2[A, B, C](fa: F[A], fb: F[B])(f: (A, B) => C): F[C] =
     flatMap(fa)(a => map(fb)(b => f(a, b)))
 }
+
+object Applicative {
+
+  // List 12-5
+  val streamApplicative = new Applicative[Stream] {
+
+    // 無限の定数ストリーム。
+    def unit[A](a: => A): Stream[A] =
+      Stream.continually(a)
+
+    // 要素を各箇所で結合。
+    override def map2[A, B, C](a: Stream[A], b: Stream[B])(f: (A, B) => C): Stream[C] =
+      a zip b map f.tupled
+  }
+}
