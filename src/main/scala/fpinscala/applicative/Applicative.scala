@@ -76,7 +76,7 @@ trait Monad[F[_]] extends Applicative[F] {
     flatMap(fa)(a => map(fb)(b => f(a, b)))
 }
 
-object Applicative {
+object Monad {
 
   // List 12-5
   val streamApplicative = new Applicative[Stream] {
