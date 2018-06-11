@@ -77,6 +77,9 @@ trait Monad[F[_]] extends Applicative[F] {
 }
 
 object Monad {
+}
+
+object Applicative {
 
   // List 12-5
   val streamApplicative = new Applicative[Stream] {
