@@ -28,4 +28,34 @@ class ApplicativeSpec extends FunSuite {
     assert(validationApplicative.map2(Failure(1, Vector(2, 3)), Success(4))((a, b) => (a, b)) ==
       Failure(1, Vector(2, 3)))
   }
+
+  test("List 12-7") {
+    import Applicative._
+
+    assert(validName("taro") == Success("taro"))
+    assert(validName("") == Failure("Name cannot be empty"))
+
+    import java.text._
+    assert(validBirthdate("2018-06-11") == Success((new SimpleDateFormat("yyyy-MM-dd").parse("2018-06-11"))))
+    assert(validBirthdate("20180611") == Failure("Birthdate must be in the form yyyy-MM-dd"))
+
+    assert(validPhone("1234567890") == Success("1234567890"))
+    assert(validPhone("123456789") == Failure("Phone bumber must be 10 digits"))
+
+    val s1 = validWebForm("taro", "2018-06-11", "1234567890")
+    val a1 = WebForm("taro", (new SimpleDateFormat("yyyy-MM-dd")).parse("2018-06-11"), "1234567890")
+    assert(s1 == Success(a1))
+
+    val s2 = validWebForm("", "2018-06-11", "1234567890")
+    assert(s2 == Failure("Name cannot be empty", Vector()))
+
+    val s3 = validWebForm("", "20180611", "1234567890")
+    assert(s3 == Failure("Name cannot be empty", Vector("Birthdate must be in the form yyyy-MM-dd")))
+
+    val s4 = validWebForm("", "20180611", "123456789")
+    assert(s4 == Failure(
+      "Name cannot be empty",
+      Vector("Birthdate must be in the form yyyy-MM-dd", "Phone bumber must be 10 digits")
+    ))
+  }
 }

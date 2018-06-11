@@ -120,6 +120,34 @@ object Applicative {
           // case (_, Failure(a, b)) => Failure(a, b)
         }
     }
+
+  // List 12-7
+  case class WebForm(name: String, birthdate: java.util.Date, phoneNumber: String)
+
+  def validWebForm(name: String, birthdate: String, phone: String): Validation[String, WebForm] =
+    validationApplicative.map3(
+      validName(name),
+      validBirthdate(birthdate),
+      validPhone(phone)
+    )(
+        WebForm(_, _, _)
+      )
+
+  def validName(name: String): Validation[String, String] =
+    if (name != "") Success(name)
+    else Failure("Name cannot be empty")
+
+  def validBirthdate(birthdate: String): Validation[String, java.util.Date] =
+    try {
+      import java.text._
+      Success((new SimpleDateFormat("yyyy-MM-dd")).parse(birthdate))
+    } catch {
+      case _: Throwable => Failure("Birthdate must be in the form yyyy-MM-dd")
+    }
+
+  def validPhone(phoneNumber: String): Validation[String, String] =
+    if (phoneNumber.matches("[0-9]{10}")) Success(phoneNumber)
+    else Failure("Phone bumber must be 10 digits")
 }
 
 // List 12-6
