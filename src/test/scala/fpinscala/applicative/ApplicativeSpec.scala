@@ -87,4 +87,13 @@ class ApplicativeSpec extends FunSuite {
     val a = p.apply((Some(f), Some(f)))((Some(1), Some(2)))
     assert(a == (Some("1"), Some("2")))
   }
+
+  test("EXERCISE 12.9 compose") {
+    import Applicative._
+
+    val c = optionApplicative.compose(optionApplicative)
+    assert(c.unit(1) == Some(Some(1)))
+    assert(c.map2(c.unit(1), c.unit(2))((a, b) => a + b) == Some(Some(3)))
+  }
+
 }
