@@ -126,6 +126,12 @@ object Monad {
           case Left(e) => Left(e)
         }
     }
+
+  def stateMonad[S] = new Monad[({ type f[x] = State[S, x] })#f] {
+    def unit[A](a: => A): State[S, A] = State(s => (a, s))
+    override def flatMap[A, B](st: State[S, A])(f: A => State[S, B]): State[S, B] =
+      st flatMap f
+  }
 }
 
 object Applicative {
@@ -238,6 +244,10 @@ trait Traverse[F[_]] extends Functor[F] with Foldable[F] { self =>
   import Applicative._
   override def foldMap[A, M](as: F[A])(f: A => M)(mb: Monoid[M]): M =
     traverse[({ type f[x] = Const[M, x] })#f, A, Nothing](as)(f)(monoidApplicative(mb))
+
+  // List 12-12
+  def traverseS[S, A, B](fa: F[A])(f: A => State[S, B]): State[S, F[B]] =
+    traverse[({ type f[x] = State[S, x] })#f, A, B](fa)(f)(Monad.stateMonad)
 }
 
 object Traverse {
