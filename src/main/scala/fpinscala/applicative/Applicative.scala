@@ -248,6 +248,13 @@ trait Traverse[F[_]] extends Functor[F] with Foldable[F] { self =>
   // List 12-12
   def traverseS[S, A, B](fa: F[A])(f: A => State[S, B]): State[S, F[B]] =
     traverse[({ type f[x] = State[S, x] })#f, A, B](fa)(f)(Monad.stateMonad)
+
+  // List 12-13
+  def zipWithIndex[A](ta: F[A]): F[(A, Int)] =
+    traverseS(ta)((a: A) => (for {
+      i <- get[Int]
+      _ <- set(i + 1)
+    } yield (a, i))).run(0)._1
 }
 
 object Traverse {
