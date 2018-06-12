@@ -33,6 +33,9 @@ trait Applicative[F[_]] extends Functor[F] {
   def product[A, B](fa: F[A], fb: F[B]): F[(A, B)] =
     map2(fa, fb)((_, _))
 
+  def assoc[A, B, C](p: (A, (B, C))): ((A, B), C) =
+    p match { case (a, (b, c)) => ((a, b), c) }
+
   // EXERCISE 12.2 map2ViaApply
   def map2[A, B, C](fa: F[A], fb: F[B])(f: (A, B) => C): F[C] =
     apply(map(fa)(f.curried))(fb)

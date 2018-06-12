@@ -70,4 +70,10 @@ class ApplicativeSpec extends FunSuite {
     val o = optionApplicative
     assert(o.map4(Some(1), Some(2), Some(3), Some(4))((a, b, c, d) => a + b + c + d) == Some(10))
   }
+
+  test("assoc") {
+    import Applicative._
+    val o = optionApplicative
+    assert(o.assoc(Some(1), (None, Some(3))) == ((Some(1), None), Some(3)))
+  }
 }
