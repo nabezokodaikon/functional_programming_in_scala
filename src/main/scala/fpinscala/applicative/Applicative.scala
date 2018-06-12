@@ -5,6 +5,7 @@ import monads.Functor
 import state._
 import State._
 import monoids._
+import Monoid.Foldable
 import language.higherKinds
 import language.implicitConversions
 
@@ -205,6 +206,52 @@ object Applicative {
     if (phoneNumber.matches("[0-9]{10}")) Success(phoneNumber)
     else Failure("Phone bumber must be 10 digits")
 }
+
+trait Traverse[F[_]] extends Functor[F] with Foldable[F] { self =>
+
+  type Id[A] = A
+
+  val idMonad = new Monad[Id] {
+    def unit[A](a: => A) = a
+    override def flatMap[A, B](a: A)(f: A => B): B = f(a)
+  }
+
+  def traverse[G[_]: Applicative, A, B](fa: F[A])(f: A => G[B]): G[F[B]] =
+    sequence(map(fa)(f))
+
+  def sequence[G[_]: Applicative, A](fga: F[G[A]]): G[F[A]] =
+    traverse(fga)(ga => ga)
+
+  def map[A, B](fa: F[A])(f: A => B): F[B] =
+    traverse[Id, A, B](fa)(f)(idMonad)
+}
+
+object Traverse {
+
+  // EXERCISE 12.13 listTraverse
+  val listTraverse = new Traverse[List] {
+    override def traverse[G[_], A, B](as: List[A])(f: A => G[B])(implicit G: Applicative[G]): G[List[B]] =
+      as.foldRight(G.unit(List[B]()))((a, fbs) => G.map2(f(a), fbs)(_ :: _))
+  }
+
+  // EXERCISE 12.13 optionTraverse
+  val optionTraverse = new Traverse[Option] {
+    override def traverse[G[_], A, B](oa: Option[A])(f: A => G[B])(implicit G: Applicative[G]): G[Option[B]] =
+      oa match {
+        case Some(a) => G.map(f(a))(Some(_))
+        case None => G.unit(None)
+      }
+  }
+
+  // EXERCISE 12.13 treeTraverse
+  val treeTraverse = new Traverse[Tree] {
+    override def traverse[G[_], A, B](ta: Tree[A])(f: A => G[B])(implicit G: Applicative[G]): G[Tree[B]] =
+      G.map2(f(ta.head), listTraverse.traverse(ta.tail)(a => traverse(a)(f)))(Tree(_, _))
+  }
+}
+
+// EXERCISE 12.13 treeTraverse
+case class Tree[+A](head: A, tail: List[Tree[A]])
 
 // List 12-6
 sealed trait Validation[+E, +A]
