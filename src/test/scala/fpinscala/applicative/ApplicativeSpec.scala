@@ -96,4 +96,11 @@ class ApplicativeSpec extends FunSuite {
     assert(c.map2(c.unit(1), c.unit(2))((a, b) => a + b) == Some(Some(3)))
   }
 
+  test("listApplicative") {
+    import Applicative._
+
+    val l = listApplicative
+    assert(l.unit(1) == List(1))
+    assert(l.map2(List(1, 2, 3), List(4, 5))((a, b) => a + b) == List(5, 7))
+  }
 }
