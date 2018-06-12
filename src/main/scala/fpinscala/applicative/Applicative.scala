@@ -25,6 +25,12 @@ trait Applicative[F[_]] extends Functor[F] {
   def sequence[A](fas: List[F[A]]): F[List[A]] =
     traverse(fas)(fa => fa)
 
+  // EXERCISE 12.2 sequenceMap
+  def sequenceMap[K, V](ofa: Map[K, F[V]]): F[Map[K, V]] =
+    (ofa foldLeft unit(Map.empty[K, V])) {
+      case (acc, (k, fv)) => map2(acc, fv)((m, v) => m + (k -> v))
+    }
+
   // EXERCISE 12.1 replicateM
   def replicateM[A](n: Int, fa: F[A]): F[List[A]] =
     sequence(List.fill(n)(fa))
