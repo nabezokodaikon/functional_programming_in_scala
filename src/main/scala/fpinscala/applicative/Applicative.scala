@@ -233,6 +233,11 @@ trait Traverse[F[_]] extends Functor[F] with Foldable[F] { self =>
 
   def map[A, B](fa: F[A])(f: A => B): F[B] =
     traverse[Id, A, B](fa)(f)(idMonad)
+
+  // List 12-11
+  import Applicative._
+  override def foldMap[A, M](as: F[A])(f: A => M)(mb: Monoid[M]): M =
+    traverse[({ type f[x] = Const[M, x] })#f, A, Nothing](as)(f)(monoidApplicative(mb))
 }
 
 object Traverse {
