@@ -58,4 +58,16 @@ class ApplicativeSpec extends FunSuite {
       Vector("Birthdate must be in the form yyyy-MM-dd", "Phone bumber must be 10 digits")
     ))
   }
+
+  test("EXERCISE 12.3 map3") {
+    import Applicative._
+    val o = optionApplicative
+    assert(o.map3(Some(1), Some(2), Some(3))((a, b, c) => a + b + c) == Some(6))
+  }
+
+  test("EXERCISE 12.3 map4") {
+    import Applicative._
+    val o = optionApplicative
+    assert(o.map4(Some(1), Some(2), Some(3), Some(4))((a, b, c, d) => a + b + c + d) == Some(10))
+  }
 }

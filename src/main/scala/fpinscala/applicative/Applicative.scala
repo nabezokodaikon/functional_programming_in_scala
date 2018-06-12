@@ -104,6 +104,17 @@ object Applicative {
       a zip b map f.tupled
   }
 
+  val optionApplicative = new Applicative[Option] {
+
+    def unit[A](a: => A): Option[A] = Some(a)
+
+    override def map2[A, B, C](a: Option[A], b: Option[B])(f: (A, B) => C): Option[C] =
+      for {
+        aa <- a
+        bb <- b
+      } yield f(aa, bb)
+  }
+
   // EXERCISE 12.6
   def validationApplicative[E]: Applicative[({ type f[x] = Validation[E, x] })#f] =
     new Applicative[({ type f[x] = Validation[E, x] })#f] {
