@@ -76,4 +76,15 @@ class ApplicativeSpec extends FunSuite {
     val o = optionApplicative
     assert(o.assoc(Some(1), (None, Some(3))) == ((Some(1), None), Some(3)))
   }
+
+  test("EXERCISE 12.8 product") {
+    import Applicative._
+    val g = optionApplicative
+    val p = optionApplicative.product(g)
+    assert(p.unit(1) == (Some(1), Some(1)))
+
+    val f = (a: Int) => a.toString
+    val a = p.apply((Some(f), Some(f)))((Some(1), Some(2)))
+    assert(a == (Some("1"), Some("2")))
+  }
 }
