@@ -255,6 +255,13 @@ trait Traverse[F[_]] extends Functor[F] with Foldable[F] { self =>
       i <- get[Int]
       _ <- set(i + 1)
     } yield (a, i))).run(0)._1
+
+  // List 12-14
+  override def toList[A](fa: F[A]): List[A] =
+    traverseS(fa)((a: A) => (for {
+      as <- get[List[A]] // 現在の要素(蓄積リスト)を取得。
+      _ <- set(a :: as) // 現在の要素を追加し、新しいリストを新しい状態として設定。
+    } yield ())).run(Nil)._2.reverse
 }
 
 object Traverse {
