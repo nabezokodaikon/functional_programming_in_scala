@@ -284,6 +284,13 @@ trait Traverse[F[_]] extends Functor[F] with Foldable[F] { self =>
   // EXERCISE 12.17 foldLeft
   override def foldLeft[A, B](fa: F[A])(z: B)(f: (B, A) => B): B =
     mapAccum(fa, z)((a, b) => ((), f(b, a)))._2
+
+  // List 12-6
+  def zip[A, B](fa: F[A], fb: F[B]): F[(A, B)] =
+    (mapAccum(fa, toList(fb)) {
+      case (a, Nil) => sys.error("zip: Incompatible shapes.")
+      case (a, b :: bs) => ((a, b), bs)
+    })._1
 }
 
 object Traverse {
