@@ -276,6 +276,10 @@ trait Traverse[F[_]] extends Functor[F] with Foldable[F] { self =>
       as <- get[List[A]] // 現在の要素(蓄積リスト)を取得。
       _ <- set(a :: as) // 現在の要素を追加し、新しいリストを新しい状態として設定。
     } yield ())).run(Nil)._2.reverse
+
+  // EXERCISE 12.16 reverse
+  def reverse[A](fa: F[A]): F[A] =
+    mapAccum(fa, toList(fa).reverse)((_, as) => (as.head, as.tail))._1
 }
 
 object Traverse {
