@@ -40,4 +40,10 @@ class MonoidSpec extends FunSuite {
     val b = endoMonoid[Int].op(endoMonoid[Int].op(a => a + 2, b => b * 2), c => c / 2)
     assert(a(2) == b(2))
   }
+
+  test("List 10-4 concatenate") {
+    import Monoid._
+
+    assert(concatenate(List(1, 2, 3), intAddition) == 6)
+  }
 }
