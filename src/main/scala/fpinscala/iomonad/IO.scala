@@ -37,6 +37,7 @@ object Player {
     println(winnerMsg(winner(p1, p2)))
 
   def printLine(msg: String): IO = new IO {
+  def PrintLine(msg: String): IO = new IO {
     def run = println(msg)
   }
 }
