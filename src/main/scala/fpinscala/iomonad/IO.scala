@@ -8,6 +8,7 @@ import scala.io.StdIn.readLine
 case class Player(name: String, score: Int)
 
 object Player {
+  import IO0._
 
   def contest(p1: Player, p2: Player): Unit =
     if (p1.score > p2.score)
@@ -44,24 +45,28 @@ object Player {
   }
 }
 
-// List 13-2
-trait IO { self => // 引数selfにより、このオブジェクトはthisではなくselfとして参照できる。
+object IO0 {
 
-  def run: Unit
+  // List 13-2
+  trait IO { self => // 引数selfにより、このオブジェクトはthisではなくselfとして参照できる。
 
-  def ++(io: IO): IO = new IO {
-    def run = {
-      self.run // selfは外側のIOを参照する。
-      io.run
+    def run: Unit
+
+    def ++(io: IO): IO = new IO {
+      def run = {
+        self.run // selfは外側のIOを参照する。
+        io.run
+      }
     }
   }
-}
 
-// List 13-2
-object IO {
+  // List 13-2
+  object IO {
 
-  def empty: IO = new IO {
-    def run = ()
+    def empty: IO = new IO {
+      def run = ()
+    }
+
   }
 
 }
