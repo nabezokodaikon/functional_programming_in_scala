@@ -10,6 +10,7 @@ class IOSpec extends FunSuite {
     Player.contest(p1, p2)
     Player.contest2(p1, p2)
     Player.contest3(p1, p2)
+    Player.contest4(p1, p2).run
   }
 
 }
