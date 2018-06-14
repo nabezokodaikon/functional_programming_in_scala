@@ -53,4 +53,16 @@ class MonoidSpec extends FunSuite {
     assert(foldMap(List(1, 3, 5), booleanOr)(a => a % 2 == 0) == false)
     assert(foldMap(List(1, 2, 5), booleanOr)(a => a % 2 == 0) == true)
   }
+
+  test("EXERCISE 10.6 foldRight") {
+    import Monoid._
+
+    assert(foldRight(List(1, 2, 3))(0)((a, b) => a + b) == 6)
+  }
+
+  test("EXERCISE 10.6 foldLeft") {
+    import Monoid._
+
+    assert(foldLeft(List(1, 2, 3))(0)((b, a) => a + b) == 6)
+  }
 }
