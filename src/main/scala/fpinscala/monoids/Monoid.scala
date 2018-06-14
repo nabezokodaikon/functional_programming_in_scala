@@ -55,6 +55,10 @@ object Monoid {
   // List 10-4
   def concatenate[A](as: List[A], m: Monoid[A]): A =
     as.foldLeft(m.zero)(m.op)
+
+  // EXERCISE 10.5
+  def foldMap[A, B](as: List[A], m: Monoid[B])(f: A => B): B =
+    as.foldLeft(m.zero)((acc, a) => m.op(acc, f(a)))
 }
 
 // trait Foldable[F[_]]
