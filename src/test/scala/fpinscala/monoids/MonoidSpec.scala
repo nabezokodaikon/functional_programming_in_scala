@@ -26,8 +26,18 @@ class MonoidSpec extends FunSuite {
 
   test("EXERCISE 10.2 optionMonoid") {
     import Monoid._
+
     assert(firstOptionMonoid[Int].op(Some(1), firstOptionMonoid[Int].op(Some(2), Some(3))) ==
       firstOptionMonoid[Int].op(firstOptionMonoid[Int].op(Some(1), Some(2)), Some(3)))
+
     assert(firstOptionMonoid[Int].op(None, firstOptionMonoid[Int].op(Some(2), Some(3))) == Some(2))
+  }
+
+  test("EXERCISE 10.3 endoMonoid") {
+    import Monoid._
+
+    val a = endoMonoid[Int].op(a => a + 2, endoMonoid[Int].op(b => b * 2, c => c / 2))
+    val b = endoMonoid[Int].op(endoMonoid[Int].op(a => a + 2, b => b * 2), c => c / 2)
+    assert(a(2) == b(2))
   }
 }

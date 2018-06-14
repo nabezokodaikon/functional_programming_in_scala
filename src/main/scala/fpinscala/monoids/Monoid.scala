@@ -42,6 +42,15 @@ object Monoid {
 
   def firstOptionMonoid[A]: Monoid[Option[A]] = optionMonoid[A]
   def lastOptionMonoid[A]: Monoid[Option[A]] = dual(optionMonoid[A])
+
+  // EXERCISE 10.3 endoMonoid
+  def endoMonoid[A]: Monoid[A => A] = new Monoid[A => A] {
+    def op(a: A => A, b: A => A) =
+      a compose b
+    // aa => b(a(aa))
+
+    def zero = (a: A) => a
+  }
 }
 
 // trait Foldable[F[_]]
