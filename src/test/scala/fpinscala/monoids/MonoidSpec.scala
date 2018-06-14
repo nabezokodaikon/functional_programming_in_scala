@@ -23,4 +23,11 @@ class MonoidSpec extends FunSuite {
     assert(booleanOr.op(true, booleanOr.op(false, false)) == booleanOr.op(booleanOr.op(true, false), false))
     assert(booleanAnd.op(true, booleanAnd.op(false, false)) == booleanAnd.op(booleanAnd.op(true, false), false))
   }
+
+  test("EXERCISE 10.2 optionMonoid") {
+    import Monoid._
+    assert(firstOptionMonoid[Int].op(Some(1), firstOptionMonoid[Int].op(Some(2), Some(3))) ==
+      firstOptionMonoid[Int].op(firstOptionMonoid[Int].op(Some(1), Some(2)), Some(3)))
+    assert(firstOptionMonoid[Int].op(None, firstOptionMonoid[Int].op(Some(2), Some(3))) == Some(2))
+  }
 }
