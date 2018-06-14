@@ -44,8 +44,24 @@ object Player {
   }
 }
 
-trait IO {
+// List 13-2
+trait IO { self =>
 
   def run: Unit
+
+  def ++(io: IO): IO = new IO {
+    def run = {
+      self.run
+      io.run
+    }
+  }
+}
+
+// List 13-2
+object IO {
+
+  def empty: IO = new IO {
+    def run = ()
+  }
 
 }
