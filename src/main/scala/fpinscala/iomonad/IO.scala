@@ -45,13 +45,13 @@ object Player {
 }
 
 // List 13-2
-trait IO { self =>
+trait IO { self => // 引数selfにより、このオブジェクトはthisではなくselfとして参照できる。
 
   def run: Unit
 
   def ++(io: IO): IO = new IO {
     def run = {
-      self.run
+      self.run // selfは外側のIOを参照する。
       io.run
     }
   }
