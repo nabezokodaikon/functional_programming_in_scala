@@ -21,4 +21,10 @@ class MonadSpec extends FunSuite {
     val l = List((1, 2), (3, 4), (5, 6))
     assert(f.distribute(l) == (List(1, 3, 5), List(2, 4, 6)))
   }
+
+  test("List 11-4 codistribute") {
+    val f = Functor.listFunctor
+    val l = Left(List(1, 2))
+    assert(f.codistribute(l) == List(Left(1), Left(2)))
+  }
 }
