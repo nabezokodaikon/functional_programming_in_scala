@@ -78,4 +78,14 @@ class MonoidSpec extends FunSuite {
     val s = "foo bar hoge"
     assert(count(s) == 3)
   }
+
+  test("EXERCISE 10.12 ListFoldable") {
+    import Monoid.intAddition
+    import ListFoldable._
+
+    assert(foldRight(List(1, 2, 3))(0)((a, b) => a + b) == 6)
+    assert(foldLeft(List(1, 2, 3))(0)((b, a) => a + b) == 6)
+    assert(foldMap(List(1, 2, 3))((a: Int) => a * 2)(intAddition) == 12)
+    assert(concatenate(List(1, 2, 3))(intAddition) == 6)
+  }
 }
