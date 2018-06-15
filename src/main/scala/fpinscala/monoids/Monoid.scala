@@ -77,6 +77,41 @@ object Monoid {
       val (l, r) = v.splitAt(v.length / 2)
       m.op(foldMapV(l, m)(f), foldMapV(r, m)(f))
     }
+
+  // List 10-5
+  sealed trait WC
+  case class Stub(chars: String) extends WC
+  case class Part(lStub: String, words: Int, rStub: String) extends WC
+
+  val wcMonoid: Monoid[WC] = new Monoid[WC] {
+
+    val zero = Stub("")
+
+    def op(a: WC, b: WC) = (a, b) match {
+      case (Stub(c), Stub(d)) => Stub(c + d)
+      case (Stub(c), Part(l, w, r)) => Part(c + l, w, r)
+      case (Part(l, w, r), Stub(c)) => Part(l, w, r + c)
+      case (Part(l1, w1, r1), Part(l2, w2, r2)) =>
+        Part(l1, w1 + (if ((r1 + l2).isEmpty) 0 else 1) + w2, r2)
+    }
+  }
+
+  // EXERCISE 10.11
+  def count(s: String): Int = {
+
+    def wc(c: Char): WC =
+      if (c.isWhitespace)
+        Part("", 0, "")
+      else
+        Stub(c.toString)
+
+    def unstub(s: String) = s.length min 1
+
+    foldMapV(s.toIndexedSeq, wcMonoid)(wc) match {
+      case Stub(s) => unstub(s)
+      case Part(l, w, r) => unstub(l) + w + unstub(r)
+    }
+  }
 }
 
 // trait Foldable[F[_]]

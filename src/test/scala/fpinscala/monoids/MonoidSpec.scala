@@ -71,4 +71,11 @@ class MonoidSpec extends FunSuite {
 
     assert(foldMapV(IndexedSeq(1, 2, 3), (intAddition))(a => a * 2) == 12)
   }
+
+  test("EXERCISE 10.11 count") {
+    import Monoid._
+
+    val s = "foo bar hoge"
+    assert(count(s) == 3)
+  }
 }
