@@ -66,4 +66,9 @@ class MonadSpec extends FunSuite {
     val om = Monad.optionMonad
     assert(om.replicateM(3, Some(2)) == Some(List(2, 2, 2)))
   }
+
+  test("product") {
+    val m = Monad.optionMonad
+    assert(m.product(Some(1), Some(2)) == Some((1, 2)))
+  }
 }
