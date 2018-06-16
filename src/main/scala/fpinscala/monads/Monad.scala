@@ -81,6 +81,10 @@ trait Monad[F[_]] {
   // EXERCISE 11.12
   def joinViaFlatMap[A](mma: F[F[A]]): F[A] =
     flatMap(mma)(ma => ma)
+
+  // EXERCISE 11.13
+  def flatMapViaJoin[A, B](ma: F[A])(f: A => F[B]): F[B] =
+    joinViaFlatMap(map(ma)(f))
 }
 
 object Monad {

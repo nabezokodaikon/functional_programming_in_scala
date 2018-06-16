@@ -95,4 +95,9 @@ class MonadSpec extends FunSuite {
     val m = Monad.listMonad
     assert(m.joinViaFlatMap(List(List(1), List(2))) == List(1, 2))
   }
+
+  test("EXERCISE 11.13 flatMapViaJoin") {
+    val m = Monad.listMonad
+    assert(m.flatMapViaJoin(List(1, 2, 3))(a => List(a * 2)) == List(2, 4, 6))
+  }
 }
