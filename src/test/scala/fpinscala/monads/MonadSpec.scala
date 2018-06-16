@@ -106,4 +106,9 @@ class MonadSpec extends FunSuite {
     val f = m.composeViaJoin((a: Int) => m.unit(a * 2), (b: Int) => m.unit(b * 3))
     assert(f(4) == m.unit(24))
   }
+
+  test("EXERCISE 11.7") {
+    assert(Id(5).map(v => v * 5) == Id(25))
+    assert(Id(4).flatMap(v => Id(v * 5)) == Id(20))
+  }
 }
