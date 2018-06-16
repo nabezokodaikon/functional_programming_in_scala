@@ -40,4 +40,10 @@ class MonadSpec extends FunSuite {
     assert(m.flatMap(Some(1))(a => Some(a * 2)) == Some(2))
     assert(m.flatMap(None)((a: Int) => Some(a * 2)) == None)
   }
+
+  test("EXERCISE 11.1 streamMonad") {
+    val m = Monad.streamMonad
+    assert(m.unit(1) == Stream(1))
+    assert(m.flatMap(Stream(1, 2, 3))(a => Stream(a * 2)) == Stream(2, 4, 6))
+  }
 }

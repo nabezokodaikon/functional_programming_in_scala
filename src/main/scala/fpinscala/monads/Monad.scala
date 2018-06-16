@@ -65,4 +65,12 @@ object Monad {
 
     def flatMap[A, B](ma: Option[A])(f: A => Option[B]): Option[B] = ma flatMap f
   }
+
+  // EXERCISE 11.1
+  def streamMonad = new Monad[Stream] {
+
+    def unit[A](a: => A): Stream[A] = Stream(a)
+
+    def flatMap[A, B](ma: Stream[A])(f: A => Stream[B]): Stream[B] = ma flatMap f
+  }
 }
