@@ -63,7 +63,7 @@ class MonadSpec extends FunSuite {
   }
 
   test("EXERCISE 11.4 replicateM") {
-    val m = Monad.optionMonad
-    println(m.replicateM(3, Some(2)) == List(2, 2, 2))
+    val om = Monad.optionMonad
+    assert(om.replicateM(3, Some(2)) == Some(List(2, 2, 2)))
   }
 }
