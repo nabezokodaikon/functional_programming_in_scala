@@ -57,4 +57,12 @@ object Monad {
 
     def flatMap[A, B](ma: List[A])(f: A => List[B]): List[B] = ma flatMap f
   }
+
+  // EXERCISE 11.1
+  def optionMonad = new Monad[Option] {
+
+    def unit[A](a: => A): Option[A] = Some(a)
+
+    def flatMap[A, B](ma: Option[A])(f: A => Option[B]): Option[B] = ma flatMap f
+  }
 }

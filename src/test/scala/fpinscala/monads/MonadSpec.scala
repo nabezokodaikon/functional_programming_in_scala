@@ -33,4 +33,11 @@ class MonadSpec extends FunSuite {
     assert(m.unit(1) == List(1))
     assert(m.flatMap(List(1, 2, 3))(a => List(a * 2)) == List(2, 4, 6))
   }
+
+  test("EXERCISE 11.1 optionMonad") {
+    val m = Monad.optionMonad
+    assert(m.unit(1) == Some(1))
+    assert(m.flatMap(Some(1))(a => Some(a * 2)) == Some(2))
+    assert(m.flatMap(None)((a: Int) => Some(a * 2)) == None)
+  }
 }
