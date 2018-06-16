@@ -46,4 +46,19 @@ class MonadSpec extends FunSuite {
     assert(m.unit(1) == Stream(1))
     assert(m.flatMap(Stream(1, 2, 3))(a => Stream(a * 2)) == Stream(2, 4, 6))
   }
+
+  test("EXERCISE 11.3 sequence") {
+    val m = Monad.optionMonad
+    assert(m.sequence(List(None)) == None)
+    assert(m.sequence(List(Some(1), None)) == None)
+    assert(m.sequence(List(Some(1), Some(2))) == Some(List(1, 2)))
+  }
+
+  test("EXERCISE 11.3 traverse") {
+    val m = Monad.optionMonad
+    assert(m.traverse(List(None))(a => a) == None)
+    assert(m.traverse(List(Some(1), None))(a => a) == None)
+    assert(m.traverse(List(Some(1), Some(2)))(a => a) == Some(List(1, 2)))
+    assert(m.traverse(List(1, 2))(a => Some(a * 2)) == Some(List(2, 4)))
+  }
 }
