@@ -79,4 +79,10 @@ class MonadSpec extends FunSuite {
     val om = Monad.optionMonad
     assert(om.filterM(List(1, 2, 3))(a => om.unit(a % 2 == 1)) == Some(List(1, 3)))
   }
+
+  test("EXERCISE 11-7 compose") {
+    val m = Monad.optionMonad
+    val f = m.compose((a: Int) => m.unit(a * 2), (b: Int) => m.unit(b * 3))
+    assert(f(4) == m.unit(24))
+  }
 }
