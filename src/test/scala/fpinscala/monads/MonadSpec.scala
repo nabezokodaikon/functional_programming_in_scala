@@ -100,4 +100,10 @@ class MonadSpec extends FunSuite {
     val m = Monad.listMonad
     assert(m.flatMapViaJoin(List(1, 2, 3))(a => List(a * 2)) == List(2, 4, 6))
   }
+
+  test("EXERCISE 11-13 composeViaJoin") {
+    val m = Monad.optionMonad
+    val f = m.composeViaJoin((a: Int) => m.unit(a * 2), (b: Int) => m.unit(b * 3))
+    assert(f(4) == m.unit(24))
+  }
 }

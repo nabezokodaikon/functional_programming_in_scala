@@ -85,6 +85,10 @@ trait Monad[F[_]] {
   // EXERCISE 11.13
   def flatMapViaJoin[A, B](ma: F[A])(f: A => F[B]): F[B] =
     joinViaFlatMap(map(ma)(f))
+
+  // EXERCISE 11.13
+  def composeViaJoin[A, B, C](f: A => F[B], g: B => F[C]): A => F[C] =
+    a => joinViaFlatMap(map(f(a))(g))
 }
 
 object Monad {
