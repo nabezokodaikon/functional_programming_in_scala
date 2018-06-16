@@ -110,5 +110,10 @@ class MonadSpec extends FunSuite {
   test("EXERCISE 11.7") {
     assert(Id(5).map(v => v * 5) == Id(25))
     assert(Id(4).flatMap(v => Id(v * 5)) == Id(20))
+
+    val m = Id.idMonad
+    assert(m.unit(1) == Id(1))
+    assert(m.flatMap(Id(5))(v => m.unit(v * 5)) == Id(25))
+
   }
 }
