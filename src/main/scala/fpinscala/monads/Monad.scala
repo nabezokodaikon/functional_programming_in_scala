@@ -35,7 +35,7 @@ object Functor {
 }
 
 // List 11-8
-trait Mon[F[_]] {
+trait Monad[F[_]] {
 
   def unit[A](a: => A): F[A]
 
@@ -46,4 +46,15 @@ trait Mon[F[_]] {
 
   def map2[A, B, C](ma: F[A], mb: F[B])(f: (A, B) => C): F[C] =
     flatMap(ma)(a => map(mb)(b => f(a, b)))
+}
+
+object Monad {
+
+  // EXERCISE 11.1
+  def listMonad = new Monad[List] {
+
+    def unit[A](a: => A): List[A] = List(a)
+
+    def flatMap[A, B](ma: List[A])(f: A => List[B]): List[B] = ma flatMap f
+  }
 }

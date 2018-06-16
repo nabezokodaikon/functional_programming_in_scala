@@ -27,4 +27,10 @@ class MonadSpec extends FunSuite {
     val l = Left(List(1, 2))
     assert(f.codistribute(l) == List(Left(1), Left(2)))
   }
+
+  test("EXERCISE 11.1 listMonad") {
+    val m = Monad.listMonad
+    assert(m.unit(1) == List(1))
+    assert(m.flatMap(List(1, 2, 3))(a => List(a * 2)) == List(2, 4, 6))
+  }
 }
