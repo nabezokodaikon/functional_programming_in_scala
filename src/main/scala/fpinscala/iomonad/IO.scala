@@ -140,6 +140,7 @@ object IO1 {
   val echo = ReadLine.flatMap(PrintLine)
   val readInt = ReadLine.map(_.toInt)
   val readInts = readInt ** readInt
+  val replicateM = IO.replicateM(10, ReadLine)
 }
 
 object Main extends App {
@@ -149,5 +150,6 @@ object Main extends App {
 
   // IO1.echo.run
   // IO1.readInt.run
-  IO1.readInts.run
+  // IO1.readInts.run
+  IO1.replicateM.run
 }
