@@ -34,12 +34,4 @@ class IOSpec extends FunSuite {
     val io3 = io1 ++ io2
     io3.run
   }
-
-  test("List 13-3") {
-    // import IO0._
-    // import java.io._
-    // val in = new ByteArrayInputStream("1.0".getBytes)
-    // System.setIn(in)
-    // converter
-  }
 }
