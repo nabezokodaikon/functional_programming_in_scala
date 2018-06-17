@@ -117,7 +117,23 @@ object IO1 {
     // IOブロックを生成するための関数適用構文を使用できるようになる。
     def apply[A](a: => A): IO[A] = unit(a)
   }
+
+  // List 13-6
+  def ReadLine: IO[String] = IO { readLine }
+  def PrintLine(msg: String): IO[Unit] = IO { println(msg) }
+
+  def fahrenheitToCelsius(f: Double): Double =
+    (f - 32) * 5.0 / 9.0
+
+  def converter: IO[Unit] = for {
+    _ <- PrintLine("Enter a temperature in degrees Fahrenheit: ")
+    d <- ReadLine.map(_.toDouble)
+    _ <- PrintLine(fahrenheitToCelsius(d).toString)
+  } yield ()
 }
 
 object Main extends App {
+
+  // List 13-6
+  IO1.converter.run
 }
