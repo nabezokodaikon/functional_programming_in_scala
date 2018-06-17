@@ -118,3 +118,6 @@ object IO1 {
     def apply[A](a: => A): IO[A] = unit(a)
   }
 }
+
+object Main extends App {
+}
