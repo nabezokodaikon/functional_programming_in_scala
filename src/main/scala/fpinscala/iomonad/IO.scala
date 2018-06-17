@@ -105,4 +105,16 @@ object IO1 {
         def run = f(self.run).run
       }
   }
+
+  // List 13-5
+  object IO extends Monad[IO] {
+
+    def unit[A](a: => A): IO[A] = new IO[A] { def run = a }
+
+    def flatMap[A, B](fa: IO[A])(f: A => IO[B]) = fa flatMap f
+
+    // このメソッドにより、IO { ... } のように、
+    // IOブロックを生成するための関数適用構文を使用できるようになる。
+    def apply[A](a: => A): IO[A] = unit(a)
+  }
 }
