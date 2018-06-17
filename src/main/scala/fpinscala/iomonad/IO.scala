@@ -68,4 +68,14 @@ object IO0 {
     new IO {
       def run = println(msg)
     }
+
+  // List 13-3
+  def fahrenheitToCelsius(f: Double): Double =
+    (f - 32) * 5.0 / 9.0
+
+  def converter: Unit = {
+    println("Enter a temperature in degrees Fahrenheit: ")
+    val d = readLine.toDouble
+    println(fahrenheitToCelsius(d))
+  }
 }
