@@ -130,10 +130,14 @@ object IO1 {
     d <- ReadLine.map(_.toDouble)
     _ <- PrintLine(fahrenheitToCelsius(d).toString)
   } yield ()
+
+  val echo = ReadLine.flatMap(PrintLine)
 }
 
 object Main extends App {
 
   // List 13-6
-  IO1.converter.run
+  // IO1.converter.run
+
+  IO1.echo.run
 }
