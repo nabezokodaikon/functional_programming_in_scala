@@ -78,4 +78,11 @@ object IO0 {
     val d = readLine.toDouble
     println(fahrenheitToCelsius(d))
   }
+
+  /*
+  def converter2: IO = {
+    val prompt: IO = PrintLine("Enter a temperature in degrees Fahrenheit: ")
+    // now what ???
+  }
+  */
 }
