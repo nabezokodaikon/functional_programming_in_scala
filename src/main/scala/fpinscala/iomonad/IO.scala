@@ -104,6 +104,12 @@ object IO1 {
       new IO[B] {
         def run = f(self.run).run
       }
+
+    def map2[B, C](ib: IO[B])(f: (A, B) => C): IO[C] =
+      self.flatMap(a => ib.map(b => f(a, b)))
+
+    def **[B](ib: IO[B]): IO[(A, B)] =
+      self.map2(ib)((_, _))
   }
 
   // List 13-5
@@ -133,6 +139,7 @@ object IO1 {
 
   val echo = ReadLine.flatMap(PrintLine)
   val readInt = ReadLine.map(_.toInt)
+  val readInts = readInt ** readInt
 }
 
 object Main extends App {
@@ -141,5 +148,6 @@ object Main extends App {
   // IO1.converter.run
 
   // IO1.echo.run
-  IO1.readInt.run
+  // IO1.readInt.run
+  IO1.readInts.run
 }
