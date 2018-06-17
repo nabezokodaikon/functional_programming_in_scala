@@ -19,4 +19,19 @@ class IOSpec extends FunSuite {
 
     Player.contest4(Player("taro", 50), Player("jiro", 50)).run
   }
+
+  test("List 13-2") {
+    import IO0._
+
+    val io1 = new IO {
+      def run = println("IO 1")
+    }
+
+    val io2 = new IO {
+      def run = println("IO 2")
+    }
+
+    val io3 = io1 ++ io2
+    io3.run
+  }
 }

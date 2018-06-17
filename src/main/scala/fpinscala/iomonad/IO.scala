@@ -43,9 +43,25 @@ object Player {
 
 object IO0 {
 
-  trait IO {
+  // List 13-2
+  trait IO { self => // 引数selfにより、このオブジェクトをthisではなくselfとして参照できる。
 
     def run: Unit
+
+    def ++(io: IO): IO = new IO {
+      def run = {
+        self.run // selfは外側のIOを参照する。
+        io.run
+      }
+    }
+  }
+
+  // List 13-2
+  object IO {
+
+    def empty: IO = new IO {
+      def run = ()
+    }
   }
 
   def PrintLine(msg: String): IO =
