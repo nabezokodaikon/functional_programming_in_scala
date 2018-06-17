@@ -36,7 +36,20 @@ object Player {
 
   def contest3(p1: Player, p2: Player): Unit =
     println(winnerMsg(winner(p1, p2)))
+
+  def contest4(p1: Player, p2: Player): IO =
+    PrintLine(winnerMsg(winner(p1, p2)))
 }
 
 object IO0 {
+
+  trait IO {
+
+    def run: Unit
+  }
+
+  def PrintLine(msg: String): IO =
+    new IO {
+      def run = println(msg)
+    }
 }
