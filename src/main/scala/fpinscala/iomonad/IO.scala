@@ -132,6 +132,7 @@ object IO1 {
   } yield ()
 
   val echo = ReadLine.flatMap(PrintLine)
+  val readInt = ReadLine.map(_.toInt)
 }
 
 object Main extends App {
@@ -139,5 +140,6 @@ object Main extends App {
   // List 13-6
   // IO1.converter.run
 
-  IO1.echo.run
+  // IO1.echo.run
+  IO1.readInt.run
 }
