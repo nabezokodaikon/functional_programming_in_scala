@@ -3,6 +3,7 @@ package fpinscala.iomonad
 import language.postfixOps
 import language.higherKinds
 import scala.io.StdIn.readLine
+import fpinscala.monads._
 
 case class Player(name: String, score: Int)
 
@@ -85,4 +86,23 @@ object IO0 {
     // now what ???
   }
   */
+}
+
+object IO1 {
+
+  // List 13-4
+  sealed trait IO[A] { self =>
+
+    def run: A
+
+    def map[B](f: A => B): IO[B] =
+      new IO[B] {
+        def run = f(self.run)
+      }
+
+    def flatMap[B](f: A => IO[B]): IO[B] =
+      new IO[B] {
+        def run = f(self.run).run
+      }
+  }
 }
