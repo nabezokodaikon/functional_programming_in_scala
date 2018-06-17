@@ -114,6 +114,9 @@ class MonadSpec extends FunSuite {
     val m = Id.idMonad
     assert(m.unit(1) == Id(1))
     assert(m.flatMap(Id(5))(v => m.unit(v * 5)) == Id(25))
+  }
 
+  test("List 11-12 zipWithIndex") {
+    assert(StateMonad.zipWithIndex(List("a", "b", "c")) == List((0, "a"), (1, "b"), (2, "c")))
   }
 }
