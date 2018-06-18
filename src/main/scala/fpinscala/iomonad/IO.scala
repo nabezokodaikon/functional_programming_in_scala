@@ -4,6 +4,8 @@ import language.postfixOps
 import language.higherKinds
 import scala.io.StdIn.readLine
 import fpinscala.monads._
+import fpinscala.parallelism._
+import fpinscala.parallelism.Par._
 
 case class Player(name: String, score: Int)
 
@@ -360,6 +362,30 @@ object IO3 {
       case FlatMap(Return(x), f) => step(f(x))
       case _ => a
     }
+
+  // List 13-15
+  sealed trait Console[A] {
+    // このConsole[A]をPar[A]として解釈。
+    def toPar: Par[A]
+
+    // このConsole[A]をFunction0[A]として解釈。
+    def toThunk: () => A
+  }
+
+  case object ReadLIne extends Console[Option[String]] {
+    def toPar = Par.lazyUnit(run)
+    def toThunk = () => run
+
+    // ReadLineの両方のインタープリタによって使用されるヘルパー関数。
+    def run: Option[String] =
+      try Some(readLine())
+      catch { case e: Exception => None }
+  }
+
+  case class PrintLine(line: String) extends Console[Unit] {
+    def toPar = Par.lazyUnit(println(line))
+    def toThunk = () => println(line)
+  }
 }
 
 object Main extends App {
