@@ -307,6 +307,15 @@ object IO2c {
     }
 }
 
+object IO3 {
+
+  // List 13-14
+  sealed trait Free[F[_], A]
+  case class Return[F[_], A](a: A) extends Free[F, A]
+  case class Suspend[F[_], A](s: F[A]) extends Free[F, A]
+  case class FlatMap[F[_], A, B](s: Free[F, A], f: A => Free[F, B]) extends Free[F, B]
+}
+
 object Main extends App {
 
   // List 13-6
