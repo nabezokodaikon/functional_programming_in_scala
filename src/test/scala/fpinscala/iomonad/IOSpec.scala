@@ -65,5 +65,23 @@ class IOSpec extends FunSuite {
       val f = FlatMap(io, (a: Int) => Return(a * 3))
       assert(IO2a.run(io) == 2)
     }
+
+    {
+      val io = FlatMap(Suspend(() => 1), (a: Int) => Return(a * 2))
+      val f = FlatMap(io, (a: Int) => Return(a * 3))
+      assert(IO2a.run(io) == 2)
+    }
+
+    {
+      val f: Int => IO[Int] = (x: Int) => Return(x)
+      // f: Int => IO[Int] = <function1>
+      val g = List.fill(100000)(f).foldLeft(f) { (a, b) => x => Suspend(() => ()).flatMap { _ => a(x).flatMap(b) }
+      }
+      // g: Int => IO[Int] = <function1>
+
+      assert(IO2a.run(g(0)) == 0)
+      assert(IO2a.run(g(42)) == 42)
+      assert(IO2a.run(g(100000)) == 100000)
+    }
   }
 }
