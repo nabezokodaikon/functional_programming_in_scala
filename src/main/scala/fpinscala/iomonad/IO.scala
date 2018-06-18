@@ -141,6 +141,56 @@ object IO1 {
   val readInt = ReadLine.map(_.toInt)
   val readInts = readInt ** readInt
   val replicateM = IO.replicateM(10, ReadLine)
+
+  // List 13-7
+  // def factorial(n: Int): IO[Int] = // ミュータブルなIO参照を使った命令型のfactorial。
+  // for {
+  // acc <- ref(1) // ミュータブルな参照の割り当て。
+  // _ <- foreachM(1 to n toStream)(i => acc.modify(_ * i).skip) // ループ内で参照を変更。
+  // result <- acc.get // 参照先の値を取得するための間接参照。
+  // } yield result
+
+  // val factorialREPL: IO[Unit] = sequence_(
+  // IO { println(helpstring) },
+  // doWhile { IO { readLine } } {
+  // line =>
+  // val ok = line != "q"
+  // when(ok) {
+  // for {
+  // n <- factorial(line.toInt)
+  // _ <- IO { println("factorial: " + n) }
+  // } yield ()
+  // }
+  // }
+  // )
+
+  // condがtrueを返す限り、1つ目の引数の作用を繰り返す。
+  // def doWhile[A](a: F[A])(cond: A => F[Boolean]): F[Unit] =
+  // for {
+  // a1 <- a
+  // ok <- cond(a1)
+  // } yield ()
+
+  // 引数の作用を無限に繰り返す。
+  // def forever[A, B](a: F[A]): F[B] = {
+  // lazy val t: F[B] = forever(a)
+  // a flatMap (_ => t)
+  // }
+
+  // ストリームを関数fで畳み込み、作用を結合し、その結果を返す。
+  // def foldM[A, B](l: Stream[A])(z: B)(f: (B, A) => F[B]): F[B] =
+  // l match {
+  // case h #:: t => f(z, h) flatMap(z2 => foldM(t)(z2)(f))
+  // }
+
+  // foldM関数と同じだが、結果を無視する。
+  // def foldM_[A, B](l: Stream[A])(z: B)(f: (B, A) => F[B]): F[Unit] =
+  // skip { foldM(1)(z)(f) }
+
+  // ストリームの要素ごとにf関数を呼び出し、作用を結合する。
+  // def foreachM[A](l: Stream[A])(f: A => F[Unit]): F[Unit] =
+  // foldM_(1)(())((u, a) => skip(f(a)))
+
 }
 
 object Main extends App {
