@@ -193,6 +193,32 @@ object IO1 {
 
 }
 
+object IO2a {
+
+  // List 13-8
+  // 余分なステップを実行せずに直ちにAを返す純粋な計算。
+  // このコンストラクタを検出した時点で、runは計算が終了していることを認識する。
+  case class Return[A](a: A) extends IO[A]
+
+  // 計算の一時的な中断。
+  // resumeは引数を受け取らない関数だが、何らかの作用を持ち、結果を返す。
+  case class Suspend[A](resume: () => A) extends IO[A]
+
+  // 2つのステップの合成。
+  // flatMapを関数ではなくデータコンストラクタとして具体化する。
+  // これを検出した時点で、runは部分計算subを処理し、subが結果を生成したところでkを継続する必要がある。
+  case class FlatMap[A, B](sub: IO[A], k: A => IO[B]) extends IO[B]
+
+  sealed trait IO[A] {
+
+    def flatMap[B](f: A => IO[B]): IO[B] =
+      FlatMap(this, f)
+
+    def map[B](f: A => B): IO[B] =
+      flatMap(f andThen (Return(_)))
+  }
+}
+
 object Main extends App {
 
   // List 13-6
