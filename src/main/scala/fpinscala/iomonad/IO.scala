@@ -263,6 +263,25 @@ object IO2b {
     }
 }
 
+object IO2c {
+  import fpinscala.parallelism.Par._
+
+  // List 13-12
+  case class Return[A](a: A) extends Async[A]
+  case class Suspend[A](resume: Par[A]) extends Async[A]
+  case class FlatMap[A, B](sub: Async[A], k: A => Async[B]) extends Async[B]
+
+  sealed trait Async[A] {
+
+    def flatMap[B](f: A => Async[B]): Async[B] =
+      FlatMap(this, f)
+
+    def map[B](f: A => B): Async[B] =
+      flatMap(f andThen (Return(_)))
+  }
+
+}
+
 object Main extends App {
 
   // List 13-6
