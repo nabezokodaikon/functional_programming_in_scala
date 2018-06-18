@@ -84,4 +84,28 @@ class IOSpec extends FunSuite {
       assert(IO2a.run(g(100000)) == 100000)
     }
   }
+
+  test("List 13-13") {
+    import java.util.concurrent._
+    import fpinscala.parallelism._
+    import fpinscala.parallelism.Par._
+    import IO2c._
+
+    {
+      val es = Executors.newFixedThreadPool(1)
+      val a = Return(1)
+      val p = IO2c.run(a)
+      val f = Par.run(es)(p)
+      assert(f == UnitFuture(1))
+    }
+
+    {
+      val es = Executors.newFixedThreadPool(1)
+      val par = unit(1)
+      val async = Suspend(par)
+      val a = IO2c.run(async)
+      val f = Par.run(es)(a)
+      assert(f == UnitFuture(1))
+    }
+  }
 }
