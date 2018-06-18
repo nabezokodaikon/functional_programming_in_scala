@@ -372,7 +372,7 @@ object IO3 {
     def toThunk: () => A
   }
 
-  case object ReadLIne extends Console[Option[String]] {
+  case object ReadLine extends Console[Option[String]] {
     def toPar = Par.lazyUnit(run)
     def toThunk = () => run
 
