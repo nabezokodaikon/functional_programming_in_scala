@@ -227,7 +227,7 @@ object IO2a {
       case FlatMap(x, f) =>
         x match {
           case Return(a) => run(f(a))
-          case Suspend(r) => run(f(r))
+          case Suspend(r) => run(f(r()))
           case FlatMap(y, g) => run(y flatMap (a => g(a) flatMap f))
         }
     }
