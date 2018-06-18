@@ -397,6 +397,14 @@ object IO3 {
     def printLn(line: String): ConsoleIO[Unit] =
       Suspend(PrintLine(line))
   }
+
+  // Example for List 13-16
+  import Console._
+  val f1: Free[Console, Option[String]] =
+    for {
+      _ <- printLn("I can only interact with the console.")
+      ln <- readLn
+    } yield ln
 }
 
 object Main extends App {
