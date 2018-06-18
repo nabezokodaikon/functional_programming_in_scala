@@ -34,4 +34,36 @@ class IOSpec extends FunSuite {
     val io3 = io1 ++ io2
     io3.run
   }
+
+  test("List 13-10") {
+    import IO2a._
+
+    {
+      val io = Return(1)
+      assert(IO2a.run(io) == 1)
+    }
+
+    {
+      val io = Suspend(() => 1)
+      assert(IO2a.run(io) == 1)
+    }
+
+    {
+      val io = Return(1)
+      val f = FlatMap(io, (a: Int) => Return(a * 2))
+      assert(IO2a.run(io) == 1)
+    }
+
+    {
+      val io = Suspend(() => 1)
+      val f = FlatMap(io, (a: Int) => Return(a * 2))
+      assert(IO2a.run(io) == 1)
+    }
+
+    {
+      val io = FlatMap(Return(1), (a: Int) => Return(a * 2))
+      val f = FlatMap(io, (a: Int) => Return(a * 3))
+      assert(IO2a.run(io) == 2)
+    }
+  }
 }

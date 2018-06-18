@@ -217,6 +217,20 @@ object IO2a {
     def map[B](f: A => B): IO[B] =
       flatMap(f andThen (Return(_)))
   }
+
+  // List 13-10
+  @annotation.tailrec
+  def run[A](io: IO[A]): A =
+    io match {
+      case Return(a) => a
+      case Suspend(r) => r()
+      case FlatMap(x, f) =>
+        x match {
+          case Return(a) => run(f(a))
+          case Suspend(r) => run(f(r))
+          case FlatMap(y, g) => run(y flatMap (a => g(a) flatMap f))
+        }
+    }
 }
 
 object Main extends App {
