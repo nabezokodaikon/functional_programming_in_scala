@@ -108,4 +108,15 @@ class IOSpec extends FunSuite {
       assert(f == UnitFuture(1))
     }
   }
+
+  test("EXERCISE 13.2") {
+    import IO3._
+    val r = Return[Function0, Int](10)
+    val s = Suspend[Function0, String](() => "abc")
+    val f = FlatMap[Function0, Int, String](r, a => Return(a.toString))
+
+    assert(runTrampoline(r) == 10)
+    assert(runTrampoline(s) == "abc")
+    assert(runTrampoline(f) == "10")
+  }
 }
