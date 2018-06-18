@@ -11,7 +11,7 @@ object Par {
   def unit[A](a: A): Par[A] =
     (es: ExecutorService) => UnitFuture(a)
 
-  private case class UnitFuture[A](get: A) extends Future[A] {
+  case class UnitFuture[A](get: A) extends Future[A] {
     def isDone = true
     def get(timeout: Long, units: TimeUnit) = get
     def isCancelled = false
