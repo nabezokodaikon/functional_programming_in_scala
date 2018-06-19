@@ -118,5 +118,7 @@ class IOSpec extends FunSuite {
     assert(runTrampoline(r) == 10)
     assert(runTrampoline(s) == "abc")
     assert(runTrampoline(f) == "10")
+
+    println(IO3.run(r))
   }
 }

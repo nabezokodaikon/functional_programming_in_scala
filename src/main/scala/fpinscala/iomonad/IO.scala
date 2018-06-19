@@ -415,6 +415,12 @@ object IO3 {
   // Translate[F, G]を(F ~> G)に置き換えることができるようになる。
   type ~>[F[_], G[_]] = Translate[F, G]
 
+  implicit val function0Monad = new Monad[Function0] {
+    def unit[A](a: => A) = () => a
+    def flatMap[A, B](a: Function0[A])(f: A => Function0[B]) =
+      () => f(a())()
+  }
+
   val consoleToFunction0 =
     new (Console ~> Function0) {
       // new Translate[Console, Function0] {
