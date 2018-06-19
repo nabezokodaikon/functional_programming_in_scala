@@ -421,6 +421,11 @@ object IO3 {
       () => f(a())()
   }
 
+  implicit val parMonad = new Monad[Par] {
+    def unit[A](a: => A) = Par.unit(a)
+    def flatMap[A, B](a: Par[A])(f: A => Par[B]) = Par.fork { Par.flatMapViaJoin(a)(f) }
+  }
+
   val consoleToFunction0 =
     new (Console ~> Function0) {
       // new Translate[Console, Function0] {
