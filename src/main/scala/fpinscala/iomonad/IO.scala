@@ -426,6 +426,16 @@ object IO3 {
     def flatMap[A, B](a: Par[A])(f: A => Par[B]) = Par.fork { Par.flatMapViaJoin(a)(f) }
   }
 
+  // List 13-18
+  // F ~ G == Translate[F, G]
+  def runFree[F[_], G[_], A](free: Free[F, A])(t: F ~> G)(implicit G: Monad[G]): G[A] =
+    step(free) match {
+      case Return(a) => G.unit(a)
+      case Suspend(r) => t(r)
+      case FlatMap(Suspend(r), f) => G.flatMap(t(r))(a => runFree(f(a))(t))
+      case _ => sys.error("Impossible: `step` eliminates these cases")
+    }
+
   val consoleToFunction0 =
     new (Console ~> Function0) {
       // new Translate[Console, Function0] {
