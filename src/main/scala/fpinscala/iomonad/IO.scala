@@ -447,6 +447,13 @@ object IO3 {
       // new Translate[Console, Par] {
       def apply[A](a: Console[A]) = a.toPar
     }
+
+  // List 13-19
+  def runConsoleFunction0[A](a: Free[Console, A]): () => A =
+    runFree[Console, Function0, A](a)(consoleToFunction0)
+
+  def runConsolePar[A](a: Free[Console, A]): Par[A] =
+    runFree[Console, Par, A](a)(consoleToPar)
 }
 
 object Main extends App {
