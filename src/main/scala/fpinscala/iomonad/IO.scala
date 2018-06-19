@@ -456,6 +456,23 @@ object IO3 {
 
   def runConsolePar[A](a: Free[Console, A]): Par[A] =
     runFree[Console, Par, A](a)(consoleToPar)
+
+  // EXERCISE 13.4
+  def translate[F[_], G[_], A](f: Free[F, A])(fg: F ~> G): Free[G, A] = {
+    type FreeG[A] = Free[G, A]
+    val t = new (F ~> FreeG) {
+      def apply[A](a: F[A]): Free[G, A] = Suspend { fg(a) }
+    }
+    runFree(f)(t)(freeMonad[G])
+  }
+
+  // EXERCISE 13.4
+  def runConsole[A](a: Free[Console, A]): A =
+    runTrampoline {
+      translate(a)(new (Console ~> Function0) {
+        def apply[A](c: Console[A]) = c.toThunk
+      })
+    }
 }
 
 object Main extends App {
