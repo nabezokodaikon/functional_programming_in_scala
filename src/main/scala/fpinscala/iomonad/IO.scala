@@ -442,7 +442,7 @@ object IO3 {
       def apply[A](a: Console[A]) = a.toThunk
     }
 
-  val consoleToPpr =
+  val consoleToPar =
     new (Console ~> Par) {
       // new Translate[Console, Par] {
       def apply[A](a: Console[A]) = a.toPar
