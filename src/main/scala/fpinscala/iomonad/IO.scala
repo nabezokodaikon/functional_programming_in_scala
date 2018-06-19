@@ -405,6 +405,27 @@ object IO3 {
       _ <- printLn("I can only interact with the console.")
       ln <- readLn
     } yield ln
+
+  // List 13-17
+  trait Translate[F[_], G[_]] {
+    // 任意の'F[A]'と'G[A]'間の変換。
+    def apply[A](f: F[A]): G[A]
+  }
+
+  // Translate[F, G]を(F ~> G)に置き換えることができるようになる。
+  type ~>[F[_], G[_]] = Translate[F, G]
+
+  val consoleToFunction0 =
+    new (Console ~> Function0) {
+      // new Translate[Console, Function0] {
+      def apply[A](a: Console[A]) = a.toThunk
+    }
+
+  val consoleToPpr =
+    new (Console ~> Par) {
+      // new Translate[Console, Par] {
+      def apply[A](a: Console[A]) = a.toPar
+    }
 }
 
 object Main extends App {
