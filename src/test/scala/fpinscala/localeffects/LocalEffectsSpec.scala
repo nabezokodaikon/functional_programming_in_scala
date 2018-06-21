@@ -11,4 +11,10 @@ class LocalEffectsSpec extends FunSuite {
     assert(quicksort(List(3, 2, 1)) == List(1, 2, 3))
   }
 
+  test("List 14-2") {
+    import Mutable._
+    val st = ST(10)
+    println(st.map(a => a.toString))
+    println(st.flatMap(a => ST(a.toString)))
+  }
 }
