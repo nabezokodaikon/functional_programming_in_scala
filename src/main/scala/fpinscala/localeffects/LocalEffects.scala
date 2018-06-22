@@ -95,4 +95,9 @@ object Mutable {
       var cell = a
     })
   }
+
+  // List 14-4
+  trait RunnableST[A] {
+    def apply[S]: ST[S, A]
+  }
 }
