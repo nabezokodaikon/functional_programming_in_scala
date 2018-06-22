@@ -17,4 +17,18 @@ class LocalEffectsSpec extends FunSuite {
     println(st.map(a => a.toString))
     println(st.flatMap(a => ST(a.toString)))
   }
+
+  test("List 14-3 まだ実行できない。") {
+    import Mutable._
+    for {
+      r1 <- STRef[Nothing, Int](1)
+      r2 <- STRef[Nothing, Int](2)
+      x <- r1.read
+      y <- r2.read
+      _ <- r1.write(y + 1)
+      _ <- r2.write(x + 2)
+      a <- r1.read
+      b <- r2.read
+    } yield (a, b)
+  }
 }
