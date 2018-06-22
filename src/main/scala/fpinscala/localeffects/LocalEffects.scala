@@ -75,6 +75,10 @@ object Mutable {
         def run(s: S) = (memo, s)
       }
     }
+
+    // List 14-5
+    def runST[A](st: RunnableST[A]): A =
+      st.apply[Unit].run(())._1
   }
 
   // List 14-3

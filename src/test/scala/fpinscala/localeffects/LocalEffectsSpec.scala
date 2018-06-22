@@ -31,4 +31,23 @@ class LocalEffectsSpec extends FunSuite {
       b <- r2.read
     } yield (a, b)
   }
+
+  test("List 14-5") {
+    import Mutable._
+    val p = new RunnableST[(Int, Int)] {
+      def apply[S] = for {
+        r1 <- STRef(1)
+        r2 <- STRef(10)
+        x <- r1.read
+        y <- r2.read
+        _ <- r1.write(y + 1)
+        _ <- r2.write(x + 2)
+        a <- r1.read
+        b <- r2.read
+      } yield (a, b)
+    }
+
+    val r = ST.runST(p)
+    assert(r == (11, 3))
+  }
 }
