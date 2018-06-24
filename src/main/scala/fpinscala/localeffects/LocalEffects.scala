@@ -132,6 +132,14 @@ object Mutable {
       xs.foldRight(ST[S, Unit](Unit)) {
         case ((k, v), st) => st flatMap (_ => write(k, v))
       }
+
+    // List 14-8
+    def swap(i: Int, j: Int): ST[S, Unit] = for {
+      x <- read(i)
+      y <- read(j)
+      _ <- write(i, y)
+      _ <- write(j, x)
+    } yield ()
   }
 
   object STArray {
