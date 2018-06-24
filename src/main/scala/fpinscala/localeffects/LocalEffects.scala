@@ -140,5 +140,11 @@ object Mutable {
       ST(new STArray[S, A] {
         lazy val value = Array.fill(sz)(v)
       })
+
+    // List 14-7
+    def fromList[S, A: Manifest](xs: List[A]): ST[S, STArray[S, A]] =
+      ST(new STArray[S, A] {
+        lazy val value = xs.toArray
+      })
   }
 }

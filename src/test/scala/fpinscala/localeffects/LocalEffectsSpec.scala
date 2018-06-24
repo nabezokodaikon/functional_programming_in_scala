@@ -66,4 +66,18 @@ class LocalEffectsSpec extends FunSuite {
     val r = ST.runST(p)
     assert(r == List("a", "b", "c"))
   }
+
+  test("List 14-7") {
+    import Mutable._
+    val p = new RunnableST[List[Int]] {
+      def apply[S] = for {
+        a <- STArray.fromList(List(1, 2, 3))
+        _ <- a.write(1, 5)
+        b <- a.freeze
+      } yield b
+    }
+
+    val list = ST.runST(p)
+    assert(list == List(1, 5, 3))
+  }
 }
