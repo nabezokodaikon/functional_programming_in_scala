@@ -80,4 +80,9 @@ class LocalEffectsSpec extends FunSuite {
     val list = ST.runST(p)
     assert(list == List(1, 5, 3))
   }
+
+  test("List 14-9 quicksort") {
+    val l = Immutable.quicksort(List(5, 3, 1, 4, 2))
+    assert(l == List(1, 2, 3, 4, 5))
+  }
 }
