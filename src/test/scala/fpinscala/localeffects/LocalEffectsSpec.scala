@@ -50,4 +50,20 @@ class LocalEffectsSpec extends FunSuite {
     val r = ST.runST(p)
     assert(r == (11, 3))
   }
+
+  test("EXERCISE 14.1") {
+    import Mutable._
+    val st = STArray(3, "a")
+    val map = Map(0 -> "a", 1 -> "b", 2 -> "c")
+    val p = new RunnableST[List[String]] {
+      def apply[S] = for {
+        a <- STArray(3, "a")
+        b <- a.fill(map)
+        l <- a.freeze
+      } yield l
+    }
+
+    val r = ST.runST(p)
+    assert(r == List("a", "b", "c"))
+  }
 }

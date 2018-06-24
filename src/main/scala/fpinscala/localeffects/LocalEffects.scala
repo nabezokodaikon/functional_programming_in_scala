@@ -104,4 +104,41 @@ object Mutable {
   trait RunnableST[A] {
     def apply[S]: ST[S, A]
   }
+
+  // List 14-6
+  // Scalaで，配列の構築に`implicit manifest`が必要。
+  sealed abstract class STArray[S, A](implicit manifest: Manifest[A]) {
+
+    protected def value: Array[A]
+
+    def size: ST[S, Int] = ST(value.size)
+
+    // 配列の指定されたインデックス一に値を書き込む。
+    def write(i: Int, a: A): ST[S, Unit] = new ST[S, Unit] {
+      def run(s: S) = {
+        value(i) = a
+        ((), s)
+      }
+    }
+
+    // 配列の指定されたインデックス一の値を読み取る。
+    def read(i: Int): ST[S, A] = ST(value(i))
+
+    // 配列をミュータブルなリストに変換。
+    def freeze: ST[S, List[A]] = ST(value.toList)
+
+    // EXERCISE 14.1
+    def fill(xs: Map[Int, A]): ST[S, Unit] =
+      xs.foldRight(ST[S, Unit](Unit)) {
+        case ((k, v), st) => st flatMap (_ => write(k, v))
+      }
+  }
+
+  object STArray {
+    // vの値が含まれた、指定されたサイズの配列を作成。
+    def apply[S, A: Manifest](sz: Int, v: A): ST[S, STArray[S, A]] =
+      ST(new STArray[S, A] {
+        lazy val value = Array.fill(sz)(v)
+      })
+  }
 }
