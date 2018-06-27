@@ -36,6 +36,7 @@ object SimpleStreamTransducers {
 
   // List 15-3
   sealed trait Process[I, O] {
+    import Process._
 
     // List 15-4
     def apply(s: Stream[I]): Stream[O] =
@@ -50,22 +51,26 @@ object SimpleStreamTransducers {
       }
   }
 
-  // 放出する。
-  // head値を出力ストリームに書き出さなければならないことをドライバに合図します。
-  // それにより、状態機械がtail状態へ遷移します。
-  case class Emit[I, O](
-      head: O,
-      tail: Process[I, O] = Halt[I, O]()
-  ) extends Process[I, O]
+  object Process {
 
-  // 待つ。
-  // 入力ストリームの値をリクエストします。ドライバは次に利用可能な値をrecv関数に渡し、
-  // それ以上要素がない場合はNoneを返します。
-  case class Await[I, O](
-      recv: Option[I] => Process[I, O]
-  ) extends Process[I, O]
+    // List 15-3
+    // 放出する。
+    // head値を出力ストリームに書き出さなければならないことをドライバに合図します。
+    // それにより、状態機械がtail状態へ遷移します。
+    case class Emit[I, O](
+        head: O,
+        tail: Process[I, O] = Halt[I, O]()
+    ) extends Process[I, O]
 
-  // 停止する。
-  // それ以上入力を読み取らない、または出力に書き出さないことをドライバに合図します。
-  case class Halt[I, O]() extends Process[I, O]
+    // 待つ。
+    // 入力ストリームの値をリクエストします。ドライバは次に利用可能な値をrecv関数に渡し、
+    // それ以上要素がない場合はNoneを返します。
+    case class Await[I, O](
+        recv: Option[I] => Process[I, O]
+    ) extends Process[I, O]
+
+    // 停止する。
+    // それ以上入力を読み取らない、または出力に書き出さないことをドライバに合図します。
+    case class Halt[I, O]() extends Process[I, O]
+  }
 }

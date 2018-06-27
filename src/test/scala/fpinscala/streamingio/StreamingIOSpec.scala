@@ -25,7 +25,7 @@ class StreamingIOSpec extends FunSuite {
   }
 
   test("List 15-4 Process.apply") {
-    import SimpleStreamTransducers._
+    import SimpleStreamTransducers.Process._
 
     {
       val halt = Halt()
