@@ -30,6 +30,9 @@ object ImperativeAndLazyIO {
       Stream.empty
     }
   }
+}
+
+object SimpleStreamTransducers {
 
   // List 15-3
   sealed trait Process[I, O]
