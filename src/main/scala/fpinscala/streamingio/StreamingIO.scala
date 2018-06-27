@@ -35,7 +35,20 @@ object ImperativeAndLazyIO {
 object SimpleStreamTransducers {
 
   // List 15-3
-  sealed trait Process[I, O]
+  sealed trait Process[I, O] {
+
+    // List 15-4
+    def apply(s: Stream[I]): Stream[O] =
+      this match {
+        case Halt() => Stream()
+        case Await(recv) =>
+          s match {
+            case h #:: t => recv(Some(h))(t)
+            case xs => recv(None)(xs)
+          }
+        case Emit(h, t) => h #:: t(s)
+      }
+  }
 
   // 放出する。
   // head値を出力ストリームに書き出さなければならないことをドライバに合図します。

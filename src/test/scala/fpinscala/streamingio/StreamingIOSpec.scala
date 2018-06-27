@@ -23,4 +23,30 @@ class StreamingIOSpec extends FunSuite {
     assert(res.run(0) == "1")
     assert(res.run(1) == "2")
   }
+
+  test("List 15-4 Process.apply") {
+    import SimpleStreamTransducers._
+
+    {
+      val halt = Halt()
+      println("### Halt")
+      println(halt)
+    }
+
+    {
+      val emit = Emit[Int, String]("1")
+      println("### Emit")
+      println(emit)
+      println(emit.head)
+      println(emit.tail)
+    }
+
+    {
+      val await = Await[Int, String]((recv: Option[Int]) => Emit("1"))
+      println("### Await")
+      println(await.recv)
+      println(await.recv(None))
+      println(await.recv(None)(Stream(1, 2, 3)))
+    }
+  }
 }
