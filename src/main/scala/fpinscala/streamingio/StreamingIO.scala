@@ -20,4 +20,14 @@ object ImperativeAndLazyIO {
       count > 5
     } finally src.close
   }
+
+  // List 15-2
+  // リソースの開放がストリームの最後まで走査した場合だけ。
+  def lines(filename: String): IO[Stream[String]] = IO {
+    val src = io.Source.fromFile(filename)
+    src.getLines.toStream.append {
+      src.close
+      Stream.empty
+    }
+  }
 }

@@ -16,5 +16,11 @@ class StreamingIOSpec extends FunSuite {
     assert(lines.filter(!_.trim.isEmpty).zipWithIndex.exists(_._2 + 1 >= 4) == true)
     assert(lines.filter(!_.trim.isEmpty).take(4).map(_.head).indexOfSlice("c".toList) == 3)
   }
-}
 
+  test("List 15-2 lines") {
+    import ImperativeAndLazyIO._
+    val res = lines("""resource/List15-1_01.txt""")
+    assert(res.run(0) == "1")
+    assert(res.run(1) == "2")
+  }
+}
