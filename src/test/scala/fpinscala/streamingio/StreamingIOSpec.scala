@@ -87,4 +87,10 @@ class StreamingIOSpec extends FunSuite {
     val evens = even(Stream(1, 2, 3, 4)).toList
     assert(evens == List(2, 4))
   }
+
+  test("これまでに検出された値の累積合計を出力する。") {
+    import SimpleStreamTransducers.Process._
+    val s = sum(Stream(1.0, 2.0, 3.0, 4.0)).toList
+    assert(s == List(1.0, 3.0, 6.0, 10.0))
+  }
 }

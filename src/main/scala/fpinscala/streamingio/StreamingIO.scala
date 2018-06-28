@@ -115,5 +115,25 @@ object SimpleStreamTransducers {
         case Some(i) if p(i) => emit(i)
         case _ => Halt()
       }.repeat
+
+    // これまでに検出された値の累積合計を出力する。
+    def sum: Process[Double, Double] = {
+
+      def go(acc: Double): Process[Double, Double] =
+        // 関数を受け取るメソッドに対し、その関数の引数でmatchしたい場合、「引数 match」を省略できる。
+        Await {
+          case Some(d) => Emit(d + acc, go(d + acc))
+          case None => Halt()
+        }
+      // Await {
+      // recv =>
+      // recv match {
+      // case Some(d) => Emit(d + acc, go(d + acc))
+      // case None => Halt()
+      // }
+      // }
+
+      go(0.0)
+    }
   }
 }
