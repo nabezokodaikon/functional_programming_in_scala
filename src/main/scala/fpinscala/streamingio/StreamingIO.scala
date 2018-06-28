@@ -189,5 +189,11 @@ object SimpleStreamTransducers {
 
       go(0.0, 0.0)
     }
+
+    // List 15-9
+    def loop[S, I, O](z: S)(f: (I, S) => (O, S)): Process[I, O] =
+      await((i: I) => f(i, z) match {
+        case (o, s2) => emit(o, loop(s2)(f))
+      })
   }
 }
