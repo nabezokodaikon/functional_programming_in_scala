@@ -94,6 +94,17 @@ object SimpleStreamTransducers {
         case Emit(h, t) => f(h) ++ t.flatMap(f)
         case Await(recv) => Await(recv andThen (_ flatMap f))
       }
+
+    // EXERCISE 15.6
+    def map[O2](f: O => O2): Process[I, O2] = this |> lift(f)
+
+    // EXERCISE 15.6
+    def zip[O2](p: Process[I, O2]): Process[I, (O, O2)] =
+      Process.zip(this, p)
+
+    // EXERCISE 15.6
+    def zipWithIndex: Process[I, (O, Int)] =
+      this zip (count map (_ - 1))
   }
 
   object Process {
@@ -242,6 +253,26 @@ object SimpleStreamTransducers {
 
         def flatMap[O, O2](p: Process[I, O])(f: O => Process[I, O2]): Process[I, O2] =
           p flatMap f
+      }
+
+    // EXERCISE 15.6
+    def feed[A, B](oa: Option[A])(p: Process[A, B]): Process[A, B] =
+      p match {
+        case Halt() => p
+        case Emit(h, t) => Emit(h, feed(oa)(t))
+        case Await(recv) => recv(oa)
+      }
+
+    // EXERCISE 15.6
+    def zip[A, B, C](p1: Process[A, B], p2: Process[A, C]): Process[A, (B, C)] =
+      (p1, p2) match {
+        case (Halt(), _) => Halt()
+        case (_, Halt()) => Halt()
+        case (Emit(b, t1), Emit(c, t2)) => Emit((b, c), zip(t1, t2))
+        case (Await(recv1), _) =>
+          Await((oa: Option[A]) => zip(recv1(oa), feed(oa)(p2)))
+        case (_, Await(recv2)) =>
+          Await((oa: Option[A]) => zip(feed(oa)(p1), recv2(oa)))
       }
   }
 }

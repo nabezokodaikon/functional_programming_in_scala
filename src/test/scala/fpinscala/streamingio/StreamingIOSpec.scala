@@ -159,4 +159,11 @@ class StreamingIOSpec extends FunSuite {
     val r = p(Stream(1, 2, 3, 4, 5, 6))
     assert(r == List(1, 2, 3, 6))
   }
+
+  test("EXERCISE 15.6 zipWithIndex") {
+    import SimpleStreamTransducers.Process._
+    val p = take[String](2)
+    val r = p(Stream("a", "b", "c")).zipWithIndex
+    assert(r == List(("a", 0), ("b", 1), ("c", 2)))
+  }
 }
