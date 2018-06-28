@@ -86,6 +86,14 @@ object SimpleStreamTransducers {
         case Emit(h, t) => Emit(h, t ++ p)
         case Await(recv) => Await(recv andThen (_ ++ p))
       }
+
+    // List 15-11
+    def flatMap[O2](f: O => Process[I, O2]): Process[I, O2] =
+      this match {
+        case Halt() => Halt()
+        case Emit(h, t) => f(h) ++ t.flatMap(f)
+        case Await(recv) => Await(recv andThen (_ flatMap f))
+      }
   }
 
   object Process {
