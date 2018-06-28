@@ -80,4 +80,11 @@ class StreamingIOSpec extends FunSuite {
     val xs = p(Stream(1, 2, 3)).toList
     assert(xs == List(10, 20, 30))
   }
+
+  test("List 15-8 filter") {
+    import SimpleStreamTransducers.Process._
+    val even = filter((x: Int) => x % 2 == 0)
+    val evens = even(Stream(1, 2, 3, 4)).toList
+    assert(evens == List(2, 4))
+  }
 }

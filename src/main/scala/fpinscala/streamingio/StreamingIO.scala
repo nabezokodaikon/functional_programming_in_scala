@@ -89,6 +89,14 @@ object SimpleStreamTransducers {
     // それ以上入力を読み取らない、または出力に書き出さないことをドライバに合図します。
     case class Halt[I, O]() extends Process[I, O]
 
+    // List 15-8
+    // Emitを生成する。
+    def emit[I, O](
+      head: O,
+      tail: Process[I, O] = Halt[I, O]
+    ): Process[I, O] =
+      Emit(head, tail)
+
     // List 15-5
     // 任意の関数 f: I => O を Process[I, O] に変換する。
     def liftOne[I, O](f: I => O): Process[I, O] =
@@ -100,5 +108,12 @@ object SimpleStreamTransducers {
     // List 15-7
     def lift[I, O](f: I => O): Process[I, O] =
       liftOne(f).repeat
+
+    // List 15-8
+    def filter[I](p: I => Boolean): Process[I, I] =
+      Await[I, I] {
+        case Some(i) if p(i) => emit(i)
+        case _ => Halt()
+      }.repeat
   }
 }
