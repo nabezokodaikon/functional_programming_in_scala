@@ -65,4 +65,12 @@ class StreamingIOSpec extends FunSuite {
       assert(xs == List(1))
     }
   }
+
+  test("List 15-6 repeat") {
+    import SimpleStreamTransducers.Process._
+    val p = liftOne((x: Int) => x * 10)
+    val p2 = p.repeat
+    val xs = p2(Stream(1, 2, 3)).toList
+    assert(xs == List(10, 20, 30))
+  }
 }
