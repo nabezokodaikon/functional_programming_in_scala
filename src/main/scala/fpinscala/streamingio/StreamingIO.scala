@@ -96,5 +96,9 @@ object SimpleStreamTransducers {
         case Some(i) => Emit(f(i))
         case None => Halt()
       }
+
+    // List 15-7
+    def lift[I, O](f: I => O): Process[I, O] =
+      liftOne(f).repeat
   }
 }
