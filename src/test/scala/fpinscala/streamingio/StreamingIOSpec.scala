@@ -145,4 +145,11 @@ class StreamingIOSpec extends FunSuite {
     val r = countViaLoop(Stream("a", "b", "c", "d")).toList
     assert(r == List(1, 2, 3, 4))
   }
+
+  test("EXERCISE 15.5 |>") {
+    import SimpleStreamTransducers.Process._
+    val p = drop[Int](2) |> take(1)
+    val r = p(Stream(1, 2, 3, 4, 5))
+    assert(r == List(3, 4))
+  }
 }
