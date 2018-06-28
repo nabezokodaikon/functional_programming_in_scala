@@ -195,5 +195,13 @@ object SimpleStreamTransducers {
       await((i: I) => f(i, z) match {
         case (o, s2) => emit(o, loop(s2)(f))
       })
+
+    // EXERCISE 15.4
+    def sumViaLoop: Process[Double, Double] =
+      loop(0.0)((d: Double, acc) => (acc + d, acc + d))
+
+    // EXERCISE 15.4
+    def countViaLoop[I]: Process[I, Int] =
+      loop(0)((_: I, n) => (n + 1, n + 1))
   }
 }
