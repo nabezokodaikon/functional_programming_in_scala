@@ -127,4 +127,10 @@ class StreamingIOSpec extends FunSuite {
     val r = count(Stream("a", "b", "c", "d")).toList
     assert(r == List(1, 2, 3, 4))
   }
+
+  test("EXERCISE 15.3 mean") {
+    import SimpleStreamTransducers.Process._
+    val r = mean(Stream(1.0, 2.0, 3.0, 4.0)).toList
+    assert(r == List(1, 1.5, 2, 2.5))
+  }
 }
