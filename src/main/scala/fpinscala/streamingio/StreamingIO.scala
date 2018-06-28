@@ -78,6 +78,14 @@ object SimpleStreamTransducers {
             case Await(g) => Await((i: Option[I]) => g(i) |> p2)
           }
       }
+
+    // List 15-10
+    def ++(p: => Process[I, O]): Process[I, O] =
+      this match {
+        case Halt() => p
+        case Emit(h, t) => Emit(h, t ++ p)
+        case Await(recv) => Await(recv andThen (_ ++ p))
+      }
   }
 
   object Process {

@@ -152,4 +152,11 @@ class StreamingIOSpec extends FunSuite {
     val r = p(Stream(1, 2, 3, 4, 5))
     assert(r == List(3, 4))
   }
+
+  test("List 15-10 ++") {
+    import SimpleStreamTransducers.Process._
+    val p = take[Int](2) ++ drop(2)
+    val r = p(Stream(1, 2, 3, 4, 5, 6))
+    assert(r == List(1, 2, 3, 6))
+  }
 }
