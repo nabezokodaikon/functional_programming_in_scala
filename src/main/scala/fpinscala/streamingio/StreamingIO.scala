@@ -72,5 +72,13 @@ object SimpleStreamTransducers {
     // 停止する。
     // それ以上入力を読み取らない、または出力に書き出さないことをドライバに合図します。
     case class Halt[I, O]() extends Process[I, O]
+
+    // List 15-5
+    // 任意の関数 f: I => O を Process[I, O] に変換する。
+    def liftOne[I, O](f: I => O): Process[I, O] =
+      Await {
+        case Some(i) => Emit(f(i))
+        case None => Halt()
+      }
   }
 }
