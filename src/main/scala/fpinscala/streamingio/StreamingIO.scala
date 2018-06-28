@@ -97,6 +97,23 @@ object SimpleStreamTransducers {
     ): Process[I, O] =
       Emit(head, tail)
 
+    // EXERCISE 15.1
+    def await[I, O](
+      f: I => Process[I, O],
+      fallback: Process[I, O] = Halt[I, O]()
+    ): Process[I, O] =
+      Await[I, O] {
+        case Some(i) => f(i)
+        case None => fallback
+      }
+    // Await {
+    // recv =>
+    // recv match {
+    // case Some(i) => f(i)
+    // case None => fallback
+    // }
+    // }
+
     // List 15-5
     // 任意の関数 f: I => O を Process[I, O] に変換する。
     def liftOne[I, O](f: I => O): Process[I, O] =
@@ -125,15 +142,34 @@ object SimpleStreamTransducers {
           case Some(d) => Emit(d + acc, go(d + acc))
           case None => Halt()
         }
-      // Await {
-      // recv =>
-      // recv match {
-      // case Some(d) => Emit(d + acc, go(d + acc))
-      // case None => Halt()
-      // }
-      // }
 
       go(0.0)
     }
+
+    // EXERCISE 15.1
+    def take[I](n: Int): Process[I, I] =
+      if (n < 0) Halt()
+      else await(i => emit(i, take[I](n - 1)))
+
+    // EXERCISE 15.1
+    def drop[I](n: Int): Process[I, I] =
+      if (n <= 0) id // 残りの出力は無限。
+      // if (n <= 0) lift(I => I)
+      else await(i => drop[I](n - 1))
+
+    // EXERCISE 15.1
+    def takeWhile[I](f: I => Boolean): Process[I, I] =
+      await(i =>
+        if (f(i)) emit(i, takeWhile(f))
+        else Halt())
+
+    // EXERCISE 15.1
+    def dropWhile[I](f: I => Boolean): Process[I, I] =
+      await(i =>
+        if (f(i)) dropWhile(f)
+        else emit(i, id)) // 残りの出力は無限。
+
+    def id[I]: Process[I, I] = lift(identity)
+    // def id[I]: Process[I, I] = lift(I => I)
   }
 }

@@ -93,4 +93,32 @@ class StreamingIOSpec extends FunSuite {
     val s = sum(Stream(1.0, 2.0, 3.0, 4.0)).toList
     assert(s == List(1.0, 3.0, 6.0, 10.0))
   }
+
+  test("EXERCISE 15.1 take") {
+    import SimpleStreamTransducers.Process._
+    val p = take[Int](2)
+    val r = p(Stream(1, 2, 3, 4)).toList
+    assert(r == List(1, 2, 3))
+  }
+
+  test("EXERCISE 15.1 drop") {
+    import SimpleStreamTransducers.Process._
+    val p = drop[Int](2)
+    val r = p(Stream(1, 2, 3, 4)).toList
+    assert(r == List(3, 4))
+  }
+
+  test("EXERCISE 15.1 takeWhile") {
+    import SimpleStreamTransducers.Process._
+    val p = takeWhile[Int](i => i < 3)
+    val r = p(Stream(1, 2, 3, 4)).toList
+    assert(r == List(1, 2))
+  }
+
+  test("EXERCISE 15.1 dropWhile") {
+    import SimpleStreamTransducers.Process._
+    val p = dropWhile[Int](i => i < 3)
+    val r = p(Stream(1, 2, 3, 4)).toList
+    assert(r == List(3, 4))
+  }
 }
