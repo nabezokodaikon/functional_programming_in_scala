@@ -166,4 +166,13 @@ class StreamingIOSpec extends FunSuite {
     val r = p(Stream("a", "b", "c")).zipWithIndex
     assert(r == List(("a", 0), ("b", 1), ("c", 2)))
   }
+
+  test("EXERCISE 15.8 exists") {
+    import SimpleStreamTransducers.Process._
+    val r1 = exists[Int](_ % 2 == 0)(Stream(1, 3, 5)).toList
+    assert(r1 == List(false, false, false))
+
+    val r2 = exists[Int](_ % 2 == 0)(Stream(1, 2, 5)).toList
+    assert(r2 == List(false, true, true))
+  }
 }

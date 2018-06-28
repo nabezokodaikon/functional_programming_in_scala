@@ -274,5 +274,13 @@ object SimpleStreamTransducers {
         case (_, Await(recv2)) =>
           Await((oa: Option[A]) => zip(feed(oa)(p1), recv2(oa)))
       }
+
+    // EXERCISE 15.8
+    def any: Process[Boolean, Boolean] =
+      loop(false)((b: Boolean, s) => (s || b, s || b))
+
+    // EXERCISE 15.8
+    def exists[I](f: I => Boolean): Process[I, Boolean] =
+      lift(f) |> any
   }
 }
