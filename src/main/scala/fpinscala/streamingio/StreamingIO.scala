@@ -232,5 +232,16 @@ object SimpleStreamTransducers {
     // EXERCISE 15.4
     def countViaLoop[I]: Process[I, Int] =
       loop(0)((_: I, n) => (n + 1, n + 1))
+
+    // List 15-2
+    import fpinscala.monads.Monad
+    def monad[I]: Monad[({ type f[x] = Process[I, x] })#f] =
+      new Monad[({ type f[x] = Process[I, x] })#f] {
+
+        def unit[O](o: => O): Process[I, O] = emit(o)
+
+        def flatMap[O, O2](p: Process[I, O])(f: O => Process[I, O2]): Process[I, O2] =
+          p flatMap f
+      }
   }
 }
