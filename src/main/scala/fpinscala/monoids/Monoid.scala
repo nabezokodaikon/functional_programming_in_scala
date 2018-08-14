@@ -13,4 +13,10 @@ object Monoid {
     def op(a1: String, a2: String) = a1 + a2
     val zero = ""
   }
+
+  // List 10-3
+  def listMonoid[A] = new Monoid[List[A]] {
+    def op(a1: List[A], a2: List[A]) = a1 ++ a2
+    val zero = Nil
+  }
 }
