@@ -34,4 +34,14 @@ class MonoidSpec extends FunSuite {
     assert(op(zero, true) == true)
     assert(op(zero, false) == false)
   }
+
+  test("EXERCISE 10.2 optionMonoid") {
+    import Monoid._
+
+    val m = optionMonoid[Int]
+
+    assert(m.op(m.op(Some(1), None), Some(2)) == m.op(Some(1), m.op(None, Some(2))))
+    assert(m.op(m.zero, Some(1)) == Some(1))
+    assert(m.op(m.zero, None) == None)
+  }
 }
