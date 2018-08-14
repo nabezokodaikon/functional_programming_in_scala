@@ -44,4 +44,9 @@ class MonoidSpec extends FunSuite {
     assert(m.op(m.zero, Some(1)) == Some(1))
     assert(m.op(m.zero, None) == None)
   }
+
+  test("EXERCISE 10.3 endoMonoid") {
+    import Monoid._
+    // TODO
+  }
 }

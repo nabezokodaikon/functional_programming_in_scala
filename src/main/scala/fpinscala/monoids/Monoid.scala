@@ -49,4 +49,10 @@ object Monoid {
     def op(a1: Option[A], a2: Option[A]) = a1 orElse a2
     val zero = None
   }
+
+  // EXERCISE 10.3
+  def endoMonoid[A]: Monoid[A => A] = new Monoid[A => A] {
+    def op(f: A => A, g: A => A) = f compose g
+    val zero = (a: A) => a
+  }
 }
