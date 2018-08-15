@@ -75,4 +75,12 @@ class MonoidSpec extends FunSuite {
       foldLeft(List(1, 2, 3))(0)((a, b) => a + b) == 6
     }
   }
+
+  test("EXERCISE 10.7") {
+    import Monoid._
+
+    assert {
+      foldMapV(IndexedSeq(1, 2, 3), intAddition)(a => a + 1) == 9
+    }
+  }
 }
