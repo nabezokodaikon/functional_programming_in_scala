@@ -119,4 +119,12 @@ class MonoidSpec extends FunSuite {
       wcMonoid.op(Part("aa", 1, ""), Part("", 2, "dd")) == Part("aa", 3, "dd")
     }
   }
+
+  test("EXERCISE 10.11") {
+    import Monoid._
+
+    assert {
+      count("lorem ipsum dolor sit amet, ") == 5
+    }
+  }
 }

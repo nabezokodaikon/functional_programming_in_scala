@@ -123,4 +123,21 @@ object Monoid {
         Part(l1, w1 + (if ((r1 + l2).isEmpty) 0 else 1) + w2, r2)
     }
   }
+
+  // EXERCISE 10.11
+  def count(s: String): Int = {
+
+    def wc(c: Char): WC =
+      if (c.isWhitespace)
+        Part("", 0, "")
+      else
+        Stub(c.toString)
+
+    def unstub(s: String) = s.length min 1
+
+    foldMapV(s.toIndexedSeq, wcMonoid)(wc) match {
+      case Stub(s) => unstub(s)
+      case Part(l, w, r) => unstub(l) + w + unstub(r)
+    }
+  }
 }
