@@ -95,4 +95,28 @@ class MonoidSpec extends FunSuite {
       ordered(IndexedSeq(1, 4, 3)) == false
     }
   }
+
+  test("EXERCISE 10.10") {
+    import Monoid._
+
+    assert {
+      wcMonoid.op(Stub("aa"), Stub("bb")) == Stub("aabb")
+    }
+
+    assert {
+      wcMonoid.op(Stub("aa"), Part("bb", 1, "cc")) == Part("aabb", 1, "cc")
+    }
+
+    assert {
+      wcMonoid.op(Part("bb", 1, "cc"), Stub("aa")) == Part("bb", 1, "ccaa")
+    }
+
+    assert {
+      wcMonoid.op(Part("aa", 1, "bb"), Part("cc", 2, "dd")) == Part("aa", 4, "dd")
+    }
+
+    assert {
+      wcMonoid.op(Part("aa", 1, ""), Part("", 2, "dd")) == Part("aa", 3, "dd")
+    }
+  }
 }
