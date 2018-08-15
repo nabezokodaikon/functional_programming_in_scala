@@ -83,4 +83,16 @@ class MonoidSpec extends FunSuite {
       foldMapV(IndexedSeq(1, 2, 3), intAddition)(a => a + 1) == 9
     }
   }
+
+  test("EXERCISE 10.9") {
+    import Monoid._
+
+    assert {
+      ordered(IndexedSeq(1, 2, 3)) == true
+    }
+
+    assert {
+      ordered(IndexedSeq(1, 4, 3)) == false
+    }
+  }
 }
