@@ -55,4 +55,8 @@ object Monoid {
     def op(f: A => A, g: A => A) = f compose g
     val zero = (a: A) => a
   }
+
+  // List 10-4
+  def concatenate[A](as: List[A], m: Monoid[A]): A =
+    as.foldLeft(m.zero)(m.op)
 }

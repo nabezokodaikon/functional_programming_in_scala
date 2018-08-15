@@ -49,4 +49,10 @@ class MonoidSpec extends FunSuite {
     import Monoid._
     // TODO
   }
+
+  test("List 10-4 concatenate") {
+    import Monoid._
+
+    assert(concatenate(List(1, 2, 3), intAddition) == 6)
+  }
 }
