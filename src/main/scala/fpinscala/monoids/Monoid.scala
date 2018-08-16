@@ -140,6 +140,14 @@ object Monoid {
       case Part(l, w, r) => unstub(l) + w + unstub(r)
     }
   }
+
+  // EXERCISE 10.16
+  def productMonoid[A, B](a: Monoid[A], b: Monoid[B]): Monoid[(A, B)] =
+    new Monoid[(A, B)] {
+      def op(x: (A, B), y: (A, B)) =
+        (a.op(x._1, y._1), b.op(x._2, y._2))
+      val zero = (a.zero, b.zero)
+    }
 }
 
 trait Foldable[F[_]] {
