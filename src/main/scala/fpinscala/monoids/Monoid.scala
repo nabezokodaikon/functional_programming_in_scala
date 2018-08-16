@@ -148,6 +148,24 @@ object Monoid {
         (a.op(x._1, y._1), b.op(x._2, y._2))
       val zero = (a.zero, b.zero)
     }
+
+  // List 10-6
+  def mapMergeMonoid[K, V](v: Monoid[V]): Monoid[Map[K, V]] =
+    new Monoid[Map[K, V]] {
+      def zero = Map[K, V]()
+      def op(a: Map[K, V], b: Map[K, V]) =
+        (a.keySet ++ b.keySet).foldLeft(zero) {
+          (acc, k) =>
+            acc.updated(k, v.op(a.getOrElse(k, v.zero), b.getOrElse(k, v.zero)))
+        }
+    }
+
+  // EXERCISE 10.17
+  def functionMonoid[A, B](A: Monoid[A], B: Monoid[B]): Monoid[A => B] =
+    new Monoid[A => B] {
+      def op(f: A => B, g: A => B) = a => B.op(f(a), g(a))
+      val zero: A => B = a => B.zero
+    }
 }
 
 trait Foldable[F[_]] {
