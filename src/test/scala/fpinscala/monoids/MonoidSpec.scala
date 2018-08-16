@@ -193,4 +193,26 @@ class MonoidSpec extends FunSuite {
       f.concatenate(Stream(1, 2, 3))(intAddition) == 6
     }
   }
+
+  test("EXERCISE 10.14 OptionFoldable") {
+    import Monoid._
+    
+    val f = OptionFoldable 
+
+    assert {
+      f.foldRight(Some(3))(0)((a, b) => a + b) == 3
+    }
+
+    assert {
+      f.foldLeft(Some(3))(0)((a, b) => a + b) == 3
+    }
+
+    assert {
+      f.foldMap(Some(3))(a => a.toString)(stringMonoid) == "3"
+    }
+
+    assert {
+      f.concatenate(Some(3))(intAddition) == 3
+    }
+  }
 }
