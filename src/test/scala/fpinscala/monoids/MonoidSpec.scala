@@ -127,4 +127,70 @@ class MonoidSpec extends FunSuite {
       count("lorem ipsum dolor sit amet, ") == 5
     }
   }
+
+  test("EXERCISE 10.12 ListFoldable") {
+    import Monoid._
+    
+    val f = ListFoldable
+
+    assert {
+      f.foldRight(List(1, 2, 3))(0)((a, b) => a + b) == 6
+    }
+
+    assert {
+      f.foldLeft(List(1, 2, 3))(0)((a, b) => a + b) == 6
+    }
+
+    assert {
+      f.foldMap(List(1, 2, 3))(a => a.toString)(stringMonoid) == "123"
+    }
+
+    assert {
+      f.concatenate(List(1, 2, 3))(intAddition) == 6
+    }
+  }
+
+  test("EXERCISE 10.12 IndexedSeqFoldable") {
+    import Monoid._
+    
+    val f = IndexedSeqFoldable
+
+    assert {
+      f.foldRight(IndexedSeq(1, 2, 3))(0)((a, b) => a + b) == 6
+    }
+
+    assert {
+      f.foldLeft(IndexedSeq(1, 2, 3))(0)((a, b) => a + b) == 6
+    }
+
+    assert {
+      f.foldMap(IndexedSeq(1, 2, 3))(a => a.toString)(stringMonoid) == "123"
+    }
+
+    assert {
+      f.concatenate(IndexedSeq(1, 2, 3))(intAddition) == 6
+    }
+  }
+
+  test("EXERCISE 10.12 StreamFoldable") {
+    import Monoid._
+    
+    val f = StreamFoldable 
+
+    assert {
+      f.foldRight(Stream(1, 2, 3))(0)((a, b) => a + b) == 6
+    }
+
+    assert {
+      f.foldLeft(Stream(1, 2, 3))(0)((a, b) => a + b) == 6
+    }
+
+    assert {
+      f.foldMap(Stream(1, 2, 3))(a => a.toString)(stringMonoid) == "123"
+    }
+
+    assert {
+      f.concatenate(Stream(1, 2, 3))(intAddition) == 6
+    }
+  }
 }
