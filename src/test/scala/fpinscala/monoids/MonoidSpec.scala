@@ -215,4 +215,14 @@ class MonoidSpec extends FunSuite {
       f.concatenate(Some(3))(intAddition) == 3
     }
   }
+
+  test("EXERCISE 10.15") {
+    assert {
+      ListFoldable.toList(List(1, 2, 3)) == List(1, 2, 3)
+    }
+
+    assert {
+      OptionFoldable.toList(Some(3)) == List(3)
+    }
+  }
 }
