@@ -166,6 +166,10 @@ object Monoid {
       def op(f: A => B, g: A => B) = a => B.op(f(a), g(a))
       val zero: A => B = a => B.zero
     }
+
+  // EXERCISE 10.18
+  def bag[A](as: IndexedSeq[A]): Map[A, Int] =
+    foldMapV(as, mapMergeMonoid[A, Int](intAddition))((a: A) => Map(a -> 1))
 }
 
 trait Foldable[F[_]] {
